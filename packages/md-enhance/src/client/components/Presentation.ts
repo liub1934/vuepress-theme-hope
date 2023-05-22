@@ -11,17 +11,19 @@ import {
   onMounted,
   onUnmounted,
   ref,
+  shallowRef,
 } from "vue";
 import { LoadingIcon, atou } from "vuepress-shared/client";
 
 import { useReveal } from "@temp/md-enhance/reveal";
+
+import { useRevealConfig } from "../helpers/index.js";
 
 import "../styles/slides/index.scss";
 import "../styles/slides/theme/fonts/league-gothic/league-gothic.css";
 import "../styles/slides/theme/fonts/source-sans-pro/source-sans-pro.css";
 
 declare const MARKDOWN_ENHANCE_DELAY: number;
-declare const REVEAL_CONFIG: Partial<RevealOptions>;
 
 type ThemeType =
   | "auto"
@@ -65,10 +67,11 @@ export default defineComponent({
   },
 
   setup(props) {
+    const revealOptions = useRevealConfig();
     const frontmatter = usePageFrontmatter<{ reveal: RevealOptions }>();
     const code = ref("");
     const loading = ref(true);
-    const presentationContainer = ref<HTMLElement>();
+    const presentationContainer = shallowRef<HTMLElement>();
 
     let reveal: Reveal | null = null;
 
@@ -93,12 +96,10 @@ export default defineComponent({
         mouseWheel: frontmatter.value.layout === "Slide",
         transition: "slide",
         slideNumber: true,
-        ...REVEAL_CONFIG,
+        ...revealOptions,
         ...(frontmatter.value.reveal || {}),
         embedded: frontmatter.value.layout !== "Slide",
       });
-
-      reveal.configure({ backgroundTransition: "slide" });
 
       return reveal;
     };

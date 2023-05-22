@@ -1,5 +1,10 @@
-import { isArray, isLinkHttp, isString } from "@vuepress/shared";
-import { endsWith } from "vuepress-shared/node";
+import {
+  endsWith,
+  isAbsoluteUrl,
+  isArray,
+  isLinkHttp,
+  isString,
+} from "vuepress-shared/node";
 
 import { type FontIconAssets } from "../options/index.js";
 import { logger } from "../utils.js";
@@ -63,71 +68,80 @@ const getFontAwesomeLink = (links: string[]): LinkInfo[] =>
     type: "script",
     content: `\
 useScriptTag(
-  \`//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/js/${item}.min.js\`,
+  \`https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/js/${item}.min.js\`,
   () => {},
   { attrs: { "data-auto-replace-svg": "nest" } }
 );
 `,
   }));
 
-export const getIconLink = (iconLink?: FontIconAssets): LinkInfo[] => {
-  if (!iconLink) return [];
+const getIconLink = (asset?: string): LinkInfo[] => {
+  if (isString(asset)) {
+    if (asset === "fontawesome")
+      return getFontAwesomeLink(["solid", "fontawesome"]);
 
-  if (iconLink === "fontawesome")
-    return getFontAwesomeLink(["solid", "fontawesome"]);
+    if (asset === "fontawesome-with-brands")
+      return getFontAwesomeLink(["brands", "solid", "fontawesome"]);
 
-  if (iconLink === "fontawesome-with-brands")
-    return getFontAwesomeLink(["brands", "solid", "fontawesome"]);
-
-  if (iconLink === "iconfont")
-    return [
-      {
-        type: "style",
-        content: `\
+    if (asset === "iconfont")
+      return [
+        {
+          type: "style",
+          content: `\
   useStyleTag(\`\\
-  @import url("//at.alicdn.com/t/c/font_2410206_5vb9zlyghj.css");
+  @import url("https://at.alicdn.com/t/c/font_2410206_5vb9zlyghj.css");
   \`);\
 `,
-      },
-    ];
+        },
+      ];
 
-  if (iconLink === "iconify")
-    return [
-      {
-        type: "script",
-        content: `\
+    if (asset === "iconify")
+      return [
+        {
+          type: "script",
+          content: `\
 useScriptTag(
-  \`//cdn.jsdelivr.net/npm/iconify-icon@1\`
+  \`https://cdn.jsdelivr.net/npm/iconify-icon@1\`
 );\
 `,
-      },
-    ];
+        },
+      ];
 
-  return (isArray(iconLink) ? iconLink : [iconLink])
-    .map((item) => {
-      const actualLink = isLinkHttp(item) ? item : `//${item}`;
+    const actualLink = isLinkHttp(asset)
+      ? asset
+      : isAbsoluteUrl(asset)
+      ? asset
+      : `//${asset}`;
 
-      if (endsWith(actualLink, ".css"))
-        return {
+    if (endsWith(actualLink, ".css"))
+      return [
+        {
           type: "style",
           content: `\
 useStyleTag(\`\\
 @import url("${actualLink}");
 \`);\
 `,
-        };
+        },
+      ];
 
-      if (endsWith(actualLink, ".js"))
-        return {
+    if (endsWith(actualLink, ".js"))
+      return [
+        {
           type: "script",
           content: `\
 useScriptTag(\`${actualLink}\`);\
 `,
-        };
+        },
+      ];
 
-      logger.error(`Can not recognize icon link: "${item}"`);
+    logger.error(`Can not recognize icon link: "${asset}"`);
+  }
 
-      return null;
-    })
-    .filter((item): item is LinkInfo => item !== null);
+  return [];
 };
+
+export const getIconLinks = (iconAssets?: FontIconAssets): LinkInfo[] =>
+  (isArray(iconAssets) ? iconAssets : [iconAssets])
+    .map((asset) => getIconLink(asset))
+    .flat();

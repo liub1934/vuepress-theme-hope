@@ -46,11 +46,12 @@ export interface ThemeBlogHomePageFrontmatter extends ThemePageFrontmatter {
    */
   heroFullScreen?: boolean;
   heroImage?: string;
-  heroImageStyle?: Record<string, string>;
+  heroImageDark?: string;
+  heroImageStyle?: Record<string, string> | string;
   heroAlt?: string;
   heroText?: string | false;
   bgImage?: string | false;
-  bgImageStyle?: Record<string, string>;
+  bgImageStyle?: Record<string, string> | string;
   tagline?: string;
   projects: ThemeBlogHomeProjectOptions[];
 }

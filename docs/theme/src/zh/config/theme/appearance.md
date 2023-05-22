@@ -30,12 +30,13 @@ tag:
     | `http://${string}`
     | `https://${string}`;
 
-  export type FontIconAssets =
+  type BuiltInFontIcon =
+    | "iconify"
     | "iconfont"
     | "fontawesome"
-    | "fontawesome-with-brand"
-    | Link
-    | Link[];
+    | "fontawesome-with-brands";
+
+  type FontIconAssets = BuiltInFontIcon | Link | (BuiltInFontIcon | Link)[];
   ```
 
 - 必填: 否
@@ -63,14 +64,6 @@ tag:
 
 :::
 
-## themeColor <Badge text="仅限 Root" type="warning" />
-
-- 类型: `Record<string, string> | false`
-- 默认值: `false`
-- 详情: [界面 → 主题色](../../guide/interface/theme-color.md)
-
-主题色选择器配置。
-
 ## fullscreen
 
 - 类型: `boolean`
@@ -81,38 +74,29 @@ tag:
 
 ## backToTop <Badge text="仅限 Root" type="warning" />
 
-- 类型: `boolean | number`
+- 类型: `BackToTopOptions | boolean`
+
+  ```ts
+  interface BackToTopOptions {
+    /**
+     * 滚动距离阈值，用于显示返回顶部按钮 (单位: 像素)
+     *
+     * @default 100
+     */
+    threshold?: number;
+
+    /**
+     * 是否显示滚动进度
+     *
+     * @default true
+     */
+    progress?: boolean;
+  }
+  ```
+
 - 默认值: `true`
 
-是否显示返回顶部按钮。
-
-如果设置为数字，则该数字为触发临界值 (默认临界值为 300px)。
-
-## mobileBreakPoint <Badge text="仅限 Root" type="warning" />
-
-- 类型: `number`
-- 默认值: `719`
-
-切换桌面布局和移动布局的窗口宽度，单位像素。
-
-::: warning
-
-你需要将此选项和 `.vuepress/config.scss` 中的 `$tablet` 保持一致。
-
-:::
-
-## wideBreakPoint <Badge text="仅限 Root" type="warning" />
-
-- 类型: `number`
-- 默认值: `1440`
-
-切换桌面布局和宽屏布局的窗口宽度，单位像素。
-
-::: warning
-
-你需要将此选项和 `.vuepress/config.scss` 中的 `$pc` 保持一致。
-
-:::
+自定义返回顶部按钮，将其设置为 `false` 会禁用该按钮。
 
 ## pure <Badge text="仅限 Root" type="warning" />
 

@@ -24,11 +24,11 @@ tag:
 
 ## 修改主题字体
 
-主题在 `.vuepress/styles/palette.scss` 中提供了 `$font-family`、`$font-family-fancy` 和 `$font-family-code` 三个变量控制字体。
+主题在 `.vuepress/styles/palette.scss` 中提供了 `$font-family`、`$font-family-heading` 和 `$font-family-mono` 三个变量控制字体。
 
 - `$font-family`: 普通文本上使用的字体
-- `$font-family-fancy:` 用于花哨元素的字体
-- `$font-family-code`: 代码上使用的字体
+- `$font-family-heading:` 用于标题元素的字体
+- `$font-family-mono`: 代码上使用的字体
 
 默认情况下，主题在普通文本上使用无衬线体。
 
@@ -146,7 +146,7 @@ $font-family: '"Noto Serif SC", serif';
 [^noto-serif-sc]: 基于「开源字体授权发布」，并且在文档中说明可以基于其源代码进行二次修改后使用 (商用或者个人使用)，所以没有任何版权问题。
 
 <script setup lang="ts">
-import { useScriptTag } from '@vueuse/core'
+import { useScriptTag } from "@vueuse/core";
 
 useScriptTag("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&display=swap");
 </script>

@@ -1,8 +1,13 @@
 import { type UserConfig } from "@vuepress/cli";
 import { type Plugin, type PluginConfig } from "@vuepress/core";
 import { type MarkdownOptions } from "@vuepress/markdown";
-import { isArray, isFunction, isPlainObject, isString } from "@vuepress/shared";
 import { colors } from "@vuepress/utils";
+import {
+  isArray,
+  isFunction,
+  isPlainObject,
+  isString,
+} from "vuepress-shared/node";
 
 import { defineHopeConfig } from "./helper-v2.js";
 import { convertThemeOptions } from "./theme.js";
@@ -83,7 +88,7 @@ ${colors.magenta("markdown.slugify")} is ${colors.red(
 If you want to change the slugify function anyway, set the following options separately:
 · ${colors.blue("markdown.anchor.slugify")}
 · ${colors.blue("markdown.toc.slugify")}
-· ${colors.blue("markdown.extractHeaders.slugify")}
+· ${colors.blue("markdown.headers.slugify")}
 `
     );
 

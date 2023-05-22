@@ -12,7 +12,7 @@ tag:
 
 ## Config File
 
-Without any configuration, the VuePress site is pretty minimal. To customize your site, let’s first create a `.vuepress` directory inside your docs directory. This is where all VuePress-specific files will be placed. Your project structure is probably like this:
+Without any configuration, the VuePress site is pretty minimal. To customize your site, let's first create a `.vuepress` directory inside your docs directory. This is where all VuePress-specific files will be placed. Your project structure is probably like this:
 
 ```
 ├─ docs
@@ -70,7 +70,7 @@ export default {
 
 ::: tip
 
-Check out the [Config Reference](https://v2.vuepress.vuejs.org/reference/config.html) for a full list of VuePress config.
+Check out the [Config Reference](https://vuejs.press/reference/config.html) for a full list of VuePress config.
 
 :::
 
@@ -90,7 +90,7 @@ To use `vuepress-theme-hope`, you should import `hopeTheme` from it, passing in 
 
 ::: warning
 
-If you don’t specify the `theme` option of VuePress config, the default theme will be used.
+If you don't specify the `theme` option of VuePress config, the default theme will be used.
 
 :::
 
@@ -124,6 +124,6 @@ export default defineClientConfig({
 
 Unlike config file, client config file could not be specified via CLI options.
 
-To learn more about client config file, see [Advanced > Cookbook > Usage of Client Config](https://v2.vuepress.vuejs.org/advanced/cookbook/usage-of-client-config.html)
+To learn more about client config file, see [Advanced > Cookbook > Usage of Client Config](https://vuejs.press/advanced/cookbook/usage-of-client-config.html)
 
 :::

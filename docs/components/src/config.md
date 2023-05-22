@@ -83,13 +83,13 @@ Twitter username.
     | `http://${string}`
     | `https://${string}`;
 
-  type FontIconAssets =
-    | "iconfont"
+  type BuiltInFontIcon =
     | "iconify"
+    | "iconfont"
     | "fontawesome"
-    | "fontawesome-with-brands"
-    | Link
-    | Link[];
+    | "fontawesome-with-brands";
+
+  type FontIconAssets = BuiltInFontIcon | Link | (BuiltInFontIcon | Link)[];
   ```
 
 - Required: No
@@ -131,7 +131,26 @@ Public ID of addThis.
 
 ### rootComponents.backToTop
 
-- Type: `boolean | number`
+- Type: `BackToTopOptions | boolean`
+
+  ```ts
+  interface BackToTopOptions {
+    /**
+     * Scroll threshold distance to display back to top button (in pixels)
+     *
+     * @default 100
+     */
+    threshold?: number;
+
+    /**
+     * Whether display scroll progress
+     *
+     * @default true
+     */
+    progress?: boolean;
+  }
+  ```
+
 - Default: `false`
 - Details:
   - [Guide → BackToTop](./guide/backtotop.md)
@@ -286,5 +305,6 @@ Locales config for pdf component.
 - **Korean** (ko-KR)
 - **Finnish** (fi-FI)
 - **Indonesian** (id-ID)
+- **Dutch** (nl-NL)
 
 :::

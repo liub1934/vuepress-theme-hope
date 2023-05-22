@@ -35,12 +35,12 @@ export default defineComponent({
     const controlKeys = computed(() =>
       primaryKey
         ? [
-            ...(isMacOS.value
-              ? ["⌘", "⇧", "⌥"]
-              : ["Ctrl", "Shift", "Alt"]
+            (isMacOS.value
+              ? ["⌃", "⇧", "⌥", "⌘"]
+              : ["Ctrl", "Shift", "Alt", "Win"]
             ).filter(
               (_, index) =>
-                primaryKey[(["ctrl", "shift", "alt"] as const)[index]]
+                primaryKey[(["ctrl", "shift", "alt", "meta"] as const)[index]]
             ),
             primaryKey.key.toUpperCase(),
           ]
@@ -77,6 +77,7 @@ export default defineComponent({
       h(
         "button",
         {
+          type: "button",
           class: "search-pro-button",
           role: "search",
           "aria-label": locale.value.search,

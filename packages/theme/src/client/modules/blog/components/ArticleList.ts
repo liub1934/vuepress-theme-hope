@@ -76,7 +76,7 @@ export default defineComponent({
 
       if (SUPPORT_PAGEVIEW)
         void import(
-          /* webpackChunkName: "pageview" */ "vuepress-plugin-comment2/client/pageview.js"
+          /* webpackChunkName: "pageview" */ "vuepress-plugin-comment2/pageview"
         ).then(({ updatePageview }) => {
           updatePageview();
         });
@@ -91,6 +91,14 @@ export default defineComponent({
           window.scrollTo(0, distance);
         }, 100);
       });
+
+      // FIXME: Workaround for https://github.com/vuepress/vuepress-next/issues/1249
+      watch(
+        () => route.query,
+        ({ page }) => {
+          updatePage(page ? Number(page) : 1);
+        }
+      );
     });
 
     return (): VNode =>

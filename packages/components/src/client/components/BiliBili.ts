@@ -1,12 +1,12 @@
 /* eslint-disable vue/no-unused-properties */
-import { useEventListener } from "@vueuse/core";
-import { type VNode, computed, defineComponent, h, onMounted, ref } from "vue";
-import { checkIsMobile } from "vuepress-shared/client";
+import { type VNode, computed, defineComponent, h } from "vue";
 
 import { useSize } from "../composables/index.js";
 import { videoIframeAllow } from "../utils/index.js";
 
 import "../styles/bili-bili.scss";
+
+const VIDEO_LINK = "https://player.bilibili.com/player.html";
 
 export default defineComponent({
   name: "BiliBili",
@@ -19,7 +19,27 @@ export default defineComponent({
      */
     bvid: {
       type: String,
-      required: true,
+      default: "",
+    },
+
+    /**
+     * BiliBili video aid
+     *
+     * B 站视频 a ID
+     */
+    aid: {
+      type: String,
+      default: "",
+    },
+
+    /**
+     * BiliBili video cid
+     *
+     * B 站视频 CID
+     */
+    cid: {
+      type: String,
+      default: "",
     },
 
     /**
@@ -83,68 +103,49 @@ export default defineComponent({
     },
 
     /**
-     * Whether use low quality source
+     * Whether autoplay
      *
-     * 是否使用低质量画质
+     * 是否自动播放
      */
-    lowQuality: Boolean,
-
-    /**
-     * Whether to disable danmaku
-     *
-     * 是否禁用弹幕
-     */
-    noDanmaku: Boolean,
+    autoplay: Boolean,
   },
 
   setup(props) {
-    const isMobile = ref(false);
-    // on pc with width >= 640, a 68px hint will be under video
-    const extraHeight = computed(() => (isMobile.value ? 0 : 68));
+    const { el, width, height } = useSize<HTMLIFrameElement>(props);
 
-    const updateMobile = (): void => {
-      isMobile.value =
-        checkIsMobile(navigator.userAgent) || el.value!.clientWidth < 640;
-    };
+    const videoLink = computed(() => {
+      const { aid, bvid, cid, autoplay, time, page } = props;
 
-    const { el, width, height } = useSize<HTMLIFrameElement>(
-      props,
-      extraHeight
-    );
-
-    const videoLink = computed(
-      () =>
-        `https://player.bilibili.com/player.html?bvid=${props.bvid}&t=${
-          props.time
-        }&high_quality=${props.lowQuality ? 0 : 1}&page=${props.page}&danmaku=${
-          props.noDanmaku ? 0 : 1
-        }`
-    );
-
-    onMounted(() => {
-      updateMobile();
-      useEventListener("orientationchange", () => updateMobile());
-      useEventListener("resize", () => updateMobile());
+      return aid && cid
+        ? `${VIDEO_LINK}?aid=${aid}&cid=${cid}&t=${time}&autoplay=${
+            autoplay ? 1 : 0
+          }&page=${page}`
+        : bvid
+        ? `${VIDEO_LINK}?bvid=${bvid}&t=${time}&autoplay=${autoplay ? 1 : 0}`
+        : null;
     });
 
-    return (): VNode[] => [
-      h(
-        "div",
-        { class: "bili-desc" },
-        h("a", { class: "sr-only", href: videoLink.value }, props.title)
-      ),
-      h("iframe", {
-        ref: el,
-        // Tip: `https://www.bilibili.com/blackboard/newplayer.html?bvid=${props.bvid}&as_wide=1&page=1` only support whitelist sites now
-        src: videoLink.value,
-        title: props.title,
-        class: "bili-iframe",
-        allow: videoIframeAllow,
-        style: {
-          width: width.value,
-          height: height.value,
-        },
-      }),
-    ];
+    return (): VNode[] | null =>
+      videoLink.value
+        ? [
+            h(
+              "div",
+              { class: "bili-desc" },
+              h("a", { class: "sr-only", href: videoLink.value }, props.title)
+            ),
+            h("iframe", {
+              ref: el,
+              // Tip: `https://www.bilibili.com/blackboard/newplayer.html?bvid=${props.bvid}&as_wide=1&page=1` only support whitelist sites now
+              src: videoLink.value,
+              title: props.title,
+              class: "bili-iframe",
+              allow: videoIframeAllow,
+              style: {
+                width: width.value,
+                height: height.value,
+              },
+            }),
+          ]
+        : null;
   },
 });

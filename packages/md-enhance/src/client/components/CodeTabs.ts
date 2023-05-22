@@ -1,11 +1,13 @@
 import { useStorage } from "@vueuse/core";
 import {
   type PropType,
+  type SlotsType,
   type VNode,
   defineComponent,
   h,
   onMounted,
   ref,
+  shallowRef,
   watch,
 } from "vue";
 
@@ -63,12 +65,20 @@ export default defineComponent({
     },
   },
 
+  slots: Object as SlotsType<{
+    [slot: `tab${number}`]: (props: {
+      title: string;
+      value: string;
+      isActive: boolean;
+    }) => VNode[];
+  }>,
+
   setup(props, { slots }) {
     // index of current active item
     const activeIndex = ref(props.active);
 
     // refs of the tab buttons
-    const tabRefs = ref<HTMLUListElement[]>([]);
+    const tabRefs = shallowRef<HTMLUListElement[]>([]);
 
     // update store
     const updateStore = (): void => {
@@ -153,6 +163,7 @@ export default defineComponent({
                 return h(
                   "button",
                   {
+                    type: "button",
                     ref: (element) => {
                       if (element)
                         tabRefs.value[index] = <HTMLUListElement>element;
@@ -183,7 +194,7 @@ export default defineComponent({
                   role: "tabpanel",
                   "aria-expanded": isActive,
                 },
-                slots[`tab${index}`]?.({ title, value, isActive })
+                slots[`tab${index}`]({ title, value, isActive })
               );
             }),
           ])

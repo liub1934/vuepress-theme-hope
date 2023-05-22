@@ -59,6 +59,24 @@ export default {
 
 详见 [mermaid 官方文档](https://mermaid.js.org/)。
 
+## 高级
+
+你可以在客户端配置文件中导入并使用 `defineMermaidConfig` 来自定义 Mermaid 配置:
+
+```ts
+// .vuepress/client.ts
+import { defineClientConfig } from "@vuepress/client";
+import { defineMermaidConfig } from "vuepress-plugin-md-enhance/client";
+
+defineMermaidConfig({
+  // 在此设置 mermaid 选项
+});
+
+export default defineClientConfig({
+  // ...
+});
+```
+
 ## 例子
 
 ### 流程图
@@ -358,7 +376,7 @@ Add another diagram to demo page    :48h
 ### 饼图
 
 ```pie
-title What Voldemort doesn’t have?
+title What Voldemort doesn't have?
   "FRIENDS" : 2
   "FAMILY" : 3
   "NOSE" : 45
@@ -368,7 +386,7 @@ title What Voldemort doesn’t have?
 
 ````md
 ```pie
-title What Voldemort doesn’t have?
+title What Voldemort doesn't have?
   "FRIENDS" : 2
   "FAMILY" : 3
   "NOSE" : 45

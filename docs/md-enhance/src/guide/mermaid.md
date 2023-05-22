@@ -59,6 +59,24 @@ export default {
 
 Please see [mermaid](https://mermaid.js.org/).
 
+## Advanced
+
+You can import and call `defineMermaidConfig` in client config file to customize mermaid:
+
+```ts
+// .vuepress/client.ts
+import { defineClientConfig } from "@vuepress/client";
+import { defineMermaidConfig } from "vuepress-plugin-md-enhance/client";
+
+defineMermaidConfig({
+  // mermaid options here
+});
+
+export default defineClientConfig({
+  // ...
+});
+```
+
 ## Demo
 
 ### Flowchart
@@ -358,7 +376,7 @@ Add another diagram to demo page    :48h
 ### Pie Chart Diagrams
 
 ```pie
-title What Voldemort doesn’t have?
+title What Voldemort doesn't have?
   "FRIENDS" : 2
   "FAMILY" : 3
   "NOSE" : 45
@@ -368,7 +386,7 @@ title What Voldemort doesn’t have?
 
 ````md
 ```pie
-title What Voldemort doesn’t have?
+title What Voldemort doesn't have?
   "FRIENDS" : 2
   "FAMILY" : 3
   "NOSE" : 45

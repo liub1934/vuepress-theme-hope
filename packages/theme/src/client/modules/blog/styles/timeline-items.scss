@@ -121,7 +121,7 @@
 
     font-weight: 700;
     font-size: 26px;
-    font-family: var(--font-family-fancy);
+    font-family: var(--font-family-heading);
 
     transition: color var(--color-transition);
 
@@ -156,7 +156,7 @@
     // inset-inline-end: calc(100% + 24px);
     right: calc(100% + 24px);
 
-    width: 40px;
+    width: 50px;
 
     font-size: 14px;
     line-height: 30px;

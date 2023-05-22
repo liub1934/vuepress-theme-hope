@@ -1,13 +1,14 @@
 import { usePageData } from "@vuepress/client";
 import { useScrollLock } from "@vueuse/core";
 import {
+  type SlotsType,
   Transition,
   type VNode,
   defineComponent,
   h,
   onMounted,
   onUnmounted,
-  ref,
+  shallowRef,
   watch,
 } from "vue";
 
@@ -31,11 +32,16 @@ export default defineComponent({
 
   emits: ["close"],
 
+  slots: Object as SlotsType<{
+    before?: () => VNode | VNode[];
+    after?: () => VNode | VNode[];
+  }>,
+
   setup(props, { emit, slots }) {
     const page = usePageData();
     const { isMobile } = useWindowSize();
 
-    const body = ref<HTMLElement>();
+    const body = shallowRef<HTMLElement>();
     const isLocked = useScrollLock(body);
 
     onMounted(() => {
@@ -78,10 +84,10 @@ export default defineComponent({
                 "div",
                 { id: "nav-screen" },
                 h("div", { class: "container" }, [
-                  slots["before"]?.(),
+                  slots.before?.(),
                   h(NavScreenLinks),
                   h("div", { class: "outlook-wrapper" }, h(OutlookSettings)),
-                  slots["after"]?.(),
+                  slots.after?.(),
                 ])
               )
             : null

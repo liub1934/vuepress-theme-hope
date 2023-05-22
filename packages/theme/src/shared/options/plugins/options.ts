@@ -1,6 +1,6 @@
 import { type GitPluginOptions } from "@vuepress/plugin-git";
 import { type AutoCatalogOptions } from "vuepress-plugin-auto-catalog";
-import { type CommentOptions } from "vuepress-plugin-comment2";
+import { type CommentPluginOptions } from "vuepress-plugin-comment2";
 import { type ComponentOptions } from "vuepress-plugin-components";
 import { type CopyCodeOptions } from "vuepress-plugin-copy-code2";
 import { type CopyrightOptions } from "vuepress-plugin-copyright2";
@@ -67,7 +67,7 @@ export interface PluginsOptions {
    *
    * @see https://plugin-comment2.vuejs.press/zh/config/
    */
-  comment?: CommentOptions | false;
+  comment?: CommentPluginOptions | false;
 
   /**
    * code copy plugin options
@@ -118,13 +118,13 @@ export interface PluginsOptions {
    *
    * @description By default this plugin is only enabled in production mode for performance reasons.
    *
-   * @see https://v2.vuepress.vuejs.org/reference/plugin/git.html
+   * @see https://vuejs.press/reference/plugin/git.html
    *
    * Git 插件配置
    *
    * @description 默认情况下，出于性能原因，此插件仅在生产模式下启用。
    *
-   * @see https://v2.vuepress.vuejs.org/zh/reference/plugin/git.html
+   * @see https://vuejs.press/zh/reference/plugin/git.html
    */
   git?: GitPluginOptions | boolean;
 

@@ -1,14 +1,8 @@
-import { theme } from "docs-shared";
-import {
-  enNavbarConfig,
-  zhNavbarConfig,
-  ruNavbarConfig,
-} from "./navbar/index.js";
-import {
-  enSidebarConfig,
-  zhSidebarConfig,
-  ruSidebarConfig,
-} from "./sidebar/index.js";
+import { getDirname, theme, path } from "docs-shared";
+import { enNavbarConfig, zhNavbarConfig } from "./navbar/index.js";
+import { enSidebarConfig, zhSidebarConfig } from "./sidebar/index.js";
+
+const __dirname = getDirname(import.meta.url);
 
 const IS_NETLIFY = "NETLIFY" in process.env;
 
@@ -19,14 +13,11 @@ export default theme("theme", {
     name: "VuePress Theme Hope",
   },
 
-  themeColor: {
-    blue: "#2196f3",
-    red: "#f26d6d",
-    green: "#3eaf7c",
-    orange: "#fb9b5f",
-  },
-
   fullscreen: true,
+
+  extraLocales: {
+    Русский: "https://theme-hope-ru.vuejs.press/:route",
+  },
 
   locales: {
     "/": {
@@ -37,9 +28,12 @@ export default theme("theme", {
       navbar: zhNavbarConfig,
       sidebar: zhSidebarConfig,
     },
-    "/ru/": {
-      navbar: ruNavbarConfig,
-      sidebar: ruSidebarConfig,
+  },
+
+  encrypt: {
+    config: {
+      "/demo/encrypt.html": "1234",
+      "/zh/demo/encrypt.html": "1234",
     },
   },
 
@@ -98,18 +92,6 @@ export default theme("theme", {
                   },
                 ],
               },
-              {
-                path: "/ru/",
-                title: "Новое местоположение документации",
-                content:
-                  "Наша документация переехала на новый домен vuejs.press<br>Текущая документация построена на основе последнего коммита в главной ветке и может содержать <strong>неопубликованные изменения</strong>!",
-                actions: [
-                  {
-                    text: "Посетите сейчас",
-                    link: "https://theme-hope.vuejs.press/ru/",
-                  },
-                ],
-              },
             ],
           },
     },
@@ -125,9 +107,9 @@ export default theme("theme", {
     mdEnhance: {
       align: true,
       attrs: true,
+      card: true,
       chart: true,
       codetabs: true,
-      container: true,
       demo: true,
       echarts: true,
       figure: true,
@@ -136,7 +118,17 @@ export default theme("theme", {
       imgLazyload: true,
       imgMark: true,
       imgSize: true,
-      include: true,
+      include: {
+        resolvePath: (file, cwd) => {
+          if (file.startsWith("@echarts"))
+            return file.replace(
+              "@echarts",
+              path.resolve(__dirname, "../echarts")
+            );
+
+          return file;
+        },
+      },
       mathjax: true,
       mark: true,
       mermaid: true,

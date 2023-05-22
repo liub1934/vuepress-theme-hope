@@ -1,5 +1,5 @@
 import { useSiteLocaleData } from "@vuepress/client";
-import { useEventListener } from "@vueuse/core";
+import { useEventListener, useScrollLock } from "@vueuse/core";
 import {
   type VNode,
   defineAsyncComponent,
@@ -7,7 +7,10 @@ import {
   h,
   inject,
   nextTick,
+  onMounted,
+  onUnmounted,
   ref,
+  shallowRef,
   watch,
 } from "vue";
 import { useIsMobile, useLocaleConfig } from "vuepress-shared/client";
@@ -46,7 +49,7 @@ export default defineComponent({
     const { enabled, queryHistory } = useSearchQueryHistory();
 
     const input = ref("");
-    const inputElement = ref<HTMLInputElement>();
+    const inputElement = shallowRef<HTMLInputElement>();
 
     watch(isActive, (value) => {
       if (value)
@@ -57,6 +60,18 @@ export default defineComponent({
 
     useEventListener("keydown", (event: KeyboardEvent) => {
       if (isActive.value && event.key === "Escape") isActive.value = false;
+    });
+
+    onMounted(() => {
+      const isLocked = useScrollLock(document.body);
+
+      watch(isActive, (value) => {
+        isLocked.value = value;
+      });
+
+      onUnmounted(() => {
+        isLocked.value = false;
+      });
     });
 
     return (): VNode | null =>
@@ -106,6 +121,7 @@ export default defineComponent({
                 h(
                   "button",
                   {
+                    type: "button",
                     class: "close-button",
                     onClick: () => {
                       isActive.value = false;

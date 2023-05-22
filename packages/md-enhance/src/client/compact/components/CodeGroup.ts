@@ -1,11 +1,13 @@
 import {
   type Component,
   type FunctionalComponent,
+  type SlotsType,
   type VNode,
   defineComponent,
   h,
   onBeforeUpdate,
   ref,
+  shallowRef,
 } from "vue";
 
 import "../styles/code-group.scss";
@@ -18,17 +20,18 @@ export interface CodeGroupItemProps {
   active?: boolean;
 }
 
-export const CodeGroupItem: FunctionalComponent<CodeGroupItemProps> = (
-  { active = false },
-  { slots }
-): VNode =>
+export const CodeGroupItem: FunctionalComponent<
+  CodeGroupItemProps,
+  Record<never, never>,
+  { default: () => VNode | VNode[] | undefined }
+> = ({ active = false }, { slots }): VNode =>
   h(
     "div",
     {
       class: ["code-group-item", { active }],
       "aria-selected": active,
     },
-    slots["default"]?.()
+    slots.default?.()
   );
 
 CodeGroupItem.displayName = "CodeGroupItem";
@@ -36,12 +39,16 @@ CodeGroupItem.displayName = "CodeGroupItem";
 export const CodeGroup = defineComponent({
   name: "CodeGroup",
 
+  slots: Object as SlotsType<{
+    default: () => VNode[];
+  }>,
+
   setup(_props, { slots }) {
     // index of current active item
     const activeIndex = ref(-1);
 
     // refs of the tab buttons
-    const tabRefs = ref<HTMLUListElement[]>([]);
+    const tabRefs = shallowRef<HTMLUListElement[]>([]);
 
     // after removing a code-group-item, we need to clear the ref
     // of the removed item to avoid issues caused by HMR
@@ -82,12 +89,12 @@ export const CodeGroup = defineComponent({
       // `setup()` function of current component is called
 
       // get children code-group-item
-      const items = (slots["default"]?.() || [])
-        .filter((vnode) => (vnode.type as Component).name === "CodeGroupItem")
-        .map((vnode) => {
-          if (vnode.props === null) vnode.props = {};
+      const items = (slots.default?.() || [])
+        .filter((vNode) => (vNode.type as Component).name === "CodeGroupItem")
+        .map((vNode) => {
+          if (vNode.props === null) vNode.props = {};
 
-          return vnode as VNode & { props: Exclude<VNode["props"], null> };
+          return vNode as VNode & { props: Exclude<VNode["props"], null> };
         });
 
       // do not render anything if there is no code-group-item
@@ -96,15 +103,15 @@ export const CodeGroup = defineComponent({
       // if `activeIndex` is invalid
       if (activeIndex.value < 0 || activeIndex.value > items.length - 1) {
         // find the index of the code-group-item with `active` props
-        activeIndex.value = items.findIndex((vnode) => "active" in vnode.props);
+        activeIndex.value = items.findIndex((vNode) => "active" in vNode.props);
 
         // if there is no `active` props on code-group-item, set the first item active
         if (activeIndex.value === -1) activeIndex.value = 0;
       }
       // set the active item
       else {
-        items.forEach((vnode, index) => {
-          vnode.props["active"] = index === activeIndex.value;
+        items.forEach((vNode, index) => {
+          vNode.props["active"] = index === activeIndex.value;
         });
       }
 
@@ -112,12 +119,13 @@ export const CodeGroup = defineComponent({
         h(
           "div",
           { class: "code-group-nav" },
-          items.map((vnode, index) => {
+          items.map((vNode, index) => {
             const isActive = index === activeIndex.value;
 
             return h(
               "button",
               {
+                type: "button",
                 ref: (element) => {
                   if (element) tabRefs.value[index] = <HTMLUListElement>element;
                 },
@@ -130,7 +138,7 @@ export const CodeGroup = defineComponent({
                 onKeydown: (event: KeyboardEvent) =>
                   keyboardHandler(event, index),
               },
-              <string[]>vnode.props["title"]
+              <string[]>vNode.props["title"]
             );
           })
         ),

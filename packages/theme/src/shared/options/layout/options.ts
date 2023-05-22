@@ -1,3 +1,5 @@
+import { type BackToTopOptions } from "vuepress-plugin-components";
+
 import { type FooterLocaleOptions } from "./footer.js";
 import { type DocsRepoLocaleOptions } from "./info.js";
 import { type MetaLocaleOptions, type MetaLocateData } from "./meta.js";
@@ -123,41 +125,11 @@ export interface LayoutOptions {
   /**
    * Wether display back to top button
    *
-   * If it’s set with a number, then it will be the threshold
-   *
    * 是否显示返回顶部按钮
-   *
-   * 如果设置为数字，则该数字为触发临界值 (默认临界值为 300px)
    *
    * @default true
    */
-  backToTop?: boolean | number;
-
-  /**
-   * Window width switching mobile view and desktop view in pixels.
-   *
-   * @description This should be the same value with `$tablet` value in `config.scss`.
-   *
-   * 切换桌面布局和移动布局的窗口宽度，单位像素。
-   *
-   * @description 该值应与 `config.scss` 中的 `$tablet` 值相同。
-   *
-   * @default 719
-   */
-  mobileBreakPoint?: number;
-
-  /**
-   * Window width detecting wide screen in pixels.
-   *
-   * @description This should be the same value with `$pc` value in `config.scss`.
-   *
-   * 切换宽屏的窗口宽度，单位像素。
-   *
-   * @description 该值应与 `config.scss` 中的 `$pc` 值相同。
-   *
-   * @default 1440
-   */
-  wideBreakPoint?: number;
+  backToTop?: BackToTopOptions | boolean;
 
   /**
    * Sorter of structure sidebar
@@ -168,8 +140,3 @@ export interface LayoutOptions {
    */
   sidebarSorter?: SidebarSorter;
 }
-
-export type LayoutConfig = Pick<
-  LayoutOptions,
-  "mobileBreakPoint" | "wideBreakPoint"
->;

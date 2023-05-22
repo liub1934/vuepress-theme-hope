@@ -26,7 +26,7 @@ We recommend you to use iconify or fontawesome.
 ## Browsing Icons
 
 - Iconify: <https://icon-sets.iconify.design/>
-- Iconfont: <https://www.iconfont.cn/en/>
+- Iconfont: <https://www.iconfont.cn/?lang=en-us>
 - Fontawesome: <https://fontawesome.com/icons>
 
 ::: details Featured Icons with iconfont keyword
@@ -48,6 +48,26 @@ You can use icon in multiple places.
 - Sidebar: set `icon` option in SidebarItemConfig
 
 - HomePage: set `icon` option in feature item
+
+## Adding Icons in Markdown
+
+You can use `<HopeIcon />` component to add icon in markdown.
+
+- `icon` prop accepts the same content as other `icon` options, i.e.: font class and image url
+- `color` prop accepts a css color value, which will be used as the icon color (optional)
+- `size` prop accepts a css size value, which will be used as the icon size (optional)
+
+::: details Demo
+
+- <HopeIcon icon="home" color="red" />
+- <HopeIcon icon="/logo.svg" size="4rem" />
+
+```md
+- <HopeIcon icon="home" color="red" />
+- <HopeIcon icon="/logo.svg" size="4rem" />
+```
+
+:::
 
 ## Global Settings
 
@@ -123,7 +143,7 @@ To keep it simple, we add built-in keywords `"iconfont"`, `"iconify"`, `"fontawe
 
 If you use this plugin for commercial project documentation, `iconfont` is **not recommended** as iconfont itself is a study/share platform for designers and developers.
 
-Every icon is uploaded by users and you must get authorized from the author for commercial usage. Also there could be chance where the uploader obeys usage term. and upload icons where its copyright is at 3rd party.
+Every icon is uploaded by users, and you must get authorized from the author for commercial usage. Also, there could be chance where the uploader obeys usage term. And upload icons where its copyright is at 3rd party.
 
 :::
 
@@ -133,7 +153,7 @@ Every icon is uploaded by users and you must get authorized from the author for 
 
 Normally, there should be a common prefix for your icon class, for `iconfont` icon classes are `iconfont icon-<ICON-NAME>` and for fontawesome free icon classes are `fas fa-<icon-name>`. So when you are setting the above `assets` option with keywords or a single link generated from iconfont website, fontawesome kit or fontawesome CDN, the plugin recognize those and set prefix as `"iconfont icon-"` and `"fas fa-"` automatically for you.
 
-In other cases where you use iconify or your own url, you can manually set this options yourself. After all writing `icon: apple` is always better then something like `icon: iconfont icon-apple`, `icon: mdi:icon-apple` or `icon: fa-solid fa-apple`.
+In other cases where you use iconify or your own url, you can manually set this options yourself. After all writing `icon: apple` is always better than something like `icon: iconfont icon-apple`, `icon: mdi:icon-apple` or `icon: fa-solid fa-apple`.
 
 ## Advanced
 
@@ -156,7 +176,7 @@ For details, please follow [fontawesome document](https://fontawesome.com/).
 
 ::: info Iconfont
 
-[Iconfont](https://iconfont.cn) is a vector icon management and communication platform created by Alimama MUX.
+[Iconfont](https://www.iconfont.cn/?lang=en-us) is a vector icon management and communication platform created by Alimama MUX.
 
 The designer uploads the icon to the Iconfont platform, and the user can customize the download of icons in a variety of formats. Users can also convert the icon into a font.
 
@@ -164,7 +184,7 @@ The designer uploads the icon to the Iconfont platform, and the user can customi
 
 #### How to use
 
-First, you need to create a new project to set and manage your website’s icons:
+First, you need to create a new project to set and manage your website's icons:
 
 1. Log in to Iconfont using GitHub or Weibo.
 1. Find "Resources → My Projects" at the top of the website, and click the "New Project" icon in the upper right corner.
@@ -215,5 +235,6 @@ So we do not recommend you to use multiple iconfont links as assets, if you read
 :::
 
 <script setup lang="ts">
-import IconDisplay from '@IconDisplay';
+import IconDisplay from "@IconDisplay";
+import HopeIcon from "@theme-hope/components/HopeIcon";
 </script>

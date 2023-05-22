@@ -55,7 +55,7 @@ Icon name
 
 你应该将图标相关资源设置为 `componentsOptions.fontIcon.assets`。你需要设置一个 url 或者一组 url，它们是格式为 css 和 js 格式的图标资源。
 
-例如，你可以使用 [iconfont.cn](https://www.iconfont.cn/?lang=zh-cn) 和 [fontawesome](https://fontawesome.com) 来生成你自己的资源
+例如，你可以使用 [iconfont.cn](https://www.iconfont.cn/) 和 [fontawesome](https://fontawesome.com) 来生成你自己的资源
 
 为了便于上手，我们添加了内置关键字 `"iconfont"`、`"iconify"`、`"fontawesome"` 和 `"fontawesome-with-brand` 支持。
 
@@ -155,9 +155,9 @@ Icon name
 
 我们默认使用 jsdelivr CDN 加载 fontawesome 免费图标的 V6 版本。 对于大多数开源项目来说，这应该足够了。
 
-此外，您还可以在 [fontawesome.com](https://fontawesome.com) 购买使用套件。
+此外，你还可以在 [fontawesome.com](https://fontawesome.com) 购买使用套件。
 
-具有专业功能的 Fontawesome 工具包支持专业图标、更多图标样式和上传您自己的图标。
+具有专业功能的 Fontawesome 工具包支持专业图标、更多图标样式和上传你自己的图标。
 
 ::: note
 
@@ -169,5 +169,5 @@ Icon name
 :::
 
 <script setup lang="ts">
-import IconDisplay from '@IconDisplay';
+import IconDisplay from "@IconDisplay";
 </script>

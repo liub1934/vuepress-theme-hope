@@ -1,7 +1,6 @@
 import { type Page, type Plugin } from "@vuepress/core";
-import { isPlainObject } from "@vuepress/shared";
 import { seoPlugin } from "vuepress-plugin-seo2";
-import { keys } from "vuepress-shared/node";
+import { isPlainObject, keys } from "vuepress-shared/node";
 
 import { type PluginsOptions, type ThemeData } from "../../shared/index.js";
 
@@ -14,7 +13,7 @@ export const getSEOPlugin = (
   themeData: ThemeData,
   { seo }: PluginsOptions,
   hostname = "",
-  legacy = true
+  legacy = false
 ): Plugin | null => {
   if (seo === false) return null;
   const seoOptions = isPlainObject(seo) ? seo : {};

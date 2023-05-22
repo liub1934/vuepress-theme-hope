@@ -1,4 +1,4 @@
-import { type ReadingTimeLocaleConfig } from "./typings/index.js";
+import { type ReadingTimeLocaleConfig } from "../shared/index.js";
 
 /**
  * Default locale config for `vuepress-plugin-reading-time2` plugin
@@ -116,5 +116,11 @@ export const readingTimeLocales: ReadingTimeLocaleConfig = {
     word: "Sekitar $word kata",
     less1Minute: "Kurang dari 1 menit",
     time: "Sekitar $time menit",
+  },
+
+  "/nl/": {
+    word: "Ongeveer $word woorden",
+    less1Minute: "Minder dan 1 minuut",
+    time: "Ongeveer $time minuten",
   },
 };

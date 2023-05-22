@@ -14,6 +14,8 @@ import { useThemeData } from "@theme-hope/composables/index";
 
 import { type DarkmodeOptions } from "../../../../shared/index.js";
 
+declare const __VUEPRESS_DEV__: boolean;
+
 export type DarkmodeStatus = "light" | "dark" | "auto";
 
 export type DarkModeRef = ComputedRef<boolean>;
@@ -27,7 +29,9 @@ export interface DarkMode {
   canToggle: ComputedRef<boolean>;
 }
 
-export const darkModeSymbol: InjectionKey<DarkMode> = Symbol.for("darkMode");
+export const darkModeSymbol: InjectionKey<DarkMode> = Symbol(
+  __VUEPRESS_DEV__ ? "darkMode" : ""
+);
 
 /**
  * Inject dark mode global computed
@@ -50,7 +54,7 @@ export const injectDarkmode = (app: App): void => {
 
   const config = computed(() => themeData.value.darkmode || "switch");
 
-  const isDarkmode = computed<boolean>(() => {
+  const isDarkmode = computed(() => {
     const darkmode = config.value;
 
     // disable darkmode

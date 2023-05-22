@@ -53,6 +53,7 @@ export const theme = (
         repoId: "R_kgDOG_Pt2A",
         category: "Announcements",
         categoryId: "DIC_kwDOG_Pt2M4COD69",
+        mapping: "url",
       },
 
       components: IS_NETLIFY
@@ -88,8 +89,6 @@ export const theme = (
             },
           },
 
-      prismjs: false,
-
       seo: hostname === canonical ? {} : { canonical },
 
       ...plugins,
@@ -98,5 +97,5 @@ export const theme = (
     ...options,
   };
 
-  return hopeTheme(themeOptions, false);
+  return hopeTheme(themeOptions, { custom: true });
 };

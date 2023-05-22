@@ -1,6 +1,12 @@
-import { type App } from "@vuepress/core";
+import { type App, type LocaleConfig } from "@vuepress/core";
 
-export interface RedirectOptions {
+import {
+  type LocaleRedirectConfig,
+  type RedirectLocaleData,
+} from "../shared/index.js";
+
+export interface RedirectOptions
+  extends Partial<Omit<LocaleRedirectConfig, "localeConfig">> {
   /**
    * Redirect mapping
    *
@@ -18,4 +24,22 @@ export interface RedirectOptions {
    * 重定向到的网站域名
    */
   hostname?: string;
+
+  /**
+   * Locale language config
+   *
+   * 多语言语言配置
+   */
+  localeConfig?: Record<string, string | string[]>;
+
+  /**
+   * Locales config
+   *
+   * @see [default config](https://github.com/vuepress-theme-hope/vuepress-theme-hope/blob/main/packages/redirect/src/node/locales.ts)
+   *
+   * 多语言选项
+   *
+   * @see [默认配置](https://github.com/vuepress-theme-hope/vuepress-theme-hope/blob/main/packages/redirect/src/node/locales.ts)
+   */
+  locales?: LocaleConfig<RedirectLocaleData>;
 }

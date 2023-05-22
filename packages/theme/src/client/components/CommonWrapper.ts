@@ -6,7 +6,8 @@ import {
   useToggle,
 } from "@vueuse/core";
 import {
-  type DefineComponent,
+  type ComponentOptions,
+  type SlotsType,
   Transition,
   type VNode,
   computed,
@@ -54,7 +55,31 @@ export default defineComponent({
      * 是否禁用侧边栏
      */
     noSidebar: Boolean,
+
+    /**
+     * Whether disable toc
+     */
+    noToc: Boolean,
   },
+
+  slots: Object as SlotsType<{
+    default: () => VNode | VNode[];
+
+    // navbar
+    navbarStartBefore?: () => VNode | VNode[];
+    navbarStartAfter?: () => VNode | VNode[];
+    navbarCenterBefore?: () => VNode | VNode[];
+    navbarCenterAfter?: () => VNode | VNode[];
+    navbarEndBefore?: () => VNode | VNode[];
+    navbarEndAfter?: () => VNode | VNode[];
+    navScreenTop?: () => VNode | VNode[];
+    navScreenBottom?: () => VNode | VNode[];
+
+    // sidebar
+    sidebar?: () => VNode | VNode[];
+    sidebarTop?: () => VNode | VNode[];
+    sidebarBottom?: () => VNode | VNode[];
+  }>,
 
   setup(props, { slots }) {
     const router = useRouter();
@@ -63,15 +88,12 @@ export default defineComponent({
       ThemeProjectHomePageFrontmatter | ThemeNormalPageFrontmatter
     >();
     const themeLocale = useThemeLocaleData();
-    const { isMobile, isWide } = useWindowSize();
+    const { isMobile, isPC } = useWindowSize();
 
     const [isMobileSidebarOpen, toggleMobileSidebar] = useToggle(false);
     const [isDesktopSidebarCollapsed, toggleDesktopSidebar] = useToggle(false);
 
     const sidebarItems = useSidebarItems();
-
-    const body = ref<HTMLElement>();
-    const isLocked = useScrollLock(body);
 
     // navbar
     const hideNavbar = ref(false);
@@ -103,6 +125,13 @@ export default defineComponent({
       );
     });
 
+    const enableToc = computed(() =>
+      props.noToc || frontmatter.value.home
+        ? false
+        : frontmatter.value.toc ||
+          (themeLocale.value.toc !== false && frontmatter.value.toc !== false)
+    );
+
     const touchStart = { x: 0, y: 0 };
     const onTouchStart = (e: TouchEvent): void => {
       touchStart.x = e.changedTouches[0].clientX;
@@ -121,13 +150,6 @@ export default defineComponent({
         else toggleMobileSidebar(false);
     };
 
-    const enableToc = computed(() =>
-      frontmatter.value.home
-        ? false
-        : frontmatter.value.toc ||
-          (themeLocale.value.toc !== false && frontmatter.value.toc !== false)
-    );
-
     /** Get scroll distance */
     const getScrollTop = (): number =>
       window.pageYOffset ||
@@ -144,11 +166,11 @@ export default defineComponent({
         () => {
           const distance = getScrollTop();
 
-          // at top or scroll up > 40px
-          if (distance <= 58 || lastDistance - 40 < distance)
+          // at top or scroll up
+          if (distance <= 58 || distance < lastDistance)
             hideNavbar.value = false;
-          // scroll down > 40 px and sidebar is not opened
-          else if (lastDistance + 40 < distance && !isMobileSidebarOpen.value)
+          // scroll down > 200px and sidebar is not opened
+          else if (lastDistance + 200 < distance && !isMobileSidebarOpen.value)
             hideNavbar.value = true;
 
           lastDistance = distance;
@@ -158,22 +180,23 @@ export default defineComponent({
       )
     );
 
-    watch(isMobileSidebarOpen, (value) => {
-      isLocked.value = value;
-    });
-
     watch(isMobile, (value) => {
       if (!value) toggleMobileSidebar(false);
     });
 
     onMounted(() => {
-      body.value = document.body;
+      const isLocked = useScrollLock(document.body);
+
+      watch(isMobileSidebarOpen, (value) => {
+        isLocked.value = value;
+      });
 
       const unregisterRouterHook = router.afterEach((): void => {
         toggleMobileSidebar(false);
       });
 
       onUnmounted(() => {
+        isLocked.value = false;
         unregisterRouterHook();
       });
     });
@@ -181,7 +204,7 @@ export default defineComponent({
     return (): VNode =>
       h(
         hasGlobalComponent("GlobalEncrypt")
-          ? <DefineComponent>resolveComponent("GlobalEncrypt")
+          ? <ComponentOptions>resolveComponent("GlobalEncrypt")
           : RenderDefault,
         () =>
           h(
@@ -194,16 +217,12 @@ export default defineComponent({
                   "no-navbar": !enableNavbar.value,
                   "no-sidebar":
                     !enableSidebar.value &&
-                    !(
-                      slots["sidebar"] ||
-                      slots["sidebarTop"] ||
-                      slots["sidebarBottom"]
-                    ),
+                    !(slots.sidebar || slots.sidebarTop || slots.sidebarBottom),
                   "has-toc": enableToc.value,
                   "hide-navbar": hideNavbar.value,
                   "sidebar-collapsed":
                     !isMobile.value &&
-                    !isWide.value &&
+                    !isPC.value &&
                     isDesktopSidebarCollapsed.value,
                   "sidebar-open": isMobile.value && isMobileSidebarOpen.value,
                 },
@@ -219,14 +238,14 @@ export default defineComponent({
                     Navbar,
                     { onToggleSidebar: () => toggleMobileSidebar() },
                     {
-                      startBefore: () => slots["navbarStartBefore"]?.(),
-                      startAfter: () => slots["navbarStartAfter"]?.(),
-                      centerBefore: () => slots["navbarCenterBefore"]?.(),
-                      centerAfter: () => slots["navbarCenterAfter"]?.(),
-                      endBefore: () => slots["navbarEndBefore"]?.(),
-                      endAfter: () => slots["navbarEndAfter"]?.(),
-                      screenTop: () => slots["navScreenTop"]?.(),
-                      screenBottom: () => slots["navScreenBottom"]?.(),
+                      startBefore: () => slots.navbarStartBefore?.(),
+                      startAfter: () => slots.navbarStartAfter?.(),
+                      centerBefore: () => slots.navbarCenterBefore?.(),
+                      centerAfter: () => slots.navbarCenterAfter?.(),
+                      endBefore: () => slots.navbarEndBefore?.(),
+                      endAfter: () => slots.navbarEndAfter?.(),
+                      screenTop: () => slots.navScreenTop?.(),
+                      screenBottom: () => slots.navScreenBottom?.(),
                     }
                   )
                 : null,
@@ -262,17 +281,16 @@ export default defineComponent({
                 Sidebar,
                 {},
                 {
-                  ...(slots["sidebar"]
+                  ...(slots.sidebar
                     ? {
-                        default: (): VNode[] | undefined =>
-                          slots["sidebar"]?.(),
+                        default: (): VNode | VNode[] => slots.sidebar!(),
                       }
                     : {}),
-                  top: () => slots["sidebarTop"]?.(),
-                  bottom: () => slots["sidebarBottom"]?.(),
+                  top: () => slots.sidebarTop?.(),
+                  bottom: () => slots.sidebarBottom?.(),
                 }
               ),
-              slots["default"]?.(),
+              slots.default(),
               h(PageFooter),
             ]
           )

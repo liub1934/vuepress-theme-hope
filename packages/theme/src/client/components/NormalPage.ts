@@ -1,6 +1,7 @@
-import { usePageFrontmatter } from "@vuepress/client";
+import { usePageData, usePageFrontmatter, withBase } from "@vuepress/client";
 import {
-  type DefineComponent,
+  type ComponentOptions,
+  type SlotsType,
   type VNode,
   computed,
   defineComponent,
@@ -25,8 +26,20 @@ import "../styles/page.scss";
 export default defineComponent({
   name: "NormalPage",
 
+  slots: Object as SlotsType<{
+    top?: () => VNode | VNode[];
+    bottom?: () => VNode | VNode[];
+
+    contentBefore?: () => VNode | VNode[];
+    contentAfter?: () => VNode | VNode[];
+
+    tocBefore?: () => VNode | VNode[];
+    tocAfter?: () => VNode | VNode[];
+  }>,
+
   setup(_props, { slots }) {
     const frontmatter = usePageFrontmatter<ThemeNormalPageFrontmatter>();
+    const page = usePageData();
     const { isDarkmode } = useDarkmode();
     const themeLocale = useThemeLocaleData();
 
@@ -42,10 +55,18 @@ export default defineComponent({
         { class: "page", id: "main-content" },
         h(
           hasGlobalComponent("LocalEncrypt")
-            ? <DefineComponent>resolveComponent("LocalEncrypt")
+            ? <ComponentOptions>resolveComponent("LocalEncrypt")
             : RenderDefault,
           () => [
-            slots["top"]?.(),
+            slots.top?.(),
+            frontmatter.value.cover
+              ? h("img", {
+                  class: "page-cover",
+                  src: withBase(frontmatter.value.cover),
+                  alt: page.value.title,
+                  "no-view": "",
+                })
+              : null,
             h(BreadCrumb),
             h(PageTitle),
             tocEnable.value
@@ -58,14 +79,14 @@ export default defineComponent({
                       2,
                   },
                   {
-                    before: () => slots["tocBefore"]?.(),
-                    after: () => slots["tocAfter"]?.(),
+                    before: () => slots.tocBefore?.(),
+                    after: () => slots.tocAfter?.(),
                   }
                 )
               : null,
-            slots["contentBefore"]?.(),
+            slots.contentBefore?.(),
             h(MarkdownContent),
-            slots["contentAfter"]?.(),
+            slots.contentAfter?.(),
             h(PageMeta),
             h(PageNav),
             hasGlobalComponent("CommentService")
@@ -73,7 +94,7 @@ export default defineComponent({
                   darkmode: isDarkmode.value,
                 })
               : null,
-            slots["bottom"]?.(),
+            slots.bottom?.(),
           ]
         )
       );

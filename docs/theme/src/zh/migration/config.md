@@ -219,7 +219,7 @@ tag:
 
 - `feed` 移动至 `plugins.feed`
 
-  - 支持通过 `plugins.feed.removedElements` 选项移除自定义组件和元素 ![新增](https://img.shields.io/badge/-新增-brightgreen)
+  - 支持通过 `plugins.feed.preservedElements` 选项保留自定义组件和元素 ![新增](https://img.shields.io/badge/-新增-brightgreen)
 
   - 可视化的 Atom 和 RSS 流，支持通过 `plugins.feed.atomXslFilename` `plugins.feed.atomXslTemplate` `plugins.feed.rssXslFilename` 和 `plugins.feed.rssXslTemplate` 配置 ![新增](https://img.shields.io/badge/-新增-brightgreen)
 
@@ -255,7 +255,7 @@ tag:
 
     该插件现在检查你的 Markdown 链接，并在检测到损坏的链接时警告你。
 
-    你可以通过 `plugins.mdEnhance.linkCheck` 选项控制此行为
+    你可以通过 `plugins.mdEnhance.checkLinks` 选项控制此行为
 
   - 图像标记支持 ![新增](https://img.shields.io/badge/-新增-brightgreen)
 
@@ -279,7 +279,7 @@ tag:
     ::: chart 标题
 
     ```js
-    module.exports = {
+    const config = {
       // chart.js 配置
     };
     ```
@@ -305,7 +305,7 @@ tag:
     ::: echarts 标题
 
     ```js
-    module.exports = {
+    const option = {
       // echarts 配置
     };
     ```
@@ -315,19 +315,19 @@ tag:
 
   - 包含文件支持 ![新增](https://img.shields.io/badge/-新增-brightgreen)
 
-    新增 `plugins.mdEnhance.include` 选项使用 `@include()` 将其他文件内容导入到 Markdown 中。
+    新增 `plugins.mdEnhance.include` 选项使用 `@include` 将其他文件内容导入到 Markdown 中。
 
-    使用 `@include(filename)` 导入文件。
+    使用 `<!-- @include: filename -->` 导入文件。
 
     如果要部分导入文件，你可以指定导入的行数
 
-    - `@include(filename{start-end})`
-    - `@include(filename{start-})`
-    - `@include(filename{-end})`
+    - `<!-- @include: filename{start-end} -->`
+    - `<!-- @include: filename{start-} -->`
+    - `<!-- @include: filename{-end} -->`
 
     同时你也可以导入文件区域:
 
-    - `@include(filename#region)`
+    - `<!-- @include: filename#region -->`
 
   - 选项卡支持 ![新增](https://img.shields.io/badge/-新增-brightgreen)
 

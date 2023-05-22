@@ -1,9 +1,22 @@
-import { type App } from "@vuepress/core";
-import { isArray, isString } from "@vuepress/shared";
+import { createRequire } from "node:module";
 
-import { getIconLink, getNoticeOptions } from "./components/index.js";
-import { type ComponentOptions } from "./options/index.js";
+import { type App } from "@vuepress/core";
+import { path } from "@vuepress/utils";
+import {
+  isArray,
+  isNumber,
+  isPlainObject,
+  isString,
+} from "vuepress-shared/node";
+
+import { getIconLinks, getNoticeOptions } from "./components/index.js";
+import {
+  type BackToTopOptions,
+  type ComponentOptions,
+} from "./options/index.js";
 import { AVAILABLE_COMPONENTS, CLIENT_FOLDER } from "./utils.js";
+
+const require = createRequire(import.meta.url);
 
 export const prepareConfigFile = (
   app: App,
@@ -34,7 +47,7 @@ if(!hasGlobalComponent("${item}")) app.component("${item}", ${item});
     }
 
     if (item === "FontIcon")
-      getIconLink(componentOptions.fontIcon?.assets).forEach((item) => {
+      getIconLinks(componentOptions.fontIcon?.assets).forEach((item) => {
         const { type, content } = item;
 
         if (type === "script") shouldImportUseScriptTag = true;
@@ -56,22 +69,28 @@ if(!hasGlobalComponent("Catalog")) app.component("Catalog", Catalog);
   if (isString(rootComponents.addThis)) {
     shouldImportUseScriptTag = true;
     setups.push(
-      `useScriptTag(\`//s7.addthis.com/js/300/addthis_widget.js#pubid=${rootComponents.addThis}\`);`
+      `useScriptTag(\`https://s7.addthis.com/js/300/addthis_widget.js#pubid=${rootComponents.addThis}\`);`
     );
   }
 
   if (rootComponents.backToTop) {
+    const { threshold, progress } = isPlainObject(rootComponents.backToTop)
+      ? rootComponents.backToTop
+      : <BackToTopOptions>{};
+
     shouldImportH = true;
     imports.push(
       `import BackToTop from "${CLIENT_FOLDER}components/BackToTop.js";`
     );
-    configRootComponents.push(
-      `() => h(BackToTop, { threshold: ${
-        typeof rootComponents.backToTop === "number"
-          ? rootComponents.backToTop
-          : 300
-      } }),`
-    );
+
+    const config = isPlainObject(rootComponents.backToTop)
+      ? {
+          ...(isNumber(threshold) ? { threshold } : {}),
+          ...(progress === false ? { noProgress: true } : {}),
+        }
+      : {};
+
+    configRootComponents.push(`() => h(BackToTop, ${JSON.stringify(config)}),`);
   }
 
   if (isArray(rootComponents.notice)) {
@@ -89,7 +108,9 @@ if(!hasGlobalComponent("Catalog")) app.component("Catalog", Catalog);
     `components/config.js`,
     `\
 import { defineClientConfig } from "@vuepress/client";
-import { hasGlobalComponent } from "${CLIENT_FOLDER}shared.js";
+import { hasGlobalComponent } from "${path.resolve(
+      require.resolve("vuepress-shared/client")
+    )}";
 ${
   shouldImportH
     ? `\
@@ -100,14 +121,18 @@ import { h } from "vue";
 ${
   shouldImportUseScriptTag
     ? `\
-import { useScriptTag } from "${CLIENT_FOLDER}vueuse.js";
+import { useScriptTag } from "${path.resolve(
+        require.resolve("@vueuse/core/index.mjs")
+      )}";
 `
     : ""
 }\
 ${
   shouldImportUseStyleTag
     ? `\
-import { useStyleTag } from "${CLIENT_FOLDER}vueuse.js";
+import { useStyleTag } from "${path.resolve(
+        require.resolve("@vueuse/core/index.mjs")
+      )}";
 `
     : ""
 }\

@@ -1,10 +1,10 @@
 import { type App } from "@vuepress/core";
-import { isPlainObject } from "@vuepress/shared";
-import { keys } from "vuepress-shared/node";
+import { isPlainObject, keys } from "vuepress-shared/node";
 
 import { type ThemeOptions } from "../../shared/index.js";
 
 export interface ThemeStatus {
+  enableAutoCatalog: boolean;
   enableBlog: boolean;
   enableEncrypt: boolean;
   enableSlide: boolean;
@@ -23,6 +23,7 @@ export const getStatus = (
   const { plugins = {} } = themeOptions;
 
   return {
+    enableAutoCatalog: plugins.autoCatalog !== false,
     enableBlog: Boolean(plugins.blog),
     enableEncrypt: Boolean(
       themeOptions.encrypt &&

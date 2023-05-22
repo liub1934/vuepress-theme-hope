@@ -39,6 +39,34 @@ icon: gears
 
 控制页面 Frontmatter。
 
+### titleGetter
+
+- 类型: `(page: Page) => string`
+- 默认值: `(page: Page) => page.title`
+
+页面标题获取器
+
+### iconGetter
+
+- 类型: `(page: Page) => string`
+- 必填: 否
+
+页面图标获取器
+
+### orderGetter
+
+- 类型: `(page: Page) => string`
+- 必填: 否
+
+页面顺序获取器
+
+### shouldIndex
+
+- 类型: `(page: Page) => boolean`
+- 默认值: `() => true`
+
+页面是否应该被索引
+
 ### component
 
 - 类型: `string`
@@ -94,16 +122,33 @@ icon: gears
 - **韩语** (ko-KR)
 - **芬兰语** (fi-FI)
 - **印尼语** (id-ID)
+- **荷兰语** (nl-NL)
 - **印尼语** (id-ID)
+- **荷兰语** (nl-NL)
 
 :::
+
+## 客户端选项
+
+### defineAutoCatalogIconComponent
+
+```ts
+export type AutoCatalogIconComponent = Component<{
+  icon: string;
+}>;
+export declare const defineAutoCatalogIconComponent: (
+  options: AutoCatalogIconComponent
+) => void;
+```
+
+自定义目录图标组件。
 
 ## AutoCatalog 组件属性
 
 ### base
 
 - 类型: `string`
-- 必填: `当前路由的基础路径`
+- 默认值: `当前路由的基础路径`
 
 目录基础路径
 
@@ -114,30 +159,9 @@ icon: gears
 
 Catalog 的最大层级
 
-### titleGetter
+### index
 
-- 类型: `(meta: RouteMeta) => string`
-- 默认值: `(meta: RouteMeta) => meta["title"]`
+- 类型: `boolean`
+- 默认值: `false`
 
-页面标题获取器
-
-### iconGetter
-
-- 类型: `(meta: RouteMeta) => string`
-- 默认值: `(meta: RouteMeta) => meta["icon"]`
-
-页面图标获取器
-
-### orderGetter
-
-- 类型: `(meta: RouteMeta) => string`
-- 默认值: `(meta: RouteMeta) => meta["order"]`
-
-页面顺序获取器
-
-### shouldIndex
-
-- 类型: `(meta: RouteMeta) => boolean`
-- 默认值: `(meta: RouteMeta) => meta["index"] !== false`
-
-页面是否应该被索引
+是否在目录列表中显示索引

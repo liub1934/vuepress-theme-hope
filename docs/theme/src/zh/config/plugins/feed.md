@@ -10,11 +10,9 @@ tag:
   - Feed
 ---
 
-## 介绍 <Badge text="默认启用" />
+## 介绍
 
-`vuepress-theme-hope` 通过 `vuepress-plugin-feed2` 插件提供 Feed 生成支持。
-
-`vuepress-theme-hope` 将主题选项中的 `plugins.feed` 作为插件选项传递给 `vuepress-plugin-feed2` 插件。
+`vuepress-theme-hope` 通过 `vuepress-plugin-feed2` 插件提供 Feed 生成支持。它将主题选项中的 `plugins.feed` 作为插件选项传递给 `vuepress-plugin-feed2` 插件。
 
 `vuepress-plugin-feed2` 插件可为你生成以下三种格式的 feed 文件:
 
@@ -22,7 +20,7 @@ tag:
 - JSON 1.1
 - RSS 2.0
 
-请按照需要生成的格式，在插件选项中设置 `atom`, `json` 或 `rss` 为 `true` 来启用插件。
+请按照需要生成的格式，在 `plugins.feed` 中设置 `atom`, `json` 或 `rss` 为 `true` 来启用插件。
 
 ::: tip
 
@@ -82,12 +80,18 @@ Atom 和 JSON 是为了提供更多 Feed 软件的适配而提供的。
 
 如果你的站点文章很多，你应该考虑设置这个选项以减少 feed 文件大小。
 
-### removedElements
+### preservedElements
 
-- 类型: `string[]`
-- 默认值: `["ExternalLinkIcon"]`
+- 类型: `(RegExp | string)[] | (tagName: string) => boolean`
+- 默认值: `[]`
 
-应在 Feed 中删除的自定义元素或组件。
+应在 Feed 中保留的自定义元素或组件。
+
+::: note
+
+默认情况下，所有的未知标签都会被移除。
+
+:::
 
 ### filter
 

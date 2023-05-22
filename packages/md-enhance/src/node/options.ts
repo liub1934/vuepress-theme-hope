@@ -16,10 +16,27 @@ import {
   type TasklistOptions,
   type VuePresetPlaygroundOptions,
 } from "./typings/index.js";
-import {
-  type CodeDemoOptions,
-  type VuePlaygroundOptions,
-} from "../shared/index.js";
+import { type CodeDemoOptions } from "../shared/index.js";
+
+export type LinksCheckStatus = "always" | "dev" | "build" | "never";
+
+export interface LinksCheckOptions {
+  /**
+   * Whether check dead links in markdown
+   *
+   * 是否检查 Markdown 中的死链
+   *
+   * @default "dev"
+   */
+  status?: LinksCheckStatus;
+
+  /**
+   * Dead links to ignore
+   *
+   * 忽略的死链
+   */
+  ignore?: (string | RegExp)[] | ((link: string, isDev: boolean) => boolean);
+}
 
 /**
  * md-enhance plugin configuration
@@ -28,11 +45,9 @@ export interface MarkdownEnhanceOptions {
   /**
    * Whether check dead links in markdown
    *
-   * @description `true` equals to `"always"`, `false` equals to `"never"`
-   *
-   * @default "dev"
+   * @default { status: "dev"}
    */
-  linkCheck?: "always" | "dev" | "build" | "never" | boolean;
+  checkLinks?: LinksCheckOptions;
 
   /**
    * Whether enable standard GFM support
@@ -241,6 +256,15 @@ export interface MarkdownEnhanceOptions {
   mathjax?: MathjaxOptions | boolean;
 
   /**
+   * Whether to enable card support
+   *
+   * 是否启用卡片支持
+   *
+   * @default false
+   */
+  card?: boolean;
+
+  /**
    * Whether to enable chart support
    *
    * 是否启用 chart 图表支持
@@ -262,6 +286,8 @@ export interface MarkdownEnhanceOptions {
    * Whether to enable flowchart support
    *
    * 是否启用 flowchart 流程图支持
+   *
+   * @deprecated The lib is lack of maintenance, use mermaid instead.
    *
    * @default false
    */
@@ -323,7 +349,7 @@ export interface MarkdownEnhanceOptions {
    *
    * @default false
    */
-  vuePlayground?: VuePlaygroundOptions | boolean;
+  vuePlayground?: boolean;
 
   /**
    * The delay of operating dom, in ms

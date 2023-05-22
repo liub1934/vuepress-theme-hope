@@ -1,20 +1,25 @@
 ---
-title: 插件选项
+title: 配置
 icon: gears
 ---
 
-## selector
+## 插件选项
+
+### selector
 
 - 类型: `string | string[]`
-- 默认值: `".theme-default-content :not(a) > img:not(no-view)"`
+- 默认值: `".theme-default-content :not(a) > img:not([no-view])"`
 
 图片选择器
 
-## options
+### scrollToClose
 
-传递给 [`photo-swipe`](http://photoswipe.com/) 的额外选项
+- 类型: `boolean`
+- 默认值: `true`
 
-## delay
+是否在滚动时关闭当前图片。
+
+### delay
 
 - 类型: `number`
 - 默认值: `800`
@@ -27,7 +32,7 @@ icon: gears
 
 :::
 
-## locales
+### locales
 
 - 类型: `PhotoSwipeLocaleConfig`
 
@@ -98,5 +103,23 @@ Photo Swipe 插件的国际化配置。
 - **韩语** (ko-KR)
 - **芬兰语** (fi-FI)
 - **印尼语** (id-ID)
+- **荷兰语** (nl-NL)
 
 :::
+
+## Client Config
+
+### definePhotoSwipeOptions
+
+传递给 [`photo-swipe`](http://photoswipe.com/) 的额外选项。
+
+```ts
+// .vuepress/client.ts
+import { definePhotoSwipeOptions } from "vuepress-plugin-photo-swipe/client";
+
+definePhotoSwipeOptions({
+  // 在此设置 photoswipe 选项
+});
+
+export default {};
+```

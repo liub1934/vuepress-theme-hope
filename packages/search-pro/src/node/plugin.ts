@@ -23,13 +23,13 @@ import { CLIENT_FOLDER, PLUGIN_NAME, logger } from "./utils.js";
 export const searchProPlugin =
   (options: SearchProOptions, legacy = true): PluginFunction =>
   (app) => {
-    // TODO: Remove it
+    // TODO: Remove this in v2 stable
     if (legacy)
       convertOptions(options as SearchProOptions & Record<string, unknown>);
 
     useSassPalettePlugin(app, { id: "hope" });
 
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.61");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.62");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
@@ -58,7 +58,10 @@ export const searchProPlugin =
           delay: options.delay || 300,
           queryHistoryCount: options.queryHistoryCount || 5,
           resultHistoryCount: options.resultHistoryCount || 5,
-          hotKeys: options.hotKeys || [{ key: "k", ctrl: true }],
+          hotKeys: options.hotKeys || [
+            { key: "k", ctrl: true },
+            { key: "/", ctrl: true },
+          ],
           worker: options.worker || "search-pro.worker.js",
         },
       },

@@ -68,12 +68,13 @@ icon: gears
     | `http://${string}`
     | `https://${string}`;
 
-  export type FontIconAssets =
+  type BuiltInFontIcon =
+    | "iconify"
     | "iconfont"
     | "fontawesome"
-    | "fontawesome-with-brand"
-    | Link
-    | Link[];
+    | "fontawesome-with-brands";
+
+  type FontIconAssets = BuiltInFontIcon | Link | (BuiltInFontIcon | Link)[];
   ```
 
 - 必填: 否
@@ -130,7 +131,26 @@ AddThis 的公开 ID。
 
 ### rootComponents.backToTop
 
-- 类型: `boolean | number`
+- 类型: `BackToTopOptions | boolean`
+
+  ```ts
+  interface BackToTopOptions {
+    /**
+     * 滚动距离阈值，用于显示返回顶部按钮 (单位: 像素)
+     *
+     * @default 100
+     */
+    threshold?: number;
+
+    /**
+     * 是否显示滚动进度
+     *
+     * @default true
+     */
+    progress?: boolean;
+  }
+  ```
+
 - 默认值: `false`
 - 详情:
   - [指南 → BackToTop](./guide/backtotop.md)
@@ -283,5 +303,6 @@ PDF 组件国际化配置。
 - **韩语** (ko-KR)
 - **芬兰语** (fi-FI)
 - **印尼语** (id-ID)
+- **荷兰语** (nl-NL)
 
 :::

@@ -1,6 +1,7 @@
 import { usePageData } from "@vuepress/client";
 import {
   type PropType,
+  type SlotsType,
   type VNode,
   computed,
   defineComponent,
@@ -34,6 +35,10 @@ export default defineComponent({
       required: true,
     },
   },
+
+  slots: Object as SlotsType<{
+    title: () => VNode;
+  }>,
 
   setup(props, { slots }) {
     const page = usePageData();
@@ -71,13 +76,13 @@ export default defineComponent({
         h(
           "button",
           {
-            class: "dropdown-title",
             type: "button",
+            class: "dropdown-title",
             "aria-label": dropdownAriaLabel.value,
             onClick: handleDropdown,
           },
           [
-            slots["title"]?.() ||
+            slots.title?.() ||
               h("span", { class: "title" }, [
                 h(HopeIcon, { icon: config.value.icon }),
                 props.config.text,

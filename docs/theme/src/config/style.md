@@ -9,9 +9,9 @@ tag:
   - Style
 ---
 
-You can change the theme’s styles in `.vuepress/styles` by setting variable values in the `config.scss` and `palette.scss` files.
+You can change the theme's styles in `.vuepress/styles` by setting variable values in the `config.scss` and `palette.scss` files.
 
-Also you can add your own styles in `.vuepress/styles/index.scss`.
+Also, you can add your own styles in `.vuepress/styles/index.scss`.
 
 <!-- more -->
 
@@ -26,6 +26,10 @@ Responsive breakpoints:
 - `$pad`
 - `$tablet`
 - `$mobile`
+
+Theme Colors:
+
+- `$theme-colors`: theme colors you want to use besides primary theme color
 
 Code block (Only available with shiki):
 
@@ -123,11 +127,11 @@ Content:
 Fonts:
 
 - `$font-family`: font family used on normal text
-- `$font-family-fancy:` font family used on fancy elements
+- `$font-family-heading:` font family used on heading elements
 
 Code:
 
-- `$font-family-code`: font family used on code
+- `$font-family-mono`: font family used on code
 - `$line-numbers-width`: width of line number in code blocks
 
 Transition:

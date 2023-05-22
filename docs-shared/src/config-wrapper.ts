@@ -1,8 +1,8 @@
 import { type UserConfig, defineUserConfig } from "@vuepress/cli";
 import { type HeadConfig } from "@vuepress/core";
 import { docsearchPlugin } from "@vuepress/plugin-docsearch";
-import { shikiPlugin } from "@vuepress/plugin-shiki";
 import { getDirname, path } from "@vuepress/utils";
+import { redirectPlugin } from "vuepress-plugin-redirect";
 import { removePWAPlugin } from "vuepress-plugin-remove-pwa";
 import { addViteOptimizeDepsInclude } from "vuepress-shared/node";
 
@@ -18,6 +18,8 @@ export interface ConfigOptions {
   indexName?: string | false;
   pwa?: boolean;
 }
+
+const assetsBase = "https://theme-hope-assets.vuejs.press/";
 
 export const config = (
   {
@@ -48,7 +50,7 @@ export const config = (
               "link",
               {
                 rel: "icon",
-                href: `${docsBase}assets/icon/chrome-mask-512.png`,
+                href: `${assetsBase}icon/chrome-mask-512.png`,
                 type: "image/png",
                 sizes: "512x512",
               },
@@ -57,7 +59,7 @@ export const config = (
               "link",
               {
                 rel: "icon",
-                href: `${docsBase}assets/icon/chrome-mask-192.png`,
+                href: `${assetsBase}icon/chrome-mask-192.png`,
                 type: "image/png",
                 sizes: "512x512",
               },
@@ -66,7 +68,7 @@ export const config = (
               "link",
               {
                 rel: "icon",
-                href: `${docsBase}assets/icon/chrome-512.png`,
+                href: `${assetsBase}icon/chrome-512.png`,
                 type: "image/png",
                 sizes: "192x192",
               },
@@ -75,7 +77,7 @@ export const config = (
               "link",
               {
                 rel: "icon",
-                href: `${docsBase}assets/icon/chrome-192.png`,
+                href: `${assetsBase}icon/chrome-192.png`,
                 type: "image/png",
                 sizes: "192x192",
               },
@@ -85,7 +87,7 @@ export const config = (
               "link",
               {
                 rel: "apple-touch-icon",
-                href: `${docsBase}assets/icon/apple-icon-152.png`,
+                href: `${assetsBase}icon/apple-icon-152.png`,
               },
             ],
             [
@@ -160,8 +162,7 @@ export const config = (
           ]
         : []),
       ...(pwa === false ? [removePWAPlugin()] : []),
-      shikiPlugin({ theme: "one-dark-pro" }),
-
+      redirectPlugin({ switchLocale: "modal" }),
       ...plugins,
     ],
 

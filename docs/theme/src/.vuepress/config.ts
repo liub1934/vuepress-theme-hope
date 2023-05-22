@@ -31,11 +31,6 @@ export default config(
         title: "vuepress-theme-hope",
         description: "一个具有强大功能的 vuepress 主题✨",
       },
-      "/ru/": {
-        lang: "ru-RU",
-        title: "vuepress-theme-hope",
-        description: "Тема vuepress с множеством функций✨",
-      },
     },
 
     theme,
@@ -48,6 +43,10 @@ export default config(
     ],
 
     alias: {
+      "@FlowChartPlayground": path.resolve(
+        __dirname,
+        "./components/FlowChartPlayground"
+      ),
       "@IconDisplay": path.resolve(__dirname, "./components/IconDisplay"),
       "@KatexPlayground": path.resolve(
         __dirname,
@@ -58,5 +57,7 @@ export default config(
         "./components/ToggleRTLButton"
       ),
     },
+
+    clientConfigFile: path.resolve(__dirname, "./client.ts"),
   }
 );

@@ -6,29 +6,35 @@ import {
 
 import { type AutoCatalogLocaleData } from "../shared/index.js";
 
-export interface AutoCatalogOptions {
+export interface DeprecatedAutoCatalogOptions {
   /**
-   * Exclude paths from being generated
-   *
-   * 排除需要生成的路径
-   *
-   * @default []
+   * @deprecated use `defineAutoCatalogIconComponent` instead
+   * @see https://plugin-auto-catalog.vuejs.press/config/#defineautocatalogiconcomponent
    */
-  exclude?: (RegExp | string)[];
+  iconComponent?: never;
 
   /**
-   * Frontmatter of the generated page
-   *
-   * @param path path to be generated
-   * @returns title of the generated page
-   *
-   * 页面 Frontmatter 获取器
-   *
-   * @param path 当前生成的路径名称
-   * @returns 页面 Frontmatter
+   * @deprecated use `titleGetter` instead
    */
-  frontmatter?: (path: string) => PageFrontmatter;
+  getTitle?: never;
 
+  /**
+   * @deprecated use `iconGetter` instead
+   */
+  getIcon?: never;
+
+  /**
+   * @deprecated use `orderGetter` instead
+   */
+  getOrder?: never;
+
+  /**
+   * @deprecated use `shouldIndex` instead
+   */
+  getIndex?: never;
+}
+
+export interface AutoCatalogOptions extends DeprecatedAutoCatalogOptions {
   /**
    * The max level of the generated catalog
    *
@@ -52,11 +58,33 @@ export interface AutoCatalogOptions {
   index?: boolean;
 
   /**
+   * Frontmatter of the generated page
+   *
+   * @param path path to be generated
+   * @returns title of the generated page
+   *
+   * 页面 Frontmatter 获取器
+   *
+   * @param path 当前生成的路径名称
+   * @returns 页面 Frontmatter
+   */
+  frontmatter?: (path: string) => PageFrontmatter;
+
+  /**
+   * Exclude paths from being generated
+   *
+   * 排除需要生成的路径
+   *
+   * @default []
+   */
+  exclude?: (RegExp | string)[];
+
+  /**
    * Page title getter
    *
    * 页面标题获取器
    */
-  getTitle?: <
+  titleGetter?: <
     ExtraPageData extends Record<string | number | symbol, unknown> = Record<
       never,
       never
@@ -83,7 +111,7 @@ export interface AutoCatalogOptions {
    *
    * 页面图标获取器
    */
-  getIcon?: <
+  iconGetter?: <
     ExtraPageData extends Record<string | number | symbol, unknown> = Record<
       never,
       never
@@ -101,25 +129,16 @@ export interface AutoCatalogOptions {
   ) => string | null | undefined;
 
   /**
-   * @default 'i'
+   * @default 'icon'
    */
   iconRouteMetaKey?: string;
-
-  /**
-   * Icon render
-   *
-   * 图标渲染器
-   *
-   * @description icon will be rendered as `<iconComponent :icon="icon" />`
-   */
-  iconComponent?: string;
 
   /**
    * Page order getter
    *
    * 页面顺序获取器
    */
-  getOrder?: <
+  orderGetter?: <
     ExtraPageData extends Record<string | number | symbol, unknown> = Record<
       never,
       never
@@ -137,7 +156,7 @@ export interface AutoCatalogOptions {
   ) => number | null | undefined;
 
   /**
-   * @default 'O'
+   * @default 'order'
    */
   orderRouteMetaKey?: string;
 
@@ -150,7 +169,7 @@ export interface AutoCatalogOptions {
    *
    * @description 返回一个布尔值，用于指示页面是否应该包含在目录中
    */
-  getIndex?: <
+  shouldIndex?: <
     ExtraPageData extends Record<string | number | symbol, unknown> = Record<
       never,
       never
@@ -168,7 +187,7 @@ export interface AutoCatalogOptions {
   ) => boolean;
 
   /**
-   * @default 'I'
+   * @default 'index'
    */
   indexRouteMetaKey?: string;
 

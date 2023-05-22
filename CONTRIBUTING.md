@@ -6,7 +6,7 @@ We always welcome everyone to contribute! Here is a guide for you.
 
 - [English](https://theme-hope.vuejs.press/contribution.html)
 - [简体中文](https://theme-hope.vuejs.press/zh/contribution.html)
-- [Русский](https://theme-hope.vuejs.press/ru/contribution.html)
+- [Русский](https://theme-hope-ru.vuejs.press/contribution.html)
 
 ## Clone and Install Project
 
@@ -22,7 +22,7 @@ If you have not installed pnpm, please install it using the following command.
 
 ```sh
 corepack enable
-corepack prepare pnpm@7.28.0 --activate
+corepack prepare pnpm@latest --activate
 ```
 
 ## Project File Structure

@@ -9,7 +9,7 @@ icon: lightbulb
 
 请不用担心你的网站大小，如果你不启用相关功能，最终代码不会包含这些功能相关的代码。
 
-同时 VuePress 本身新增了一些 Markdown 语法，如果你对它们不熟悉，可以 [查看官方文档](https://v2.vuepress.vuejs.org/zh/guide/markdown.html)。
+同时 VuePress 本身新增了一些 Markdown 语法，如果你对它们不熟悉，可以 [查看官方文档](https://vuejs.press/zh/guide/markdown.html)。
 
 :::
 
@@ -115,6 +115,18 @@ npm i -D vuepress-plugin-md-enhance
 支持设置标题、颜色模式和大小
 
 - [查看详情](image.md)
+
+### 卡片
+
+```card
+title: Mr.Hope
+desc: Where there is light, there is hope
+logo: https://mrhope.site/logo.svg
+link: https://mrhope.site
+color: rgba(253, 230, 138, 0.15)
+```
+
+- [查看详情](card.md)
 
 ### 图表
 
@@ -226,7 +238,7 @@ $$
 
 ### 导入文件
 
-@include(./demo.snippet.md{9-13})
+<!-- @include: ./demo.snippet.md{9-13} -->
 
 - [查看详情](include.md)
 

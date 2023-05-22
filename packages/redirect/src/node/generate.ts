@@ -1,64 +1,84 @@
-import { type App, type Page } from "@vuepress/core";
+import { type App } from "@vuepress/core";
+import { fs, path, withSpinner } from "@vuepress/utils";
 import {
-  isArray,
-  isFunction,
+  entries,
+  isAbsoluteUrl,
   isLinkHttp,
   removeEndingSlash,
   removeLeadingSlash,
-} from "@vuepress/shared";
-import { fs, path, withSpinner } from "@vuepress/utils";
-import { entries, fromEntries, isAbsoluteUrl } from "vuepress-shared/node";
+} from "vuepress-shared/node";
 
-import { type RedirectOptions } from "./options.js";
-import { type RedirectPluginFrontmatterOption } from "./typings/index.js";
-import { getRedirectHTML } from "./utils.js";
+import { getLocaleRedirectHTML, getRedirectHTML } from "./utils.js";
+import { type LocaleRedirectConfig } from "../shared/index.js";
 
-export const generateHTML = async (
-  app: App,
-  options: RedirectOptions
+export const generateAutoLocaleRedirects = async (
+  { dir, options, pages }: App,
+  localeOptions: LocaleRedirectConfig
 ): Promise<void> => {
-  const {
-    dir,
-    options: { base },
-    pages,
-  } = app;
+  const rootPaths = pages
+    .filter(({ pathLocale }) => pathLocale === "/")
+    .map(({ path }) => path);
+  const localeRedirectMap: Record<string, string[]> = {};
 
-  const config = isFunction(options.config)
-    ? options.config(app)
-    : options.config || {};
+  pages
+    .filter(({ pathLocale }) => pathLocale !== "/")
+    .forEach(({ path, pathLocale }) => {
+      const rootPath = path
+        .replace(pathLocale, "/")
+        .replace(/\/$/, "/index.html");
 
-  const redirectMap = fromEntries(
-    (<Page<Record<string, never>, RedirectPluginFrontmatterOption>[]>pages)
-      .map<[string, string][]>(({ frontmatter, path }) =>
-        isArray(frontmatter.redirectFrom)
-          ? frontmatter.redirectFrom.map((from) => [
-              from.replace(/\/$/, "/index.html"),
-              path,
-            ])
-          : frontmatter.redirectFrom
-          ? [[frontmatter.redirectFrom.replace(/\/$/, "/index.html"), path]]
-          : []
-      )
-      .flat()
+      if (!rootPaths.includes(rootPath))
+        (localeRedirectMap[rootPath] ??= []).push(pathLocale);
+    });
+
+  await withSpinner("Generating locale redirect files")(() =>
+    Promise.all(
+      entries(localeRedirectMap).map(([rootPath, availableLocales]) => {
+        const filePath = dir.dest(removeLeadingSlash(rootPath));
+
+        return fs.existsSync(filePath)
+          ? Promise.resolve()
+          : fs
+              .ensureDir(path.dirname(filePath))
+              .then(() =>
+                fs.writeFile(
+                  filePath,
+                  getLocaleRedirectHTML(
+                    localeOptions,
+                    availableLocales,
+                    options.base
+                  )
+                )
+              );
+      })
+    )
   );
+};
 
-  const hostname = options.hostname
-    ? isLinkHttp(options.hostname)
-      ? removeEndingSlash(options.hostname)
-      : `https://${removeEndingSlash(options.hostname)}`
+export const generateRedirects = async (
+  { dir, options }: App,
+  config: Record<string, string>,
+  hostname = ""
+): Promise<void> => {
+  const resolvedHostname = hostname
+    ? isLinkHttp(hostname)
+      ? removeEndingSlash(hostname)
+      : `https://${removeEndingSlash(hostname)}`
     : "";
 
   await withSpinner("Generating redirect files")(() =>
     Promise.all(
-      entries({ ...config, ...redirectMap }).map(([from, to]) => {
+      entries(config).map(([from, to]) => {
         const filePath = dir.dest(removeLeadingSlash(from));
         const redirectUrl = isAbsoluteUrl(to)
-          ? `${hostname}${base}${removeLeadingSlash(to)}`
+          ? `${resolvedHostname}${options.base}${removeLeadingSlash(to)}`
           : to;
 
-        return fs
-          .ensureDir(path.dirname(filePath))
-          .then(() => fs.writeFile(filePath, getRedirectHTML(redirectUrl)));
+        return fs.existsSync(filePath)
+          ? Promise.resolve()
+          : fs
+              .ensureDir(path.dirname(filePath))
+              .then(() => fs.writeFile(filePath, getRedirectHTML(redirectUrl)));
       })
     )
   );

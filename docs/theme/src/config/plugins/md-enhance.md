@@ -16,12 +16,6 @@ The `vuepress-plugin-md-enhance` plugin is enabled by default and provides Markd
 
 `vuepress-theme-hope` passes `plugins.mdEnhance` in theme options as plugin options to `vuepress-plugin-md-enhance` plugin.
 
-::: tip
-
-If you don’t need this feature, please set to `false`.
-
-:::
-
 ::: info
 
 `vuepress-theme-hope` will set the `container` option to `true` by default.
@@ -43,16 +37,18 @@ Whether to support full GFM syntax.
 
 For full GFM syntax, see [GFM](https://github.github.com/gfm/).
 
-We are not 100% supporting it to be honestly, we only supply it’s syntax including tasklists, footnote and so on.
+We are not 100% supporting it to be honestly, we only supply its syntax including footnote, task list, code highlight, image mark and so on.
 
-Some of the behavior might be different, for example to allow Vue syntax, we are not disallowing `<script>` tags. But in most situation, the behavior should be same.
+Some of the behavior might be different, for example to support Vue syntax, we are not disallowing `<script>` tags. But in most situation, the behavior should be same.
 
 :::
 
 ### container
 
 - Type: `boolean`
-- Default: `true`
+- Default: `false`
+- Details:
+  - [Custom Container](../../guide/markdown/container.md)
 
 Whether to enable custom container including
 
@@ -63,24 +59,38 @@ Whether to enable custom container including
 - danger
 - details
 
-### linkCheck
+### checkLinks
 
-- Type: `"always" | "dev" | "build" | "never" | boolean`
-- Default: `"dev"`
+- Type: `LinksCheckOptions`
 
-Whether to enable link check.
+  ```ts
+  type LinksCheckStatus = "always" | "dev" | "build" | "never";
 
-::: note
+  interface LinksCheckOptions {
+    /**
+     * Whether check dead links in markdown
+     *
+     * @default "dev"
+     */
+    status?: LinksCheckStatus;
 
-- `true` equals to `'always'`
-- `false` equals to `'never'`
+    /**
+     * Dead links to ignore
+     */
+    ignore?: (string | RegExp)[] | ((link: string, isDev: boolean) => boolean);
+  }
+  ```
 
-:::
+- Default: `{ status: "dev" }`
+
+Whether to enable links check.
 
 ### vPre
 
 - Type: `boolean`
 - Default: `false`
+- Details:
+  - [v-pre wrapper](../../guide/markdown/others.md#v-pre)
 
 Whether to enable v-pre wrapper.
 
@@ -88,6 +98,8 @@ Whether to enable v-pre wrapper.
 
 - Type: `boolean`
 - Default: `false`
+- Details:
+  - [Tabs](../../guide/markdown/tabs.md)
 
 Whether to enable tabs.
 
@@ -95,6 +107,8 @@ Whether to enable tabs.
 
 - Type: `boolean`
 - Default: `false`
+- Details:
+  - [Code Tabs](../../guide/markdown/code-tabs.md)
 
 Whether to enable codetabs.
 
@@ -102,8 +116,47 @@ Whether to enable codetabs.
 
 - Type: `boolean`
 - Default: `false`
+- Details:
+  - [Align](../../guide/markdown/align.md)
 
 Whether to enable custom align.
+
+### attrs
+
+- Type: `AttrsOptions | boolean`
+
+  ```ts
+  interface AttrsOptions {
+    /**
+     * left delimiter
+     *
+     * @default '{'
+     */
+    left?: string;
+
+    /**
+     * right delimiter
+     *
+     * @default '}'
+     */
+    right?: string;
+
+    /**
+     * allowed attributes
+     *
+     * @description An empty list means allowing all attribute
+     *
+     * @default []
+     */
+    allowed?: (string | RegExp)[];
+  }
+  ```
+
+- Default: `false`
+- Details:
+  - [Attrs](../../guide/markdown/attrs.md)
+
+Whether to enable attribute customize support.
 
 ### sup
 
@@ -126,13 +179,6 @@ Whether to enable the lower corner format support.
 
 Whether to enable footnote format support.
 
-### lazyLoad
-
-- Type: `boolean`
-- Default: `false`
-
-Whether to lazy load every images in page in native way.
-
 ### mark
 
 - Type: `boolean`
@@ -146,6 +192,13 @@ Whether to enable mark support.
 - Default: `false`
 
 Whether enable figure support.
+
+### imgLazyload
+
+- Type: `boolean`
+- Default: `false`
+
+Whether to lazy load every image in page in native way.
 
 ### imgMark
 
@@ -222,6 +275,53 @@ Whether to enable $\TeX$ syntax support through Math Jax. You can pass an object
 
 Please see [source code](https://github.com/vuepress-theme-hope/vuepress-theme-hope/tree/main/packages/md-enhance/src/shared/mathjax.ts) for available options.
 
+### include
+
+- Type: `IncludeOptions | boolean`
+
+  ```ts
+  interface IncludeOptions {
+    /**
+     * handle include filePath
+     *
+     * @default (path) => path
+     */
+    resolvePath?: (path: string, cwd: string) => string;
+
+    /**
+     * Whether deep include files in included Markdown files
+     *
+     * @default false
+     */
+    deep?: boolean;
+  }
+  ```
+
+- Default: `false`
+
+Whether to enable Markdown import support. You can pass in a function for path resolution.
+
+### card
+
+- Type: `boolean`
+- Default: `false`
+
+Whether to enable card support
+
+### chart
+
+- Type: `boolean`
+- Default: `false`
+
+Whether to enable chart support
+
+### echarts
+
+- Type: `boolean`
+- Default: `false`
+
+Whether to enable ECharts support
+
 ### flowchart
 
 - Type: `boolean`
@@ -231,10 +331,10 @@ Whether to enable flowchart support
 
 ### mermaid
 
-- Type: `boolean`
+- Type: `MermaidConfig | boolean`
 - Default: `false`
 
-Whether to enable [Mermaid](https://mermaid.js.org/) support.
+Whether to enable [Mermaid](https://mermaid.js.org/) support, you can pass in a config object to customize the behavior of Mermaid.
 
 ### stylize
 
@@ -463,7 +563,7 @@ Playground options.
      *
      * @default 'horizontal'
      */
-    layout?: "vertical" |layout?: "horizontal" | "vertical";
+    layout?: "horizontal" | "vertical";
 
     /**
      * Options to configure the `vue/compiler-sfc`
@@ -540,7 +640,7 @@ CodePen editor status
 
 #### others
 
-The following are the library links used by the third-party code demo service. Unless your environment cannot visit unpkg or the speed is slow, you probably don’t need to override the default values.
+The following are the library links used by the third-party code demo service. Unless your environment cannot visit unpkg or the speed is slow, you probably don't need to override the default values.
 
 ##### demo.babel
 
