@@ -1,6 +1,6 @@
 {
   "name": "vuepress-theme-hope-root",
-  "version": "2.0.0-beta.211",
+  "version": "2.0.0-beta.217",
   "private": true,
   "description": "A VuePress theme with tons of features",
   "type": "module",
@@ -48,9 +48,9 @@
     "@rollup/plugin-node-resolve": "15.0.2",
     "@rollup/plugin-replace": "5.0.2",
     "@types/inquirer": "9.0.3",
-    "@types/node": "20.1.5",
-    "@typescript-eslint/eslint-plugin": "5.59.6",
-    "@typescript-eslint/parser": "5.59.6",
+    "@types/node": "20.2.5",
+    "@typescript-eslint/eslint-plugin": "5.59.8",
+    "@typescript-eslint/parser": "5.59.8",
     "@vitest/coverage-c8": "0.31.1",
     "@vue/eslint-config-typescript": "11.0.3",
     "bumpp": "9.1.0",
@@ -65,12 +65,12 @@
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-vue": "9.13.0",
+    "eslint-plugin-vue": "9.14.1",
     "execa": "7.1.1",
     "gulp": "4.0.2",
     "http-server": "14.1.1",
     "husky": "8.0.3",
-    "inquirer": "9.2.5",
+    "inquirer": "9.2.6",
     "magic-string": "0.30.0",
     "markdownlint-cli": "0.34.0",
     "nano-staged": "0.8.0",
@@ -78,7 +78,7 @@
     "picocolors": "1.0.0",
     "prettier": "2.8.8",
     "rimraf": "5.0.1",
-    "rollup": "3.22.1",
+    "rollup": "3.23.0",
     "rollup-plugin-copy": "3.4.0",
     "rollup-plugin-dts": "5.3.0",
     "rollup-plugin-esbuild": "5.0.0",
@@ -91,7 +91,7 @@
     "typescript": "5.0.4",
     "vitest": "0.31.1"
   },
-  "packageManager": "pnpm@8.5.1",
+  "packageManager": "pnpm@8.6.0",
   "engines": {
     "node": ">=16.14.0",
     "npm": ">=8",
@@ -105,18 +105,6 @@
       "glob-parent": "^6.0.2",
       "micromatch": "^4.0.5",
       "yargs-parser": "^21.1.1"
-    },
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search",
-        "@types/react",
-        "eslint-plugin-import",
-        "eslint-plugin-n",
-        "eslint-plugin-promise",
-        "react",
-        "react-dom",
-        "webpack"
-      ]
     },
     "patchedDependencies": {
       "@types/katex@0.16.0": "patches/@types__katex@0.16.0.patch",

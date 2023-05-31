@@ -4,7 +4,7 @@ import { RouterLink } from "vue-router";
 
 import HopeIcon from "@theme-hope/components/HopeIcon";
 
-import { type ThemeProjectHomeFeatureItemOptions } from "../../shared/index.js";
+import { type ThemeProjectHomeItemOption } from "../../shared/index.js";
 
 import "../styles/feature-panel.scss";
 
@@ -15,10 +15,10 @@ export default defineComponent({
     /**
      * Feature config
      */
-    items: {
-      type: Object as PropType<ThemeProjectHomeFeatureItemOptions[]>,
-      default: (): ThemeProjectHomeFeatureItemOptions[] =>
-        [] as ThemeProjectHomeFeatureItemOptions[],
+    features: {
+      type: Object as PropType<ThemeProjectHomeItemOption[]>,
+      default: (): ThemeProjectHomeItemOption[] =>
+        [] as ThemeProjectHomeItemOption[],
     },
 
     /**
@@ -32,32 +32,35 @@ export default defineComponent({
 
   setup(props) {
     return (): VNode =>
-      h("div", { class: "feature-panel" }, [
+      h("div", { class: "vp-feature-panel" }, [
         props.header
-          ? h("h2", { class: "feature-header" }, props.header)
+          ? h("h2", { class: "vp-feature-title" }, props.header)
           : null,
-        props.items.length
+        props.features.length
           ? h(
               "div",
-              { class: "feature-wrapper" },
-              props.items.map((feature) => {
+              { class: "vp-features-wrapper" },
+              props.features.map(({ icon, title, details, link }) => {
                 const children = [
-                  h("h3", [
-                    h(HopeIcon, { icon: feature.icon }),
-                    h("span", { innerHTML: feature.title }),
+                  h("h3", { class: "vp-feature-header" }, [
+                    h(HopeIcon, { icon }),
+                    h("span", { innerHTML: title }),
                   ]),
-                  h("p", { innerHTML: feature.details }),
+                  h("p", {
+                    class: "vp-feature-content",
+                    innerHTML: details,
+                  }),
                 ];
 
-                return feature.link
-                  ? isLinkExternal(feature.link)
+                return link
+                  ? isLinkExternal(link)
                     ? h(
                         "a",
                         {
-                          class: "feature-item link",
-                          href: feature.link,
+                          class: "vp-feature link",
+                          href: link,
                           role: "navigation",
-                          "aria-label": feature.title,
+                          "aria-label": title,
                           target: "_blank",
                         },
                         children
@@ -65,14 +68,14 @@ export default defineComponent({
                     : h(
                         RouterLink,
                         {
-                          class: "feature-item link",
-                          to: feature.link,
+                          class: "vp-feature link",
+                          to: link,
                           role: "navigation",
-                          "aria-label": feature.title,
+                          "aria-label": title,
                         },
                         () => children
                       )
-                  : h("div", { class: "feature-item" }, children);
+                  : h("div", { class: "vp-feature" }, children);
               })
             )
           : null,

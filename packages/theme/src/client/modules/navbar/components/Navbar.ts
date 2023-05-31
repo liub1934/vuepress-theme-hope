@@ -108,17 +108,17 @@ export default defineComponent({
         h(
           "header",
           {
+            id: "navbar",
             class: [
-              "navbar",
+              "vp-navbar",
               {
                 "auto-hide": autoHide.value,
                 "hide-icon": themeLocale.value.navbarIcon === false,
               },
             ],
-            id: "navbar",
           },
           [
-            h("div", { class: "navbar-start" }, [
+            h("div", { class: "vp-navbar-start" }, [
               h(ToggleSidebarButton, {
                 onToggle: () => {
                   if (showScreen.value) showScreen.value = false;
@@ -136,7 +136,7 @@ export default defineComponent({
               slots.startAfter?.(),
             ]),
 
-            h("div", { class: "navbar-center" }, [
+            h("div", { class: "vp-navbar-center" }, [
               slots.centerBefore?.(),
               (navbarLayout.value.center || []).map((item) =>
                 h(
@@ -148,7 +148,7 @@ export default defineComponent({
               slots.centerAfter?.(),
             ]),
 
-            h("div", { class: "navbar-end" }, [
+            h("div", { class: "vp-navbar-end" }, [
               slots.endBefore?.(),
               (navbarLayout.value.end || []).map((item) =>
                 h(

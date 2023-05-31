@@ -1,4 +1,4 @@
-.search-pro-result {
+.search-pro-result-wrapper {
   scrollbar-color: var(--vp-tc) var(--vp-brc);
   scrollbar-width: thin;
 
@@ -25,6 +25,11 @@
     &:active {
       background: var(--vp-tcl);
     }
+  }
+
+  mark {
+    border-radius: 0.25em;
+    line-height: 1;
   }
 }
 

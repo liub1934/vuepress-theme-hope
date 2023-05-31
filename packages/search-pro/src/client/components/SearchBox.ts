@@ -47,7 +47,7 @@ export default defineComponent({
         : null
     );
 
-    const onKeydown = (event: KeyboardEvent): void => {
+    useEventListener("keydown", (event: KeyboardEvent): void => {
       if (
         // not active
         !isActive.value &&
@@ -60,9 +60,7 @@ export default defineComponent({
         event.preventDefault();
         isActive.value = true;
       }
-    };
-
-    useEventListener("keydown", onKeydown);
+    });
 
     onMounted(() => {
       const { userAgent } = navigator;
@@ -87,12 +85,14 @@ export default defineComponent({
         },
         [
           h(SearchIcon),
-          h("div", { class: "placeholder" }, locale.value.search),
+          h("div", { class: "search-pro-placeholder" }, locale.value.search),
           controlKeys.value
             ? h(
                 "div",
-                { class: "key-hints" },
-                controlKeys.value.map((key) => h("kbd", { class: "key" }, key))
+                { class: "search-pro-key-hints" },
+                controlKeys.value.map((key) =>
+                  h("kbd", { class: "search-pro-key" }, key)
+                )
               )
             : null,
         ]

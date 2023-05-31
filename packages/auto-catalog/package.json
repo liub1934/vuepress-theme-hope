@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-auto-catalog",
-  "version": "2.0.0-beta.211",
+  "version": "2.0.0-beta.217",
   "description": "Generate catalog for VuePress2",
   "keywords": [
     "vuepress",
@@ -56,13 +56,13 @@
     "@vuepress/shared": "2.0.0-beta.62",
     "@vuepress/utils": "2.0.0-beta.62",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.1",
+    "vue-router": "^4.2.2",
     "vuepress-plugin-components": "workspace:*",
     "vuepress-plugin-sass-palette": "workspace:*",
     "vuepress-shared": "workspace:*"
   },
   "peerDependencies": {
-    "sass-loader": "^13.2.2",
+    "sass-loader": "^13.3.1",
     "vuepress": "2.0.0-beta.62",
     "vuepress-vite": "2.0.0-beta.62",
     "vuepress-webpack": "2.0.0-beta.62"

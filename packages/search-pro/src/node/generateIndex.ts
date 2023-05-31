@@ -1,15 +1,17 @@
 import { type App, type Page } from "@vuepress/core";
 import { type AnyNode, type Element, load } from "cheerio";
-import { fromEntries, isArray, keys } from "vuepress-shared/node";
+import { addAllAsync, createIndex } from "slimsearch";
+import { entries, fromEntries, isArray, keys } from "vuepress-shared/node";
 
 import {
   type SearchProCustomFieldOptions,
   type SearchProOptions,
 } from "./options.js";
 import {
-  type PageHeaderContent,
-  type PageIndex,
-  type SearchIndex,
+  type IndexItem,
+  type LocaleIndex,
+  type PageIndexId,
+  type SearchIndexStore,
 } from "../shared/index.js";
 
 /**
@@ -41,26 +43,42 @@ const CONTENT_INLINE_TAGS =
 
 const $ = load("");
 
+const renderHeader = (node: Element): string =>
+  node.children
+    .map((node) => {
+      if (node.type === "tag") {
+        // drop anchor
+        if (node.name === "a" && node.attribs["class"] === "header-anchor")
+          return "";
+
+        return renderHeader(node);
+      }
+
+      if (node.type === "text") return node.data;
+
+      return "";
+    })
+    .join(" ")
+    .replace(/\s+/gu, " ")
+    .trim();
+
 export const generatePageIndex = (
   page: Page<{ excerpt?: string }>,
   customFieldsGetter: SearchProCustomFieldOptions[] = [],
   indexContent = false
-): PageIndex | null => {
-  const hasExcerpt = "excerpt" in page.data && page.data["excerpt"].length;
+): IndexItem[] => {
+  const { contentRendered, data, title } = page;
+  const key = <PageIndexId>page.key;
+  const hasExcerpt = "excerpt" in data && data["excerpt"].length;
 
-  const result: PageIndex = {
-    title: page.title,
-    contents: [],
-  };
+  const pageIndex: IndexItem = { id: key, h: title };
+  const results: IndexItem[] = [pageIndex];
 
   // here are some variables holding the current state of the parser
   let shouldIndexContent = hasExcerpt || indexContent;
+  let currentHeaderIndex = 0;
+  let currentContentIndex = 0;
   let currentContent = "";
-  let currentHeaderContent: PageHeaderContent = {
-    header: "",
-    slug: "",
-    contents: [],
-  };
   let isContentBeforeFirstHeader = true;
 
   const render = (node: AnyNode, preserveSpace = false): void => {
@@ -68,57 +86,31 @@ export const generatePageIndex = (
       if (HEADING_TAGS.includes(node.name)) {
         if (currentContent && shouldIndexContent) {
           // add last content
-          currentHeaderContent?.contents.push(
-            currentContent.replace(/\s+/gu, " ")
-          );
+          results.push({
+            id: `${key}#${currentHeaderIndex}/${currentContentIndex}`,
+            t: currentContent.replace(/\s+/gu, " "),
+          });
+          currentContentIndex = 0;
           currentContent = "";
         }
 
-        // content before first header does not belong to any header
-        if (isContentBeforeFirstHeader) {
-          // the content before the first header shall have actual contents
-          if (currentHeaderContent.contents.length)
-            result.contents.push(currentHeaderContent);
+        if (isContentBeforeFirstHeader) isContentBeforeFirstHeader = false;
 
-          isContentBeforeFirstHeader = false;
-        } else {
-          result.contents.push(currentHeaderContent);
-        }
-
-        const renderHeader = (node: Element): string =>
-          node.children
-            .map((node) => {
-              if (node.type === "tag") {
-                // drop anchor
-                if (
-                  node.name === "a" &&
-                  node.attribs["class"] === "header-anchor"
-                )
-                  return "";
-
-                return renderHeader(node);
-              }
-
-              if (node.type === "text") return node.data;
-
-              return "";
-            })
-            .join(" ")
-            .replace(/\s+/gu, " ")
-            .trim();
-
-        // update header
-        currentHeaderContent = {
-          header: renderHeader(node),
-          slug: node.attribs["id"],
-          contents: [],
-        };
+        // update current section index
+        currentHeaderIndex += 1;
+        results.push({
+          id: `${key}#${currentHeaderIndex}`,
+          a: node.attribs["id"],
+          h: renderHeader(node),
+        });
       } else if (CONTENT_BLOCK_TAGS.includes(node.name)) {
         if (currentContent && shouldIndexContent) {
           // add last content
-          currentHeaderContent?.contents.push(
-            currentContent.replace(/\s+/gu, " ")
-          );
+          results.push({
+            id: `${key}#${currentHeaderIndex}/${currentContentIndex}`,
+            t: currentContent.replace(/\s+/gu, " "),
+          });
+          currentContentIndex += 1;
           currentContent = "";
         }
         node.childNodes.forEach((item) =>
@@ -141,7 +133,7 @@ export const generatePageIndex = (
     }
   };
 
-  const nodes = $.parseHTML(page.contentRendered);
+  const nodes = $.parseHTML(contentRendered);
 
   // get custom fields
   const customFields = fromEntries(
@@ -159,7 +151,7 @@ export const generatePageIndex = (
   );
 
   // no content in page and no customFields
-  if (!nodes?.length && !keys(customFields).length) return null;
+  if (!nodes?.length && !keys(customFields).length) return [];
 
   // walk through nodes and extract indexes
   nodes?.forEach((node) => {
@@ -168,51 +160,60 @@ export const generatePageIndex = (
 
   // push contents in last block tags
   if (shouldIndexContent && currentContent)
-    currentHeaderContent?.contents.push(currentContent);
+    results.push({
+      id: `${key}#${currentHeaderIndex}/${currentContentIndex}`,
+      t: currentContent.replace(/\s+/gu, " "),
+    });
 
-  // push last content
-  if (currentHeaderContent.contents.length)
-    result.contents.push(currentHeaderContent);
+  // add custom fields
+  entries(customFields).forEach(([customField, values]) => {
+    results.push({
+      id: `${key}@${customField}`,
+      c: values,
+    });
+  });
 
-  return {
-    ...result,
-    ...(keys(customFields).length ? { customFields } : {}),
-  };
+  return results;
 };
 
-export const getSearchIndex = (
+export const getSearchIndexStore = async (
   app: App,
-  options: SearchProOptions
-): SearchIndex => {
-  const pagesSearchIndex = app.pages
-    .map((page) => {
-      const pageIndex = generatePageIndex(
-        page,
-        options.customFields,
-        options.indexContent
-      );
+  {
+    customFields,
+    indexContent,
+    indexOptions,
+    indexLocaleOptions,
+  }: SearchProOptions
+): Promise<SearchIndexStore> => {
+  const indexesByLocale: LocaleIndex = {};
 
-      return pageIndex
-        ? { path: page.path, index: pageIndex, localePath: page.pathLocale }
-        : null;
+  app.pages.forEach((page) => {
+    const indexes = generatePageIndex(page, customFields, indexContent);
+
+    (indexesByLocale[page.pathLocale] ??= []).push(...indexes);
+  });
+
+  const searchIndex: SearchIndexStore = {};
+
+  await Promise.all(
+    entries(indexesByLocale).map(async ([localePath, indexes]) => {
+      const index = createIndex<IndexItem, string>({
+        ...indexOptions,
+        ...indexLocaleOptions?.[localePath],
+        fields: [/** heading */ "h", /** text */ "t", /** customFields */ "c"],
+        storeFields: [
+          /** heading */ "h",
+          /** anchor */ "a",
+          /** text */ "t",
+          /** customFields */ "c",
+        ],
+      });
+
+      await addAllAsync(index, indexes);
+
+      searchIndex[localePath] = index;
     })
-    .filter(
-      (item): item is { path: string; index: PageIndex; localePath: string } =>
-        item !== null
-    );
-
-  return fromEntries(
-    keys(
-      // locales should at least have root locales
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      { "/": {}, ...app.options.locales }
-    ).map((localePath) => [
-      localePath,
-      fromEntries(
-        pagesSearchIndex
-          .filter((item) => item.localePath === localePath)
-          .map((item) => [item.path, item.index])
-      ),
-    ])
   );
+
+  return searchIndex;
 };

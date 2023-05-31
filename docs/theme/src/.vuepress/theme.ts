@@ -15,6 +15,8 @@ export default theme("theme", {
 
   fullscreen: true,
 
+  navTitle: false,
+
   extraLocales: {
     Русский: "https://theme-hope-ru.vuejs.press/:route",
   },
@@ -96,7 +98,9 @@ export default theme("theme", {
           },
     },
 
-    copyright: true,
+    copyright: {
+      license: "MIT",
+    },
 
     feed: {
       atom: true,
