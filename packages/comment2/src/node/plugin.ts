@@ -1,4 +1,4 @@
-import { type PluginFunction } from "@vuepress/core";
+import type { PluginFunction } from "@vuepress/core";
 import { getDirname, path } from "@vuepress/utils";
 import { useSassPalettePlugin } from "vuepress-plugin-sass-palette";
 import {
@@ -13,7 +13,7 @@ import {
 import { getProvider } from "./alias.js";
 import { convertOptions } from "./compact.js";
 import { walineLocales } from "./locales.js";
-import { type CommentPluginOptions } from "./options.js";
+import type { CommentPluginOptions } from "./options.js";
 import { PLUGIN_NAME, logger } from "./utils.js";
 
 const __dirname = getDirname(import.meta.url);
@@ -25,7 +25,7 @@ export const commentPlugin =
     // TODO: Remove this in v2 stable
     if (legacy)
       convertOptions(options as CommentPluginOptions & Record<string, unknown>);
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.62");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.67");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
@@ -65,7 +65,11 @@ export const commentPlugin =
       extendsBundlerOptions: (bundlerOptions: unknown, app): void => {
         switch (options.provider) {
           case "Artalk": {
-            addViteOptimizeDepsInclude(bundlerOptions, app, "artalk");
+            addViteOptimizeDepsExclude(
+              bundlerOptions,
+              app,
+              "artalk/dist/Artalk.es.js",
+            );
             addViteSsrExternal(bundlerOptions, app, "artalk");
             break;
           }

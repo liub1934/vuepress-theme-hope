@@ -1,33 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import {
-  type PageHeader,
-  usePageData,
-  usePageFrontmatter,
-  useRouteLocale,
-} from "@vuepress/client";
+import type { PageHeader } from "@vuepress/client";
+import { usePageData, useRouteLocale } from "@vuepress/client";
 import {
   isArray,
   isLinkExternal,
   isPlainObject,
   isString,
 } from "@vuepress/shared";
+import { useRouter } from "vue-router";
 import { keys, startsWith } from "vuepress-shared/client";
 
 import { sidebarData } from "@temp/theme-hope/sidebar";
-import { useAutoLink, useThemeLocaleData } from "@theme-hope/composables/index";
+import { resolveLinkInfo } from "@theme-hope/utils/index";
 
 import { resolvePrefix } from "./utils.js";
-import {
-  type SidebarArrayOptions,
-  type SidebarItem,
-  type SidebarObjectOptions,
-  type ThemeNormalPageFrontmatter,
+import type {
+  SidebarArrayOptions,
+  SidebarItem,
+  SidebarObjectOptions,
+  SidebarOptions,
 } from "../../../../shared/index.js";
-import {
-  type ResolvedSidebarGroupItem,
-  type ResolvedSidebarHeaderItem,
-  type ResolvedSidebarItem,
-  type ResolvedSidebarPageItem,
+import type {
+  ResolvedSidebarGroupItem,
+  ResolvedSidebarHeaderItem,
+  ResolvedSidebarItem,
+  ResolvedSidebarPageItem,
 } from "../utils/index.js";
 
 /**
@@ -35,7 +32,7 @@ import {
  */
 export const headerToSidebarItem = (
   header: PageHeader,
-  headerDepth: number
+  headerDepth: number,
 ): ResolvedSidebarHeaderItem => {
   const page = usePageData();
 
@@ -49,7 +46,7 @@ export const headerToSidebarItem = (
 
 export const headersToSidebarItemChildren = (
   headers: PageHeader[],
-  headerDepth: number
+  headerDepth: number,
 ): ResolvedSidebarHeaderItem[] =>
   headerDepth > 0
     ? headers.map((header) => headerToSidebarItem(header, headerDepth - 1))
@@ -59,7 +56,7 @@ export const headersToSidebarItemChildren = (
  * Resolve sidebar items if the config is `heading`
  */
 export const resolveHeadingSidebarItems = (
-  headerDepth: number
+  headerDepth: number,
 ): ResolvedSidebarHeaderItem[] => {
   const page = usePageData();
 
@@ -72,21 +69,27 @@ export const resolveHeadingSidebarItems = (
 export const resolveArraySidebarItems = (
   sidebarConfig: SidebarArrayOptions,
   headerDepth: number,
-  prefix = ""
+  prefix = "",
 ): ResolvedSidebarItem[] => {
+  const router = useRouter();
   const page = usePageData();
 
   const handleChildItem = (
     item: SidebarItem,
-    pathPrefix = prefix
+    pathPrefix = prefix,
   ): ResolvedSidebarPageItem | ResolvedSidebarGroupItem => {
     const childItem = isString(item)
-      ? useAutoLink(resolvePrefix(pathPrefix, item))
+      ? resolveLinkInfo(router, resolvePrefix(pathPrefix, item))
       : item.link
       ? {
           ...item,
           ...(!isLinkExternal(item.link)
-            ? { link: useAutoLink(resolvePrefix(pathPrefix, item.link)).link }
+            ? {
+                link: resolveLinkInfo(
+                  router,
+                  resolvePrefix(pathPrefix, item.link),
+                ).link,
+              }
             : {}),
         }
       : item;
@@ -120,7 +123,7 @@ export const resolveArraySidebarItems = (
               page.value.headers[0]?.level === 1
                 ? page.value.headers[0].children
                 : page.value.headers,
-              headerDepth
+              headerDepth,
             )
           : [],
     };
@@ -134,7 +137,7 @@ export const resolveArraySidebarItems = (
  */
 export const resolveMultiSidebarItems = (
   sidebarConfig: SidebarObjectOptions,
-  headerDepth: number
+  headerDepth: number,
 ): ResolvedSidebarItem[] => {
   const page = usePageData();
   const sidebarRoutes = keys(sidebarConfig).sort((x, y) => y.length - x.length);
@@ -152,7 +155,7 @@ export const resolveMultiSidebarItems = (
               ? resolveHeadingSidebarItems(headerDepth)
               : matchedConfig,
             headerDepth,
-            base
+            base,
           )
         : [];
     }
@@ -167,17 +170,11 @@ export const resolveMultiSidebarItems = (
  *
  * It should only be resolved and provided once
  */
-export const resolveSidebarItems = (): ResolvedSidebarItem[] => {
+export const resolveSidebarItems = (
+  sidebarConfig: SidebarOptions,
+  headerDepth: number,
+): ResolvedSidebarItem[] => {
   const routeLocale = useRouteLocale();
-  const frontmatter = usePageFrontmatter<ThemeNormalPageFrontmatter>();
-  const themeLocale = useThemeLocaleData();
-
-  // get sidebar config from frontmatter > themeConfig
-  const sidebarConfig = frontmatter.value.home
-    ? false
-    : frontmatter.value.sidebar ?? themeLocale.value.sidebar ?? "structure";
-  const headerDepth =
-    frontmatter.value.headerDepth ?? themeLocale.value.headerDepth ?? 2;
 
   // resolve sidebar items according to the config
   return sidebarConfig === false
@@ -188,7 +185,7 @@ export const resolveSidebarItems = (): ResolvedSidebarItem[] => {
     ? resolveArraySidebarItems(
         sidebarData[routeLocale.value],
         headerDepth,
-        routeLocale.value
+        routeLocale.value,
       )
     : isArray(sidebarConfig)
     ? resolveArraySidebarItems(sidebarConfig, headerDepth)

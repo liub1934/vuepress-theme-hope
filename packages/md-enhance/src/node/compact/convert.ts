@@ -1,15 +1,14 @@
 import { colors } from "@vuepress/utils";
+import { isPlainObject } from "vuepress-shared/node";
 
 import { deprecatedLogger, droppedLogger } from "./utils.js";
-import {
-  type LinksCheckStatus,
-  type MarkdownEnhanceOptions,
-} from "../options.js";
+import type { LinksCheckStatus, MarkdownEnhanceOptions } from "../options.js";
+import type { RevealPlugin } from "../typings/index.js";
 import { logger } from "../utils.js";
 
 /** @deprecated */
 export const convertOptions = (
-  options: MarkdownEnhanceOptions & Record<string, unknown>
+  options: MarkdownEnhanceOptions & Record<string, unknown>,
 ): void => {
   deprecatedLogger({
     options,
@@ -63,8 +62,8 @@ export const convertOptions = (
   if ("linkCheck" in options) {
     logger.warn(
       `${colors.magenta(
-        "linkCheck"
-      )} is deprecated, please use ${colors.magenta("checkLinks")} instead`
+        "linkCheck",
+      )} is deprecated, please use ${colors.magenta("checkLinks")} instead`,
     );
 
     options.checkLinks = {
@@ -75,5 +74,26 @@ export const convertOptions = (
             : "never"
           : (options["linkCheck"] as LinksCheckStatus),
     };
+  }
+
+  if (isPlainObject(options.presentation)) {
+    if ("revealConfig" in options.presentation)
+      logger.warn(
+        `${colors.magenta(
+          "presentation.revealConfig",
+        )} is deprecated, please import ${colors.magenta(
+          `defineRevealConfig`,
+        )} from ${colors.cyan(`vuepress-plugin-md-enhance/client`)} instead.`,
+      );
+
+    if ("plugins" in options.presentation) {
+      logger.warn(
+        `${colors.magenta(
+          "presentation.plugins",
+        )} is deprecated, please use ${colors.magenta(`presentation`)} instead`,
+      );
+
+      options.presentation = <RevealPlugin[]>options.presentation.plugins;
+    }
   }
 };

@@ -1,9 +1,10 @@
 import { createRequire } from "node:module";
 
-import { type App } from "@vuepress/core";
+import type { App } from "@vuepress/core";
 import { path } from "@vuepress/utils";
+import { isPlainObject } from "vuepress-shared/node";
 
-import { type MarkdownEnhanceOptions } from "../options.js";
+import type { MarkdownEnhanceOptions } from "../options.js";
 import { CLIENT_FOLDER } from "../utils.js";
 
 const require = createRequire(import.meta.url);
@@ -11,12 +12,16 @@ const require = createRequire(import.meta.url);
 export const prepareConfigFile = async (
   app: App,
   options: MarkdownEnhanceOptions,
-  legacy = true
+  legacy = true,
 ): Promise<string> => {
   const imports: string[] = [];
   const enhances: string[] = [];
+  const setups: string[] = [];
 
-  const getStatus = (key: keyof MarkdownEnhanceOptions, gfm = false): boolean =>
+  const getStatus = (
+    key: keyof MarkdownEnhanceOptions,
+    gfm = false,
+  ): boolean =>
     key in options
       ? Boolean(options[key])
       : (gfm && "gfm" in options && options.gfm) || false;
@@ -28,14 +33,14 @@ export const prepareConfigFile = async (
 
   if (getStatus("chart")) {
     imports.push(
-      `import ChartJS from "${CLIENT_FOLDER}components/ChartJS.js";`
+      `import ChartJS from "${CLIENT_FOLDER}components/ChartJS.js";`,
     );
     enhances.push(`app.component("ChartJS", ChartJS)`);
   }
 
   if (getStatus("codetabs")) {
     imports.push(
-      `import CodeTabs from "${CLIENT_FOLDER}components/CodeTabs.js";`
+      `import CodeTabs from "${CLIENT_FOLDER}components/CodeTabs.js";`,
     );
     enhances.push(`app.component("CodeTabs", CodeTabs);`);
 
@@ -43,13 +48,13 @@ export const prepareConfigFile = async (
     if (legacy) {
       imports.push(
         `import { hasGlobalComponent } from "${path.resolve(
-          require.resolve("vuepress-shared/client")
+          require.resolve("vuepress-shared/client"),
         )}";`,
-        `import { CodeGroup, CodeGroupItem } from "${CLIENT_FOLDER}compact/index.js";`
+        `import { CodeGroup, CodeGroupItem } from "${CLIENT_FOLDER}compact/index.js";`,
       );
       enhances.push(
         `if(!hasGlobalComponent("CodeGroup", app)) app.component("CodeGroup", CodeGroup);`,
-        `if(!hasGlobalComponent("CodeGroupItem", app)) app.component("CodeGroupItem", CodeGroupItem);`
+        `if(!hasGlobalComponent("CodeGroupItem", app)) app.component("CodeGroupItem", CodeGroupItem);`,
       );
     }
   }
@@ -59,14 +64,14 @@ export const prepareConfigFile = async (
 
   if (getStatus("demo")) {
     imports.push(
-      `import CodeDemo from "${CLIENT_FOLDER}components/CodeDemo.js";`
+      `import CodeDemo from "${CLIENT_FOLDER}components/CodeDemo.js";`,
     );
     enhances.push(`app.component("CodeDemo", CodeDemo);`);
   }
 
   if (getStatus("echarts")) {
     imports.push(
-      `import ECharts from "${CLIENT_FOLDER}components/ECharts.js";`
+      `import ECharts from "${CLIENT_FOLDER}components/ECharts.js";`,
     );
     enhances.push(`app.component("ECharts", ECharts);`);
   }
@@ -76,7 +81,7 @@ export const prepareConfigFile = async (
 
   if (getStatus("flowchart")) {
     imports.push(
-      `import FlowChart from "${CLIENT_FOLDER}components/FlowChart.js";`
+      `import FlowChart from "${CLIENT_FOLDER}components/FlowChart.js";`,
     );
 
     enhances.push(`app.component("FlowChart", FlowChart);`);
@@ -91,11 +96,11 @@ export const prepareConfigFile = async (
   if (getStatus("mermaid")) {
     imports.push(
       `import Mermaid from "${CLIENT_FOLDER}components/Mermaid.js";`,
-      `import { injectMermaidConfig } from "${CLIENT_FOLDER}/index.js";`
+      `import { injectMermaidConfig } from "${CLIENT_FOLDER}/index.js";`,
     );
     enhances.push(
       `injectMermaidConfig(app);`,
-      `app.component("Mermaid", Mermaid);`
+      `app.component("Mermaid", Mermaid);`,
     );
   }
 
@@ -103,17 +108,17 @@ export const prepareConfigFile = async (
     imports.push(
       `import "${path.resolve(require.resolve("reveal.js/dist/reveal.css"))}";`,
       `import Presentation from "${CLIENT_FOLDER}components/Presentation.js";`,
-      `import { injectRevealConfig } from "${CLIENT_FOLDER}index.js";`
+      `import { injectRevealConfig } from "${CLIENT_FOLDER}index.js";`,
     );
     enhances.push(
       `injectRevealConfig(app);`,
-      `app.component("Presentation", Presentation);`
+      `app.component("Presentation", Presentation);`,
     );
   }
 
   if (getStatus("playground")) {
     imports.push(
-      `import Playground from "${CLIENT_FOLDER}components/Playground.js";`
+      `import Playground from "${CLIENT_FOLDER}components/Playground.js";`,
     );
     enhances.push(`app.component("Playground", Playground);`);
   }
@@ -126,20 +131,28 @@ export const prepareConfigFile = async (
   if (getStatus("tasklist", true))
     imports.push(`import "${CLIENT_FOLDER}styles/tasklist.scss";`);
 
-  if (getStatus("katex"))
+  if (getStatus("katex")) {
     imports.push(
       `import "${path.resolve(require.resolve("katex/dist/katex.min.css"))}";`,
-      `import "${CLIENT_FOLDER}styles/katex.scss";`
+      `import "${CLIENT_FOLDER}styles/katex.scss";`,
     );
+
+    if (isPlainObject(options.katex) && options.katex.copy) {
+      imports.push(
+        `import { useKatexCopy } from "${CLIENT_FOLDER}composables/katex.js";`,
+      );
+      setups.push(`useKatexCopy();`);
+    }
+  }
 
   if (getStatus("vuePlayground")) {
     imports.push(
       `import { defineAsyncComponent } from "vue";`,
-      `import { injectVuePlaygroundConfig } from "${CLIENT_FOLDER}index.js";`
+      `import { injectVuePlaygroundConfig } from "${CLIENT_FOLDER}index.js";`,
     );
     enhances.push(
       `injectVuePlaygroundConfig(app);`,
-      `app.component("VuePlayground", defineAsyncComponent(() => import("${CLIENT_FOLDER}components/VuePlayground.js")));`
+      `app.component("VuePlayground", defineAsyncComponent(() => import("${CLIENT_FOLDER}components/VuePlayground.js")));`,
     );
   }
 
@@ -155,7 +168,10 @@ export default defineClientConfig({
   enhance: ({ app }) => {
 ${enhances.map((item) => `    ${item}`).join("\n")}
   },
+  setup: () => {
+${setups.join("\n")}
+  }
 });
-`
+`,
   );
 };

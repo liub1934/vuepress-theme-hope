@@ -1,12 +1,12 @@
 import MarkdownIt from "markdown-it";
 import { describe, expect, it } from "vitest";
 
-import { presentation } from "../../src/node/markdown-it/index.js";
+import { presentation } from "../../src/node/markdown-it/presentation.js";
 
 const demo = `
 ## Slide 1
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -43,7 +43,7 @@ ${demo}
 `);
 
     expect(renderResult).toMatch(
-      /<Presentation id="presentation-.*?" code=".*?" theme=".*?"><\/Presentation>/
+      /<Presentation id="presentation-.*?" code=".*?" theme=".*?"><\/Presentation>/,
     );
     expect(renderResult).toMatchSnapshot();
   });
@@ -52,7 +52,7 @@ ${demo}
     expect(
       markdownIt.render(`
 ${demo}
-`)
+`),
     ).toMatchSnapshot();
 
     expect(
@@ -60,7 +60,7 @@ ${demo}
 @slidestar
 ${demo}
 @slideend
-`)
+`),
     ).toMatchSnapshot();
   });
 });

@@ -1,4 +1,4 @@
-import { type ThemeFunction } from "@vuepress/core";
+import type { ThemeFunction } from "@vuepress/core";
 import { watch } from "chokidar";
 import { isPlainObject } from "vuepress-shared/node";
 
@@ -24,15 +24,15 @@ import {
   prepareSidebarData,
   prepareSocialMediaIcons,
 } from "./prepare/index.js";
-import { type HopeThemeBehaviorOptions } from "./typings/index.js";
+import type { HopeThemeBehaviorOptions } from "./typings/index.js";
 import { TEMPLATE_FOLDER } from "./utils.js";
-import { type ThemeOptions } from "../shared/index.js";
+import type { ThemeOptions } from "../shared/index.js";
 
 export const hopeTheme =
   (
     options: ThemeOptions,
     // TODO: Change default value in v2 stable
-    behavior: HopeThemeBehaviorOptions | boolean = true
+    behavior: HopeThemeBehaviorOptions | boolean = true,
   ): ThemeFunction =>
   (app) => {
     const behaviorOptions = isPlainObject(behavior)
@@ -135,7 +135,7 @@ export const hopeTheme =
           iconPrefix,
           favicon,
         },
-        behaviorOptions.compact
+        behaviorOptions.compact,
       ),
 
       templateBuild: `${TEMPLATE_FOLDER}index.build.html`,

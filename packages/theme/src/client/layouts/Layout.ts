@@ -1,11 +1,6 @@
 import { usePageData, usePageFrontmatter } from "@vuepress/client";
-import {
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  resolveComponent,
-} from "vue";
+import type { VNode } from "vue";
+import { computed, defineComponent, h, resolveComponent } from "vue";
 
 import CommonWrapper from "@theme-hope/components/CommonWrapper";
 import HomePage from "@theme-hope/components/HomePage";
@@ -18,7 +13,7 @@ import {
   useWindowSize,
 } from "@theme-hope/composables/index";
 
-import { type ThemePageFrontmatter } from "../../shared/index.js";
+import type { ThemePageFrontmatter } from "../../shared/index.js";
 
 declare const ENABLE_BLOG: boolean;
 
@@ -38,7 +33,7 @@ export default defineComponent({
         ? themeLocale.value.blog?.sidebarDisplay ||
           themeData.value.blog?.sidebarDisplay ||
           "mobile"
-        : "none"
+        : "none",
     );
 
     return (): VNode[] => [
@@ -57,7 +52,7 @@ export default defineComponent({
           ...(!isMobile.value && sidebarDisplay.value === "always"
             ? { sidebar: () => h(resolveComponent("BloggerInfo")) }
             : {}),
-        }
+        },
       ),
     ];
   },

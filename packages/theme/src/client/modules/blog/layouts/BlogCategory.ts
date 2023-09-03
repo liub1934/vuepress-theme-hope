@@ -1,14 +1,9 @@
 import { usePageData, usePageFrontmatter } from "@vuepress/client";
-import {
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  resolveComponent,
-} from "vue";
-import {
-  type BlogCategoryFrontmatterOptions,
-  type BlogPluginFrontmatter,
+import type { VNode } from "vue";
+import { computed, defineComponent, h, resolveComponent } from "vue";
+import type {
+  BlogCategoryFrontmatterOptions,
+  BlogPluginFrontmatter,
 } from "vuepress-plugin-blog2";
 
 import DropTransition from "@theme-hope/components/transitions/DropTransition";
@@ -38,7 +33,7 @@ export default defineComponent({
     const categoryMap = useCategoryMap();
     const tagMap = useTagMap();
     const blogOptions = computed(
-      () => (frontmatter.value.blog || {}) as BlogCategoryFrontmatterOptions
+      () => (frontmatter.value.blog || {}) as BlogCategoryFrontmatterOptions,
     );
 
     const componentName = computed(() => {
@@ -75,17 +70,22 @@ export default defineComponent({
               h(DropTransition, () =>
                 componentName.value
                   ? h(resolveComponent(componentName.value))
-                  : null
+                  : null,
               ),
               blogOptions.value.name
                 ? h(DropTransition, { appear: true, delay: 0.24 }, () =>
-                    h(ArticleList, { key: page.value.path, items: items.value })
+                    h(ArticleList, {
+                      key: page.value.path,
+                      items: items.value,
+                    }),
                   )
                 : null,
             ]),
-            h(DropTransition, { delay: 0.16 }, () => h(InfoPanel)),
-          ])
-        )
+            h(DropTransition, { delay: 0.16 }, () =>
+              h(InfoPanel, { key: "blog" }),
+            ),
+          ]),
+        ),
       );
   },
 });

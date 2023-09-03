@@ -16,22 +16,22 @@ Embed [ArtPlayer](https://github.com/zhw2590582/ArtPlayer) in Markdown files.
 
 A video player:
 
-<ArtPlayer src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4" />
+<ArtPlayer src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4" />
 
 ```md
-<ArtPlayer src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4" />
+<ArtPlayer src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4" />
 ```
 
 A video player with poster:
 
 <ArtPlayer
-  src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4"
+  src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
   poster="/poster.svg"
 />
 
 ```md
 <ArtPlayer
-  src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4"
+  src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
   poster="/poster.svg"
 />
 ```
@@ -39,7 +39,7 @@ A video player with poster:
 A video player with custom settings:
 
 <ArtPlayer
-  src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4"
+  src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
   airplay
   aspect-ratio
   auto-size
@@ -60,7 +60,7 @@ A video player with custom settings:
 
 ```md
 <ArtPlayer
-  src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4"
+  src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
   airplay
   aspect-ratio
   auto-size
@@ -314,14 +314,14 @@ You can support other format videos with `customType` option in ArtPlayer option
 Here is a demo adding DanMuKu plugin:
 
 <ArtPlayer
-  src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4"
+  src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
   :config="artPlayerDanmukuConfig"
   :customPlayer="customPlayer"
 />
 
 ```html
 <ArtPlayer
-  src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.mp4"
+  src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
   :config="artPlayerDanmukuConfig"
   :customPlayer="customPlayer"
 />
@@ -340,7 +340,7 @@ Here is a demo adding DanMuKu plugin:
         fetch(`${DANMAKU_API}/${DANMAKU_ID}.json`).then((res) => res.json()),
       ])
         .then((res) =>
-          res.filter((r) => r.status === "fulfilled").map((r) => r.value)
+          res.filter((r) => r.status === "fulfilled").map((r) => r.value),
         )
         .then((res) =>
           res
@@ -349,9 +349,9 @@ Here is a demo adding DanMuKu plugin:
                 r["code"] !== undefined &&
                 r["code"] === 0 &&
                 r["data"] !== undefined &&
-                r["data"].length > 0
+                r["data"].length > 0,
             )
-            .reduce((acc, cur) => acc.concat(cur["data"]), [])
+            .reduce((acc, cur) => acc.concat(cur["data"]), []),
         ),
   };
 

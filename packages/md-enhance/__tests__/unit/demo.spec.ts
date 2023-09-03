@@ -5,7 +5,7 @@ import {
   normalDemo,
   reactDemo,
   vueDemo,
-} from "../../src/node/markdown-it/index.js";
+} from "../../src/node/markdown-it/codeDemo.js";
 
 describe("demo", () => {
   const markdownIt = MarkdownIt({ linkify: true })
@@ -111,8 +111,8 @@ h1 {
 \`\`\`
 
 :::
-`
-      )
+`,
+      ),
     ).toMatchSnapshot();
   });
 });

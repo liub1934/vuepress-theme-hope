@@ -216,8 +216,8 @@ docs:
 blog:
   - name: Mr.Hope's Blog
     desc: Where there is light, there is hope
-    logo: https://mrhope.site/logo.svg
-    url: https://mrhope.site
+    logo: https://mister-hope.com/logo.svg
+    url: https://mister-hope.com
     repo: https://github.com/Mister-Hope/Mister-Hope.github.io
     preview: /assets/image/mrhope.jpg
 
@@ -340,8 +340,8 @@ blog:
 
   - name: heStudio
     desc: Welcome to the pit!
-    logo: https://www.hestudio.org/logo.svg
-    url: https://www.hestudio.org/
+    logo: https://www.hestudio.net/logo.svg
+    url: https://www.hestudio.net/
     repo: https://gitlab.com/heStudio/blog-source.git
     preview: /assets/image/hestudio.jpg
 
@@ -360,7 +360,7 @@ blog:
     preview: /assets/image/bing.jpg
 
   - name: Oragekk's Blog
-    desc: 到最后，竟庆幸于夕阳仍留在身上？无聊的思考总是能给人启发，多经历，多记录，多理解
+    desc: 愿人生如剑、立起寒光四射、躺倒四射寒光
     logo: https://oragekk.me/logo.svg
     url: https://oragekk.me/
     repo: https://github.com/OrageKK/oragekk.github.io
@@ -393,6 +393,20 @@ blog:
     url: https://weigao.cc
     repo: https://github.com/chenweigao/blogv2
     preview: /assets/image/someone.jpg
+
+  - name: XXXWeii
+    desc: 带着思念期待着下次相见
+    logo: https://xxxweii.github.io/XXXWeiiBlog/logo.jpg
+    url: https://xxxweii.github.io/XXXWeiiBlog
+    repo: https://github.com/XXXWeii/XXXWeiiBlog
+    preview: https://xxxweii.github.io/XXXWeiiBlog/assets/images/XXXWeii.png
+
+  - name: xiaou的学习笔记
+    desc: 热爱可抵岁月漫长
+    logo: https://mydocs.guoyaxue.top/site_logo.png
+    url: https://mydocs.guoyaxue.top
+    repo: https://github.com/xiaou61/mydocs
+    preview: https://xiaou-1305448902.cos.ap-nanjing.myqcloud.com/img/202308291337109.png
 ---
 
 ## 使用 VuePress Theme Hope 的文档

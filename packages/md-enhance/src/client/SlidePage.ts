@@ -1,6 +1,7 @@
 import { Content } from "@vuepress/client";
 import { onClickOutside } from "@vueuse/core";
-import { type VNode, defineComponent, h, ref, shallowRef } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h, ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 
 import { BackIcon, HomeIcon } from "./components/icons.js";
@@ -46,19 +47,19 @@ export default defineComponent({
             h(
               "button",
               { type: "button", class: "menu-button", onClick: () => toggle() },
-              h("span", { class: "icon" })
+              h("span", { class: "icon" }),
             ),
             h(
               "button",
               { type: "button", class: "back-button", onClick: () => back() },
-              h(BackIcon)
+              h(BackIcon),
             ),
             h(
               "button",
               { type: "button", class: "home-button", onClick: () => home() },
-              h(HomeIcon)
+              h(HomeIcon),
             ),
-          ]
+          ],
         ),
       ]);
   },

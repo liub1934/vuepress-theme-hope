@@ -1,8 +1,6 @@
-import { type Plugin } from "@vuepress/core";
-import {
-  type AutoCatalogOptions,
-  autoCatalogPlugin,
-} from "vuepress-plugin-auto-catalog";
+import type { Plugin } from "@vuepress/core";
+import type { AutoCatalogOptions } from "vuepress-plugin-auto-catalog";
+import { autoCatalogPlugin } from "vuepress-plugin-auto-catalog";
 import { isPlainObject } from "vuepress-shared/node";
 
 import { ArticleInfoType } from "../index.js";
@@ -13,7 +11,7 @@ import { ArticleInfoType } from "../index.js";
  * Resolve options for vuepress-plugin-auto-catalog
  */
 export const getAutoCatalogPlugin = (
-  autoCatalog?: AutoCatalogOptions | boolean
+  autoCatalog?: AutoCatalogOptions | boolean,
 ): Plugin | null => {
   if (autoCatalog === false) return null;
 

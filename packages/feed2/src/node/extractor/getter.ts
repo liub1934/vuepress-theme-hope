@@ -1,7 +1,7 @@
-import { type App, type Page, type PageFrontmatter } from "@vuepress/core";
-import { type GitData } from "@vuepress/plugin-git";
+import type { App, Page, PageFrontmatter } from "@vuepress/core";
+import type { GitData } from "@vuepress/plugin-git";
+import type { AuthorInfo } from "vuepress-shared/node";
 import {
-  type AuthorInfo,
   getAuthor,
   getCategory,
   getPageExcerpt,
@@ -14,17 +14,17 @@ import {
 } from "vuepress-shared/node";
 
 import { getPageRenderContent } from "./content.js";
-import { type Feed } from "../generator/feed.js";
-import {
-  type FeedAuthor,
-  type FeedCategory,
-  type FeedContributor,
-  type FeedEnclosure,
-  type FeedFrontmatterOption,
-  type FeedGetter,
-  type FeedItemInformation,
-  type FeedOptions,
-  type FeedPluginFrontmatter,
+import type { Feed } from "../generator/feed.js";
+import type {
+  FeedAuthor,
+  FeedCategory,
+  FeedContributor,
+  FeedEnclosure,
+  FeedFrontmatterOption,
+  FeedGetter,
+  FeedItemInformation,
+  FeedOptions,
+  FeedPluginFrontmatter,
 } from "../typings/index.js";
 import { getImageMineType, resolveUrl } from "../utils/index.js";
 
@@ -42,7 +42,7 @@ export class FeedInfo {
       { excerpt?: string; git?: GitData },
       FeedPluginFrontmatter
     >,
-    private feed: Feed
+    private feed: Feed,
   ) {
     this.base = this.app.options.base;
     this.frontmatter = page.frontmatter;
@@ -53,7 +53,7 @@ export class FeedInfo {
 
       return isArray(preservedElements)
         ? preservedElements.some((item) =>
-            item instanceof RegExp ? item.test(tagName) : item === tagName
+            item instanceof RegExp ? item.test(tagName) : item === tagName,
           )
         : isFunction(preservedElements)
         ? preservedElements(tagName)
@@ -203,7 +203,7 @@ export class FeedInfo {
         return resolveUrl(
           this.options.hostname,
           this.app.options.base,
-          result[1]
+          result[1],
         );
 
       if (isUrl(result[1])) return result[1];

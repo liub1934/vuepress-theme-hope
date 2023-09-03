@@ -1,21 +1,14 @@
 import { useSiteData } from "@vuepress/client";
 import { ExternalLinkIcon } from "@vuepress/plugin-external-link-icon/client";
 import { isLinkHttp, isLinkMailto, isLinkTel } from "@vuepress/shared";
-import {
-  type PropType,
-  type SlotsType,
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  toRef,
-} from "vue";
-import { RouterLink, useRoute } from "vue-router";
-import { keys, startsWith } from "vuepress-shared/client";
+import type { PropType, SlotsType, VNode } from "vue";
+import { computed, defineComponent, h, toRef } from "vue";
+import { useRoute } from "vue-router";
+import { VPLink, keys, startsWith } from "vuepress-shared/client";
 
 import HopeIcon from "@theme-hope/components/HopeIcon";
 
-import { type AutoLinkOptions } from "../../shared/index.js";
+import type { AutoLinkOptions } from "../../shared/index.js";
 
 export default defineComponent({
   name: "AutoLink",
@@ -61,25 +54,25 @@ export default defineComponent({
 
     // if the link has non-http protocol
     const hasNonHttpProtocol = computed(
-      () => isLinkMailto(config.value.link) || isLinkTel(config.value.link)
+      () => isLinkMailto(config.value.link) || isLinkTel(config.value.link),
     );
 
     // resolve the `target` attr
     const linkTarget = computed(() =>
       hasNonHttpProtocol.value
         ? undefined
-        : config.value.target || (hasHttpProtocol.value ? "_blank" : undefined)
+        : config.value.target || (hasHttpProtocol.value ? "_blank" : undefined),
     );
 
     // if the `target` attr is "_blank"
     const isBlankTarget = computed(() => linkTarget.value === "_blank");
 
-    // render `<RouterLink>` or not
-    const renderRouterLink = computed(
+    // render `<VPLink>` or not
+    const renderVPLink = computed(
       () =>
         !hasHttpProtocol.value &&
         !hasNonHttpProtocol.value &&
-        !isBlankTarget.value
+        !isBlankTarget.value,
     );
 
     // resolve the `rel` attr
@@ -87,12 +80,12 @@ export default defineComponent({
       hasNonHttpProtocol.value
         ? undefined
         : config.value.rel ||
-          (isBlankTarget.value ? "noopener noreferrer" : undefined)
+          (isBlankTarget.value ? "noopener noreferrer" : undefined),
     );
 
     // resolve the `aria-label` attr
     const linkAriaLabel = computed(
-      () => config.value.ariaLabel || config.value.text
+      () => config.value.ariaLabel || config.value.text,
     );
 
     // should be active when current route is a subpath of this link
@@ -111,23 +104,23 @@ export default defineComponent({
 
     // if this link is active
     const isActive = computed(() =>
-      renderRouterLink.value
+      renderVPLink.value
         ? config.value.activeMatch
           ? new RegExp(config.value.activeMatch).test(route.path)
           : // if this link is active in subpath
           !shouldBeActiveInSubpath.value
           ? route.path === config.value.link
           : startsWith(route.path, config.value.link)
-        : false
+        : false,
     );
 
     return (): VNode => {
       const { before, after, default: defaultSlot } = slots;
       const { text, icon, link } = config.value;
 
-      return renderRouterLink.value
+      return renderVPLink.value
         ? h(
-            RouterLink,
+            VPLink,
             {
               to: link,
               "aria-label": linkAriaLabel.value,
@@ -139,7 +132,7 @@ export default defineComponent({
             () =>
               defaultSlot
                 ? defaultSlot()
-                : [before ? before() : h(HopeIcon, { icon }), text, after?.()]
+                : [before ? before() : h(HopeIcon, { icon }), text, after?.()],
           )
         : h(
             "a",
@@ -160,7 +153,7 @@ export default defineComponent({
                   text,
                   props.noExternalLinkIcon ? null : h(ExternalLinkIcon),
                   after?.(),
-                ]
+                ],
           );
     };
   },

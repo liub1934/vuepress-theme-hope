@@ -6,24 +6,16 @@ import { cac } from "cac";
 import { execaCommand, execaCommandSync } from "execa";
 import inquirer from "inquirer";
 
-import {
-  type CreateI18n,
-  type Lang,
-  generateTemplate,
-  getLanguage,
-  version,
-} from "./config/index.js";
+import type { CreateI18n, Lang } from "./config/index.js";
+import { generateTemplate, getLanguage, version } from "./config/index.js";
 import { createPackageJson } from "./packageJson.js";
 import { getRegistry } from "./registry.js";
-import {
-  type PackageManager,
-  ensureDirExistSync,
-  getPackageManager,
-} from "./utils/index.js";
+import type { PackageManager } from "./utils/index.js";
+import { ensureDirExistSync, getPackageManager } from "./utils/index.js";
 
 const preAction = async (
   targetDir: string,
-  preset?: "docs" | "blog" | null
+  preset?: "docs" | "blog" | null,
 ): Promise<{
   lang: Lang;
   message: CreateI18n;
@@ -41,7 +33,7 @@ const preAction = async (
 
   // get packageManager
   const packageManager = await getPackageManager(
-    message.question.packageManager
+    message.question.packageManager,
   );
 
   // check if the user is a noob and warn him 🤪
@@ -82,7 +74,7 @@ const postAction = async ({
 
   execaCommandSync(
     `${packageManager} install ${registry ? `--registry ${registry}` : ""}`,
-    { cwd, stdout: "inherit" }
+    { cwd, stdout: "inherit" },
   );
 
   console.log(message.hint.finish);
@@ -118,7 +110,7 @@ cli
   .command("[dir]", "Generate a new vuepress-theme-hope project")
   .option("-p, --preset <preset>", "Choose preset to use")
   .usage(
-    "pnpm create vuepress-theme-hope [dir] / yarn create vuepress-theme-hope [dir] / npm init vuepress-theme-hope [dir]"
+    "pnpm create vuepress-theme-hope [dir] / yarn create vuepress-theme-hope [dir] / npm init vuepress-theme-hope [dir]",
   )
   .example("docs")
   .action(
@@ -128,7 +120,7 @@ cli
         preset = null,
       }: {
         preset?: "docs" | "blog" | null;
-      }
+      },
     ) => {
       const workingCWD = resolve(process.cwd(), targetDir);
       const result = await preAction(targetDir, preset);
@@ -147,7 +139,7 @@ cli
 
         await postAction({ cwd: workingCWD, lang, message, packageManager });
       }
-    }
+    },
   );
 
 cli
@@ -155,7 +147,7 @@ cli
   .alias("inject")
   .option("-p, --preset <preset>", "Choose preset to use")
   .usage(
-    "pnpm create vuepress-theme-hope add [dir] / yarn create vuepress-theme-hope add [dir] / npm init vuepress-theme-hope add [dir]"
+    "pnpm create vuepress-theme-hope add [dir] / yarn create vuepress-theme-hope add [dir] / npm init vuepress-theme-hope add [dir]",
   )
   .example("docs")
   .action(
@@ -165,7 +157,7 @@ cli
         preset = null,
       }: {
         preset?: "docs" | "blog" | null;
-      }
+      },
     ) => {
       const result = await preAction(targetDir, preset);
 
@@ -183,7 +175,7 @@ cli
 
         await postAction({ message, lang, packageManager });
       }
-    }
+    },
   );
 
 cli.help(() => [

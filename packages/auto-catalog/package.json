@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-auto-catalog",
-  "version": "2.0.0-beta.217",
+  "version": "2.0.0-beta.236",
   "description": "Generate catalog for VuePress2",
   "keywords": [
     "vuepress",
@@ -23,7 +23,7 @@
   "author": {
     "email": "mister-hope@outlook.com",
     "name": "Mr.Hope",
-    "url": "https://mrhope.site"
+    "url": "https://mister-hope.com"
   },
   "type": "module",
   "exports": {
@@ -46,26 +46,26 @@
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
   "engines": {
-    "node": ">=16.0.0",
+    "node": ">=16.19.0",
     "npm": ">=8",
     "pnpm": ">=7"
   },
   "dependencies": {
-    "@vuepress/client": "2.0.0-beta.62",
-    "@vuepress/core": "2.0.0-beta.62",
-    "@vuepress/shared": "2.0.0-beta.62",
-    "@vuepress/utils": "2.0.0-beta.62",
+    "@vuepress/client": "2.0.0-beta.67",
+    "@vuepress/core": "2.0.0-beta.67",
+    "@vuepress/shared": "2.0.0-beta.67",
+    "@vuepress/utils": "2.0.0-beta.67",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.2",
+    "vue-router": "^4.2.4",
     "vuepress-plugin-components": "workspace:*",
     "vuepress-plugin-sass-palette": "workspace:*",
     "vuepress-shared": "workspace:*"
   },
   "peerDependencies": {
-    "sass-loader": "^13.3.1",
-    "vuepress": "2.0.0-beta.62",
-    "vuepress-vite": "2.0.0-beta.62",
-    "vuepress-webpack": "2.0.0-beta.62"
+    "sass-loader": "^13.3.2",
+    "vuepress": "2.0.0-beta.67",
+    "vuepress-vite": "2.0.0-beta.67",
+    "vuepress-webpack": "2.0.0-beta.67"
   },
   "peerDependenciesMeta": {
     "sass-loader": {

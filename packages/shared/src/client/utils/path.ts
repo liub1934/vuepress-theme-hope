@@ -1,4 +1,4 @@
-import { type RouteLocationNormalizedLoaded } from "vue-router";
+import type { RouteLocationNormalizedLoaded } from "vue-router";
 
 const HASH_REGEXP = /#.*$/u;
 
@@ -30,7 +30,7 @@ export const normalizePath = (path: string): string =>
  */
 export const isActiveLink = (
   route: RouteLocationNormalizedLoaded,
-  link?: string
+  link?: string,
 ): boolean => {
   if (link === undefined) return false;
 

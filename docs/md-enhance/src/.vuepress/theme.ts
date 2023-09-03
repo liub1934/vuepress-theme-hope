@@ -1,6 +1,6 @@
 import { theme } from "docs-shared";
-import { enNavbarConfig, zhNavbarConfig } from "./navbar.js";
-import { enSidebarConfig, zhSidebarConfig } from "./sidebar.js";
+import { enNavbar, zhNavbar } from "./navbar.js";
+import { enSidebar, zhSidebar } from "./sidebar.js";
 import { getDirname, path } from "docs-shared";
 
 const __dirname = getDirname(import.meta.url);
@@ -8,13 +8,13 @@ const __dirname = getDirname(import.meta.url);
 export default theme("md-enhance", {
   locales: {
     "/": {
-      navbar: enNavbarConfig,
-      sidebar: enSidebarConfig,
+      navbar: enNavbar,
+      sidebar: enSidebar,
     },
 
     "/zh/": {
-      navbar: zhNavbarConfig,
-      sidebar: zhSidebarConfig,
+      navbar: zhNavbar,
+      sidebar: zhSidebar,
     },
   },
 
@@ -39,7 +39,7 @@ export default theme("md-enhance", {
           if (file.startsWith("@echarts"))
             return file.replace(
               "@echarts",
-              path.resolve(__dirname, "../echarts")
+              path.resolve(__dirname, "../echarts"),
             );
 
           return file;
@@ -49,11 +49,9 @@ export default theme("md-enhance", {
       mark: true,
       mermaid: true,
       playground: {
-        presets: ["ts", "vue"],
+        presets: ["ts", "vue", "unocss"],
       },
-      presentation: {
-        plugins: ["highlight", "math", "search", "notes", "zoom"],
-      },
+      presentation: ["highlight", "math", "search", "notes", "zoom"],
       stylize: [
         {
           matcher: "Recommended",

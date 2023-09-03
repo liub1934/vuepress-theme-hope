@@ -1,8 +1,7 @@
-import { type UseMediaTextTrackSource } from "@vueuse/core";
-import { type Options as PlyrOptions } from "plyr";
+import type { UseMediaTextTrackSource } from "@vueuse/core";
+import type { Options as PlyrOptions } from "plyr";
+import type { PropType, VNode } from "vue";
 import {
-  type PropType,
-  type VNode,
   computed,
   defineComponent,
   h,
@@ -143,12 +142,12 @@ export default defineComponent({
             },
             [
               props.tracks.map((track) =>
-                h("track", { ...track, src: getLink(track.src) })
+                h("track", { ...track, src: getLink(track.src) }),
               ),
               h("source", { src: getLink(props.src), type: props.type }),
-            ]
+            ],
           ),
-        ]
+        ],
       );
   },
 });

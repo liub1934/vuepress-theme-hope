@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 
-import { type App } from "@vuepress/core";
+import type { App } from "@vuepress/core";
 import { colors, fs, path } from "@vuepress/utils";
 import semver from "semver";
 
@@ -57,8 +57,8 @@ export const checkVersion = (app: App, name: string, range = "v2"): boolean => {
 
     logger.error(
       `Package ${colors.magenta(name)} requires ${colors.cyan(
-        `vuepress@${range}`
-      )}, but found ${colors.cyan(version)}.`
+        `vuepress@${range}`,
+      )}, but found ${colors.cyan(version)}.`,
     );
 
     return false;

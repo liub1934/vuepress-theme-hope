@@ -1,9 +1,9 @@
-import { type LocaleConfig, type Page } from "@vuepress/core";
+import type { LocaleConfig, Page } from "@vuepress/core";
 
-import {
-  type SearchProCustomFieldFormatter,
-  type SearchProHotKeyOptions,
-  type SearchProLocaleData,
+import type {
+  SearchProCustomFieldFormatter,
+  SearchProHotKeyOptions,
+  SearchProLocaleData,
 } from "../shared/index.js";
 
 export interface SearchProIndexOptions {
@@ -176,6 +176,19 @@ export interface SearchProOptions extends DeprecatedSearchProOptions {
    * @see [默认配置](https://github.com/vuepress-theme-hope/vuepress-theme-hope/blob/main/packages/search-pro/src/node/locales.ts)
    */
   locales?: LocaleConfig<SearchProLocaleData>;
+
+  /**
+   * Result Sort strategy
+   *
+   * @description When there are multiple matched results, the result will be sorted by the strategy. `max` means that page having higher total score will be placed in front. `total` means that page having higher max score will be placed in front.
+   *
+   * 结果排序策略
+   *
+   * @description 当有多个匹配的结果时，会按照策略对结果进行排序。`max` 表示总分更高的页面会排在前面。`total` 表示最高分更高的页面会排在前面。
+   *
+   * @default "max"
+   */
+  sortStrategy?: "max" | "total";
 
   /**
    * Create Index option

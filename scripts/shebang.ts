@@ -1,9 +1,9 @@
 import MagicString from "magic-string";
-import {
-  type Plugin,
-  type RenderedChunk,
-  type SourceMapInput,
-  type TransformResult,
+import type {
+  Plugin,
+  RenderedChunk,
+  SourceMapInput,
+  TransformResult,
 } from "rollup";
 
 const hashBangRegex = /^\s*(#!.*)/;
@@ -18,10 +18,7 @@ export const shebangPlugin = (): Plugin => {
       const match = hashBangRegex.exec(code);
 
       if (match) {
-        // FIXME: This is an issue of ts NodeNext
-        const str = new (MagicString as unknown as typeof MagicString.default)(
-          code
-        );
+        const str = new MagicString(code);
 
         str.remove(match.index, match[1].length);
         shebangMap.set(id, match[1]);
@@ -34,17 +31,15 @@ export const shebangPlugin = (): Plugin => {
 
     renderChunk(
       code: string,
-      chunk: RenderedChunk
+      chunk: RenderedChunk,
     ): { code: string; map?: SourceMapInput } | null {
       if (chunk.isEntry) {
-        const key = Array.from(shebangMap.keys()).find((id) =>
-          chunk.facadeModuleId?.includes(id)
+        const key = Array.from(shebangMap.keys()).find(
+          (id) => chunk.facadeModuleId?.includes(id),
         );
 
         if (key) {
-          // FIXME: This is an issue of ts NodeNext
-          const str =
-            new (MagicString as unknown as typeof MagicString.default)(code);
+          const str = new MagicString(code);
 
           str.prepend(`${shebangMap.get(key)!}\n`);
 

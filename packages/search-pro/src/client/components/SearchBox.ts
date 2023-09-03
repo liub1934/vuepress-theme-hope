@@ -1,13 +1,6 @@
 import { useEventListener } from "@vueuse/core";
-import {
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  inject,
-  onMounted,
-  ref,
-} from "vue";
+import type { VNode } from "vue";
+import { computed, defineComponent, h, inject, onMounted, ref } from "vue";
 import {
   checkIsIOS,
   checkIsMacOS,
@@ -40,11 +33,11 @@ export default defineComponent({
               : ["Ctrl", "Shift", "Alt", "Win"]
             ).filter(
               (_, index) =>
-                primaryKey[(["ctrl", "shift", "alt", "meta"] as const)[index]]
+                primaryKey[(["ctrl", "shift", "alt", "meta"] as const)[index]],
             ),
             primaryKey.key.toUpperCase(),
           ]
-        : null
+        : null,
     );
 
     useEventListener("keydown", (event: KeyboardEvent): void => {
@@ -91,11 +84,11 @@ export default defineComponent({
                 "div",
                 { class: "search-pro-key-hints" },
                 controlKeys.value.map((key) =>
-                  h("kbd", { class: "search-pro-key" }, key)
-                )
+                  h("kbd", { class: "search-pro-key" }, key),
+                ),
               )
             : null,
-        ]
+        ],
       ),
     ];
   },

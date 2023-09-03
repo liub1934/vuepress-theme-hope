@@ -1,10 +1,10 @@
 import { get } from "node:https";
 
-import { type PackageManager } from "./packageManager.js";
+import type { PackageManager } from "./packageManager.js";
 
 export const getNextVersion = async (
   packageManager: PackageManager,
-  packageName: string
+  packageName: string,
 ): Promise<string> => {
   const getVersionInfo = (): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ export const getNextVersion = async (
           } else {
             reject();
           }
-        }
+        },
       ).on("error", () => {
         reject();
       });

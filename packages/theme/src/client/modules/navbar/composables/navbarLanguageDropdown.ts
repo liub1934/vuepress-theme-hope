@@ -1,5 +1,6 @@
 import { useRouteLocale, useSiteLocaleData } from "@vuepress/client";
-import { type ComputedRef, computed } from "vue";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { entries, keys } from "vuepress-shared/client";
 
@@ -8,10 +9,7 @@ import {
   useThemeLocaleData,
 } from "@theme-hope/composables/index";
 
-import {
-  type AutoLinkOptions,
-  type NavGroup,
-} from "../../../../shared/index.js";
+import type { AutoLinkOptions, NavGroup } from "../../../../shared/index.js";
 
 /**
  * Get navbar config of select language dropdown
@@ -60,7 +58,7 @@ export const useNavbarLanguageDropdown =
             else {
               const targetLocalePage = path.replace(
                 routeLocale.value,
-                targetLocalePath
+                targetLocalePath,
               );
 
               link =
@@ -83,7 +81,7 @@ export const useNavbarLanguageDropdown =
             text,
             link: path.replace(
               ":route",
-              route.path.replace(routeLocale.value, "")
+              route.path.replace(routeLocale.value, ""),
             ),
           })),
         ],

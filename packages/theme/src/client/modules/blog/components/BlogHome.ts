@@ -1,4 +1,5 @@
-import { type VNode, defineComponent, h } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h } from "vue";
 
 import MarkdownContent from "@theme-hope/components/MarkdownContent";
 import DropTransition from "@theme-hope/components/transitions/DropTransition";
@@ -22,16 +23,18 @@ export default defineComponent({
         h("div", { class: "blog-page-wrapper" }, [
           h("main", { id: "main-content", class: "vp-blog-main" }, [
             h(DropTransition, { appear: true, delay: 0.16 }, () =>
-              h(ProjectPanel)
+              h(ProjectPanel),
             ),
             h(DropTransition, { appear: true, delay: 0.24 }, () =>
-              h(ArticleList, { items: articles.value.items })
+              h(ArticleList, { items: articles.value.items }),
             ),
           ]),
-          h(DropTransition, { appear: true, delay: 0.16 }, () => h(InfoPanel)),
+          h(DropTransition, { appear: true, delay: 0.16 }, () =>
+            h(InfoPanel, { key: "blog" }),
+          ),
         ]),
         h(DropTransition, { appear: true, delay: 0.28 }, () =>
-          h(MarkdownContent)
+          h(MarkdownContent),
         ),
       ]);
   },

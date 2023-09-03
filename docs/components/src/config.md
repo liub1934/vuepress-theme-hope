@@ -20,6 +20,7 @@ icon: gears
     | "Share"
     | "StackBlitz"
     | "SiteInfo"
+    // | "VidStack"
     | "VideoPlayer"
     | "XiGua"
     | "YouTube";
@@ -42,6 +43,7 @@ Available component names:
 - `"Share"`
 - `"StackBlitz"`
 - `"SiteInfo"`
+<!-- - `"VidStack"` -->
 - `"VideoPlayer"`
 - `"XiGua"`
 - `"YouTube"`
@@ -64,6 +66,13 @@ Global config for components.
   - [Guide → Share → Setting component](./guide/share.md#setting-component)
 
 Share services
+
+### componentsOptions.share.contentSelector
+
+- Type: `string`
+- Default: `.theme-default-content`
+
+Page content selector.
 
 ### componentsOptions.share.twitterUserName
 

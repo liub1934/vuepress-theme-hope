@@ -7,11 +7,11 @@ heroText: vuepress-plugin-auto-catalog
 tagline: 为 VuePress2 提供自动目录页生成
 actions:
   - text: 快速上手 💡
-    link: /zh/guide.html
+    link: ./guide.html
     type: primary
 
   - text: 配置 🛠
-    link: /zh/config.html
+    link: ./config.html
 
 features:
   - title: 一行代码生成目录
@@ -88,9 +88,3 @@ export default {
 ```
 
 :::
-
-<NetlifyBadge alt="通过 Netlify 部署" />
-
-<script setup lang="ts">
-import NetlifyBadge from "@NetlifyBadge";
-</script>

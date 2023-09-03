@@ -1,9 +1,9 @@
 import { deprecatedLogger } from "./utils.js";
-import { type PWAOptions } from "../options.js";
+import type { PWAOptions } from "../options.js";
 
 /** @deprecated */
 export const convertOptions = (
-  options: PWAOptions & Record<string, unknown>
+  options: PWAOptions & Record<string, unknown>,
 ): void => {
   deprecatedLogger({
     options,

@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-seo2",
-  "version": "2.0.0-beta.217",
+  "version": "2.0.0-beta.236",
   "description": "SEO plugin for vuepress",
   "keywords": [
     "vuepress",
@@ -21,7 +21,7 @@
   "author": {
     "name": "Mr.Hope",
     "email": "mister-hope@outlook.com",
-    "url": "https://mrhope.site"
+    "url": "https://mister-hope.com"
   },
   "type": "module",
   "exports": {
@@ -40,23 +40,23 @@
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
   "engines": {
-    "node": ">=16.0.0",
+    "node": ">=16.19.0",
     "npm": ">=8",
     "pnpm": ">=7"
   },
   "dependencies": {
-    "@vuepress/shared": "2.0.0-beta.62",
-    "@vuepress/utils": "2.0.0-beta.62",
+    "@vuepress/shared": "2.0.0-beta.67",
+    "@vuepress/utils": "2.0.0-beta.67",
     "vuepress-shared": "workspace:*"
   },
   "devDependencies": {
-    "@vuepress/core": "2.0.0-beta.62",
-    "@vuepress/plugin-git": "2.0.0-beta.62"
+    "@vuepress/core": "2.0.0-beta.67",
+    "@vuepress/plugin-git": "2.0.0-beta.67"
   },
   "peerDependencies": {
-    "vuepress": "2.0.0-beta.62",
-    "vuepress-vite": "2.0.0-beta.62",
-    "vuepress-webpack": "2.0.0-beta.62"
+    "vuepress": "2.0.0-beta.67",
+    "vuepress-vite": "2.0.0-beta.67",
+    "vuepress-webpack": "2.0.0-beta.67"
   },
   "peerDependenciesMeta": {
     "vuepress": {

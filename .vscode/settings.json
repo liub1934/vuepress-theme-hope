@@ -1,5 +1,4 @@
 {
-  "cSpell.language": "en,ru",
   "cSpell.words": [
     // words
     "atou",
@@ -106,6 +105,7 @@
     "tencloud",
     "twikoo",
     "typecho",
+    "vidstack",
     "vite",
     "vssue",
     "vuejs",
@@ -176,5 +176,7 @@
     "**/dist/**": true,
     "packages/*/lib/**": true
   },
+  "vitest.commandLine": "pnpm vitest",
+  "prettier.prettierPath": "./node_modules/prettier",
   "typescript.tsdk": "node_modules/typescript/lib"
 }

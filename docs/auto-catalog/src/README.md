@@ -7,11 +7,11 @@ heroText: vuepress-plugin-auto-catalog
 tagline: Generate Catalog pages for VuePress2
 actions:
   - text: Guide 💡
-    link: /guide.html
+    link: ./guide.html
     type: primary
 
   - text: Config 🛠
-    link: /config.html
+    link: ./config.html
 
 features:
   - title: Adding Catalog with one line
@@ -88,9 +88,3 @@ export default {
 ```
 
 :::
-
-<NetlifyBadge />
-
-<script setup lang="ts">
-import NetlifyBadge from "@NetlifyBadge";
-</script>

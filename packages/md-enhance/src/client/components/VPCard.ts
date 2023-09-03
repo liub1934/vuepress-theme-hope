@@ -1,7 +1,8 @@
 import { withBase } from "@vuepress/client";
 import { isLinkExternal } from "@vuepress/shared";
-import { type FunctionalComponent, h } from "vue";
-import { RouterLink } from "vue-router";
+import type { FunctionalComponent } from "vue";
+import { h } from "vue";
+import { VPLink } from "vuepress-shared/client";
 
 import "../styles/vp-card.scss";
 
@@ -64,23 +65,8 @@ const VPCard: FunctionalComponent<CardProps> = ({
   if (color) props["style"] = { background: color };
 
   return isLinkExternal(link)
-    ? h(
-        "a",
-        {
-          href: link,
-          target: "_blank",
-          ...props,
-        },
-        children
-      )
-    : h(
-        RouterLink,
-        {
-          to: link,
-          ...props,
-        },
-        children
-      );
+    ? h("a", { href: link, target: "_blank", ...props }, children)
+    : h(VPLink, { to: link, ...props }, () => children);
 };
 
 VPCard.displayName = "VPCard";

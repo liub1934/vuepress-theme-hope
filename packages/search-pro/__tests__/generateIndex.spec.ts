@@ -1,4 +1,5 @@
-import { type Page, createBaseApp } from "@vuepress/core";
+import type { Page } from "@vuepress/core";
+import { createBaseApp } from "@vuepress/core";
 import { path } from "@vuepress/utils";
 import { describe, expect, it } from "vitest";
 import { getPageExcerpt } from "vuepress-shared/node";
@@ -47,7 +48,7 @@ describe("generateIndex", () => {
             getter: ({ frontmatter }: Page): string[] | string | null =>
               (frontmatter.tag as string[] | string) || null,
           },
-        ])
+        ]),
       ).toMatchSnapshot();
     });
   });
@@ -63,8 +64,8 @@ describe("generateIndex", () => {
                 (frontmatter.tag as string[] | string) || null,
             },
           ],
-          true
-        )
+          true,
+        ),
       ).toMatchSnapshot();
     });
   });

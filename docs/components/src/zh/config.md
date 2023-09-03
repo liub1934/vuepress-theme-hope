@@ -20,6 +20,7 @@ icon: gears
     | "Share"
     | "StackBlitz"
     | "SiteInfo"
+    // | "VidStack"
     | "VideoPlayer"
     | "XiGua"
     | "YouTube";
@@ -42,6 +43,7 @@ icon: gears
 - `"Share"`
 - `"StackBlitz"`
 - `"SiteInfo"`
+<!-- - `"VidStack"` -->
 - `"VideoPlayer"`
 - `"XiGua"`
 - `"YouTube"`
@@ -108,6 +110,13 @@ PDFJS 查看器的路径
   - [指南 → Share → 设置组件](./guide/share.md#设置组件)
 
 分享服务
+
+### componentsOptions.share.contentSelector
+
+- 类型: `string`
+- 默认值: `.theme-default-content`
+
+页面内容选择器
 
 ### componentsOptions.share.twitterUserName
 

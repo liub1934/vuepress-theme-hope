@@ -1,13 +1,14 @@
 import { usePageFrontmatter } from "@vuepress/client";
 import { isString } from "@vuepress/shared";
-import { type VNode, computed, defineComponent, h } from "vue";
+import type { VNode } from "vue";
+import { computed, defineComponent, h } from "vue";
 
 import {
   usePageAuthor,
   useThemeLocaleData,
 } from "@theme-hope/composables/index";
 
-import { type ThemeNormalPageFrontmatter } from "../../shared/index.js";
+import type { ThemeNormalPageFrontmatter } from "../../shared/index.js";
 
 import "../styles/footer.scss";
 
@@ -45,7 +46,7 @@ export default defineComponent({
         ? themeLocale.value.copyright
         : author.value.length
         ? `Copyright © ${new Date().getFullYear()} ${author.value[0].name}`
-        : false
+        : false,
     );
 
     return (): VNode | null =>

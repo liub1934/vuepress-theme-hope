@@ -1,6 +1,6 @@
-import { type ViteBundlerOptions } from "@vuepress/bundler-vite";
-import { type WebpackBundlerOptions } from "@vuepress/bundler-webpack";
-import { type App } from "@vuepress/core";
+import type { ViteBundlerOptions } from "@vuepress/bundler-vite";
+import type { WebpackBundlerOptions } from "@vuepress/bundler-webpack";
+import type { App } from "@vuepress/core";
 import {
   addViteConfig,
   addViteOptimizeDepsExclude,
@@ -60,7 +60,7 @@ export const checkTag = (bundlerOptions: unknown, app: App): void => {
     const { isCustomElement } = webpackBundlerConfig.vue.compilerOptions;
 
     webpackBundlerConfig.vue.compilerOptions.isCustomElement = (
-      tag: string
+      tag: string,
     ): boolean | void => {
       if (isCustomElement) {
         const result = isCustomElement(tag);
@@ -80,7 +80,7 @@ export const checkTag = (bundlerOptions: unknown, app: App): void => {
  */
 export const extendsBundlerOptions = (
   bundlerOptions: unknown,
-  app: App
+  app: App,
 ): void => {
   addViteConfig(bundlerOptions, app, {
     build: {

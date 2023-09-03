@@ -1,17 +1,13 @@
 import { usePageFrontmatter, withBase } from "@vuepress/client";
-import { type Mesh, type default as Three } from "three";
-import { type OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { type STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
-import {
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
-import { type ThemeProjectHomePageFrontmatter } from "vuepress-theme-hope";
+// eslint-disable-next-line
+import type * as Three from "three";
+// eslint-disable-next-line
+import type { Mesh } from "three";
+import type { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import type { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import type { VNode } from "vue";
+import { computed, defineComponent, h, onMounted, ref, watch } from "vue";
+import type { ThemeProjectHomePageFrontmatter } from "vuepress-theme-hope";
 
 // @ts-ignore
 import { useWindowSize } from "@theme-hope/composables/index";
@@ -33,13 +29,15 @@ export default defineComponent({
     const ready = ref(false);
 
     const sizes = computed(() =>
-      isMobile.value ? { width: 220, height: 220 } : { width: 300, height: 300 }
+      isMobile.value
+        ? { width: 220, height: 220 }
+        : { width: 300, height: 300 },
     );
 
     const renderLogo = async (
       three: typeof Three,
       STLLoaderConstructor: typeof STLLoader,
-      OrbitControlsConstructor: typeof OrbitControls
+      OrbitControlsConstructor: typeof OrbitControls,
     ): Promise<void> => {
       const { width, height } = sizes.value;
 
@@ -58,7 +56,7 @@ export default defineComponent({
       // Lights
       const ambientLight = new three.AmbientLight(
         0xffffff,
-        isDarkmode.value ? 3 : 4
+        isDarkmode.value ? 3 : 4,
       );
       const directionalLight = new three.DirectionalLight(0xffffff, 3);
       const directionalLight2 = new three.DirectionalLight(0xffffff, 3);
@@ -143,7 +141,7 @@ export default defineComponent({
             scene.add(logo1);
 
             resolve();
-          })
+          }),
         ),
         new Promise<void>((resolve) =>
           stlLoader.load(BASE + "logo2.stl", (geometry) => {
@@ -166,7 +164,7 @@ export default defineComponent({
             scene.add(logo2);
 
             resolve();
-          })
+          }),
         ),
       ]);
 
@@ -175,22 +173,20 @@ export default defineComponent({
 
     onMounted(() =>
       Promise.all([
-        import(/* webpackChunkName: "hope-logo" */ "three").then(
-          (m) => m.default || m
-        ),
+        import(/* webpackChunkName: "hope-logo" */ "three").then((m) => m),
         import(
           /* webpackChunkName: "hope-logo" */ "three/examples/jsm/controls/OrbitControls.js"
-        ).then((m) => m.default || m),
+        ).then((m) => m),
         import(
           /* webpackChunkName: "hope-logo" */ "three/examples/jsm/loaders/STLLoader.js"
-        ).then((m) => m.default || m),
+        ).then((m) => m),
       ]).then(([THREE, { OrbitControls }, { STLLoader }]) => {
         void renderLogo(THREE, STLLoader, OrbitControls);
 
         watch([isDarkmode, isMobile], () =>
-          renderLogo(THREE, STLLoader, OrbitControls)
+          renderLogo(THREE, STLLoader, OrbitControls),
         );
-      })
+      }),
     );
 
     return (): (VNode | null)[] => [

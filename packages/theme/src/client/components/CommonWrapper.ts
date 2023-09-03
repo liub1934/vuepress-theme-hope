@@ -5,11 +5,9 @@ import {
   useThrottleFn,
   useToggle,
 } from "@vueuse/core";
+import type { ComponentOptions, SlotsType, VNode } from "vue";
 import {
-  type ComponentOptions,
-  type SlotsType,
   Transition,
-  type VNode,
   computed,
   defineComponent,
   h,
@@ -31,9 +29,9 @@ import Navbar from "@theme-hope/modules/navbar/components/Navbar";
 import Sidebar from "@theme-hope/modules/sidebar/components/Sidebar";
 import { useSidebarItems } from "@theme-hope/modules/sidebar/composables/index";
 
-import {
-  type ThemeNormalPageFrontmatter,
-  type ThemeProjectHomePageFrontmatter,
+import type {
+  ThemeNormalPageFrontmatter,
+  ThemeProjectHomePageFrontmatter,
 } from "../../shared/index.js";
 
 import "../styles/common.scss";
@@ -118,7 +116,7 @@ export default defineComponent({
         page.value.title ||
           themeLocale.value.logo ||
           themeLocale.value.repo ||
-          themeLocale.value.navbar
+          themeLocale.value.navbar,
       );
     });
 
@@ -136,7 +134,7 @@ export default defineComponent({
       props.noToc || frontmatter.value.home
         ? false
         : frontmatter.value.toc ||
-          (themeLocale.value.toc !== false && frontmatter.value.toc !== false)
+          (themeLocale.value.toc !== false && frontmatter.value.toc !== false),
     );
 
     const touchStart = { x: 0, y: 0 };
@@ -183,8 +181,8 @@ export default defineComponent({
           lastDistance = distance;
         },
         300,
-        true
-      )
+        true,
+      ),
     );
 
     watch(isMobile, (value) => {
@@ -254,7 +252,7 @@ export default defineComponent({
                       endAfter: () => slots.navbarEndAfter?.(),
                       screenTop: () => slots.navScreenTop?.(),
                       screenBottom: () => slots.navScreenBottom?.(),
-                    }
+                    },
                   )
                 : null,
               // sidebar mask
@@ -264,7 +262,7 @@ export default defineComponent({
                       class: "vp-sidebar-mask",
                       onClick: () => toggleMobileSidebar(false),
                     })
-                  : null
+                  : null,
               ),
               // toggle sidebar button
               h(Transition, { name: "fade" }, () =>
@@ -281,8 +279,8 @@ export default defineComponent({
                           "arrow",
                           isDesktopSidebarCollapsed.value ? "end" : "start",
                         ],
-                      })
-                    )
+                      }),
+                    ),
               ),
               // sidebar
               h(
@@ -296,12 +294,12 @@ export default defineComponent({
                     : {}),
                   top: () => slots.sidebarTop?.(),
                   bottom: () => slots.sidebarBottom?.(),
-                }
+                },
               ),
               slots.default(),
               h(PageFooter),
-            ]
-          )
+            ],
+          ),
       );
   },
 });

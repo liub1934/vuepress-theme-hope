@@ -1,9 +1,9 @@
 import { deprecatedLogger } from "./utils.js";
-import { type RedirectOptions } from "../options.js";
+import type { RedirectOptions } from "../options.js";
 
 /** @deprecated */
 export const convertOptions = (
-  options: RedirectOptions & Record<string, unknown>
+  options: RedirectOptions & Record<string, unknown>,
 ): void => {
   deprecatedLogger({
     options,

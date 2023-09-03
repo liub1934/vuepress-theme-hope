@@ -1,11 +1,11 @@
 import { usePageFrontmatter } from "@vuepress/client";
-import {
-  type default as Reveal,
-  type RevealOptions,
+import type {
+  // eslint-disable-next-line import/no-named-default
+  default as Reveal,
+  RevealOptions,
 } from "reveal.js/dist/reveal.esm.js";
+import type { PropType, VNode } from "vue";
 import {
-  type PropType,
-  type VNode,
   defineComponent,
   h,
   onMounted,
@@ -78,7 +78,7 @@ export default defineComponent({
     const initRevealJS = async (container: HTMLElement): Promise<Reveal> => {
       const promises: [
         Promise<void>,
-        ...Promise<typeof import("reveal.js/dist/reveal.esm.js")>[]
+        ...Promise<typeof import("reveal.js/dist/reveal.esm.js")>[],
       ] = [
         new Promise((resolve) => setTimeout(resolve, MARKDOWN_ENHANCE_DELAY)),
         ...useReveal(),
@@ -87,10 +87,6 @@ export default defineComponent({
       const [, revealJS, ...plugins] = await Promise.all(promises);
 
       const reveal = new revealJS.default(container, {
-        plugins: plugins.map(({ default: plugin }) => plugin),
-      });
-
-      await reveal.initialize({
         backgroundTransition: "slide",
         hash: frontmatter.value.layout === "Slide",
         mouseWheel: frontmatter.value.layout === "Slide",
@@ -99,7 +95,14 @@ export default defineComponent({
         ...revealOptions,
         ...(frontmatter.value.reveal || {}),
         embedded: frontmatter.value.layout !== "Slide",
+        plugins: [
+          ...plugins.map(({ default: plugin }) => plugin),
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          ...(revealOptions.plugins ?? []),
+        ],
       });
+
+      await reveal.initialize();
 
       return reveal;
     };
@@ -134,7 +137,7 @@ export default defineComponent({
           h("div", {
             class: "slides",
             innerHTML: `<section data-markdown data-separator="^\\r?\\n---\\r?\\n$" data-separator-vertical="^\\r?\\n--\\r?\\n$"><script type="text/template">${code.value}</script></section>`,
-          })
+          }),
         ),
         loading.value
           ? h(LoadingIcon, { class: "reveal-loading", height: 400 })

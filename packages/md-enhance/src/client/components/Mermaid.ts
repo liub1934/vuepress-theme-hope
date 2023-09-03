@@ -1,6 +1,6 @@
 import { useMutationObserver } from "@vueuse/core";
+import type { VNode } from "vue";
 import {
-  type VNode,
   computed,
   defineComponent,
   h,
@@ -9,8 +9,9 @@ import {
   shallowRef,
   watch,
 } from "vue";
-import { LoadingIcon, atou } from "vuepress-shared/client";
+import { LoadingIcon, atou, isFunction } from "vuepress-shared/client";
 
+import type { MermaidThemeVariables } from "../helpers/index.js";
 import { useMermaidOptions } from "../helpers/index.js";
 
 import "../styles/mermaid.scss";
@@ -19,7 +20,7 @@ declare const MARKDOWN_ENHANCE_DELAY: number;
 
 const DEFAULT_CHART_OPTIONS = { useMaxWidth: false };
 
-const getThemeVariables = (isDarkmode: boolean): Record<string, unknown> => ({
+const getThemeVariables = (isDarkmode: boolean): MermaidThemeVariables => ({
   dark: isDarkmode,
   background: isDarkmode ? "#1e1e1e" : "#fff",
 
@@ -90,7 +91,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const mermaidOptions = useMermaidOptions();
+    const { themeVariables, ...mermaidOptions } = useMermaidOptions();
     const mermaidElement = shallowRef<HTMLElement>();
 
     const code = computed(() => atou(props.code));
@@ -107,7 +108,12 @@ export default defineComponent({
       mermaid.initialize({
         // @ts-ignore
         theme: "base",
-        themeVariables: getThemeVariables(isDarkmode.value),
+        themeVariables: {
+          ...getThemeVariables(isDarkmode.value),
+          ...(isFunction(themeVariables)
+            ? themeVariables(isDarkmode.value)
+            : themeVariables),
+        },
         flowchart: DEFAULT_CHART_OPTIONS,
         sequence: DEFAULT_CHART_OPTIONS,
         journey: DEFAULT_CHART_OPTIONS,
@@ -138,6 +144,7 @@ export default defineComponent({
 
     const download = (): void => {
       const dataURI = `data:image/svg+xml;charset=utf8,${svgCode.value
+        .replace(/<br>/g, "<br />")
         .replace(/%/g, "%25")
         .replace(/"/g, "%22")
         .replace(/'/g, "%27")
@@ -176,7 +183,7 @@ export default defineComponent({
         {
           attributeFilter: ["class", "data-theme"],
           attributes: true,
-        }
+        },
       );
 
       watch(isDarkmode, () => renderMermaid());
@@ -209,7 +216,7 @@ export default defineComponent({
           ? // mermaid
             h("div", { class: "mermaid-content", innerHTML: svgCode.value })
           : // loading
-            h(LoadingIcon, { class: "mermaid-loading", height: 96 })
+            h(LoadingIcon, { class: "mermaid-loading", height: 96 }),
       ),
     ];
   },

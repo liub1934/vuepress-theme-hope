@@ -1,6 +1,6 @@
-import { type Page } from "@vuepress/core";
+import type { Page } from "@vuepress/core";
 
-import { type FeedChannelOption, type FeedGetter } from "./feed.js";
+import type { FeedChannelOption, FeedGetter } from "./feed.js";
 
 export interface BaseFeedOptions {
   /**
@@ -77,9 +77,9 @@ export interface BaseFeedOptions {
     ExtraPageFields extends Record<string | number | symbol, unknown> = Record<
       never,
       never
-    >
+    >,
   >(
-    page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>
+    page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
   ) => boolean;
 
   /**
@@ -99,10 +99,10 @@ export interface BaseFeedOptions {
     ExtraPageFields extends Record<string | number | symbol, unknown> = Record<
       never,
       never
-    >
+    >,
   >(
     pageA: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
-    pageB: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>
+    pageB: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
   ) => number;
 
   /**

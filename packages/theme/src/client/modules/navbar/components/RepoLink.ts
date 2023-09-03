@@ -1,4 +1,5 @@
-import { type VNode, defineComponent, h, resolveComponent } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h, resolveComponent } from "vue";
 import {
   BitbucketIcon,
   GitHubIcon,
@@ -23,7 +24,7 @@ export default defineComponent({
       repo.value
         ? h(
             "div",
-            { class: "nav-item" },
+            { class: "nav-item vp-repo" },
             h(
               "a",
               {
@@ -39,8 +40,8 @@ export default defineComponent({
                   height: "1.25rem",
                   verticalAlign: "middle",
                 },
-              })
-            )
+              }),
+            ),
           )
         : null;
   },

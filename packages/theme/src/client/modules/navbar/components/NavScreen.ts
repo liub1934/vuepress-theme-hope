@@ -1,9 +1,8 @@
 import { usePageData } from "@vuepress/client";
 import { useScrollLock } from "@vueuse/core";
+import type { SlotsType, VNode } from "vue";
 import {
-  type SlotsType,
   Transition,
-  type VNode,
   defineComponent,
   h,
   onMounted,
@@ -58,7 +57,7 @@ export default defineComponent({
         () => {
           isLocked.value = false;
           emit("close");
-        }
+        },
       );
     });
 
@@ -88,9 +87,9 @@ export default defineComponent({
                   h(NavScreenLinks),
                   h("div", { class: "vp-outlook-wrapper" }, h(OutlookSettings)),
                   slots.after?.(),
-                ])
+                ]),
               )
-            : null
+            : null,
       );
   },
 });

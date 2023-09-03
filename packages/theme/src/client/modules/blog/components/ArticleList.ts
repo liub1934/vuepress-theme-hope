@@ -1,14 +1,7 @@
-import {
-  type PropType,
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
+import type { PropType, VNode } from "vue";
+import { computed, defineComponent, h, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { updatePageview } from "vuepress-plugin-comment2/pageview";
 
 import DropTransition from "@theme-hope/components/transitions/DropTransition";
 import ArticleItem from "@theme-hope/modules/blog/components/ArticleItem";
@@ -16,7 +9,7 @@ import Pagination from "@theme-hope/modules/blog/components/Pagination";
 import { EmptyIcon } from "@theme-hope/modules/blog/components/icons/index";
 import { useBlogOptions } from "@theme-hope/modules/blog/composables/index";
 
-import { type ArticleInfo } from "../../../../shared/index.js";
+import type { ArticleInfo } from "../../../../shared/index.js";
 
 import "../styles/article-list.scss";
 
@@ -46,14 +39,14 @@ export default defineComponent({
     const currentPage = ref(1);
 
     const articlePerPage = computed(
-      () => blogOptions.value.articlePerPage || 10
+      () => blogOptions.value.articlePerPage || 10,
     );
 
     const currentArticles = computed(() =>
       props.items.slice(
         (currentPage.value - 1) * articlePerPage.value,
-        currentPage.value * articlePerPage.value
-      )
+        currentPage.value * articlePerPage.value,
+      ),
     );
 
     const updatePage = (page: number): void => {
@@ -66,7 +59,9 @@ export default defineComponent({
       if (page === 1) delete query["page"];
       else query["page"] = page.toString();
 
-      void router.push({ path: route.path, query });
+      void router.push({ path: route.path, query }).then(() => {
+        updatePageview();
+      });
     };
 
     onMounted(() => {
@@ -97,7 +92,7 @@ export default defineComponent({
         () => route.query,
         ({ page }) => {
           updatePage(page ? Number(page) : 1);
-        }
+        },
       );
     });
 
@@ -109,8 +104,8 @@ export default defineComponent({
           ? [
               ...currentArticles.value.map(({ info, path }, index) =>
                 h(DropTransition, { appear: true, delay: index * 0.04 }, () =>
-                  h(ArticleItem, { key: path, info, path })
-                )
+                  h(ArticleItem, { key: path, info, path }),
+                ),
               ),
               h(Pagination, {
                 current: currentPage.value,
@@ -119,7 +114,7 @@ export default defineComponent({
                 onUpdateCurrentPage: updatePage,
               }),
             ]
-          : h(EmptyIcon)
+          : h(EmptyIcon),
       );
   },
 });

@@ -1,5 +1,5 @@
-import { type Page } from "@vuepress/core";
-import { type GitData } from "@vuepress/plugin-git";
+import type { App, Page } from "@vuepress/core";
+import type { GitData } from "@vuepress/plugin-git";
 
 export type ModifyTimeGetter = <
   ExtraPageData extends Record<string | number | symbol, unknown> & {
@@ -12,9 +12,10 @@ export type ModifyTimeGetter = <
   ExtraPageFields extends Record<string | number | symbol, unknown> = Record<
     never,
     never
-  >
+  >,
 >(
-  page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>
+  page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
+  app: App,
 ) => string;
 
 export interface SitemapOptions {

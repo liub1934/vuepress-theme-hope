@@ -1,17 +1,20 @@
-import { type App, type Page } from "@vuepress/core";
-import { type AnyNode, type Element, load } from "cheerio";
+import type { App, Page } from "@vuepress/core";
+import type { AnyNode, Element } from "cheerio";
+import { load } from "cheerio";
 import { addAllAsync, createIndex } from "slimsearch";
 import { entries, fromEntries, isArray, keys } from "vuepress-shared/node";
 
-import {
-  type SearchProCustomFieldOptions,
-  type SearchProOptions,
+import type {
+  SearchProCustomFieldOptions,
+  SearchProOptions,
 } from "./options.js";
-import {
-  type IndexItem,
-  type LocaleIndex,
-  type PageIndexId,
-  type SearchIndexStore,
+import type {
+  IndexItem,
+  LocaleIndex,
+  PageIndexId,
+  PageIndexItem,
+  SearchIndexStore,
+  SectionIndexItem,
 } from "../shared/index.js";
 
 /**
@@ -28,7 +31,7 @@ const HEADING_TAGS = "h2,h3,h4,h5,h6".split(",");
  */
 const CONTENT_BLOCK_TAGS =
   "header,nav,section,div,dd,dl,dt,figcaption,figure,picture,hr,li,main,ol,p,ul,caption,table,thead,tbody,tfoot,th,tr,td,datalist,fieldset,form,legend,optgroup,option,select,details,dialog,menu,menuitem,summary,blockquote,pre".split(
-    ","
+    ",",
   );
 
 /**
@@ -38,7 +41,7 @@ const CONTENT_BLOCK_TAGS =
  */
 const CONTENT_INLINE_TAGS =
   "routerlink,a,b,abbr,bdi,bdo,cite,code,dfn,em,i,kbd,mark,q,rp,rt,ruby,s,samp,small,span,strong,sub,sup,time,u,var,wbr,del,ins,button,label,legend,meter,optgroup,option,output,progress,select".split(
-    ","
+    ",",
   );
 
 const $ = load("");
@@ -65,56 +68,56 @@ const renderHeader = (node: Element): string =>
 export const generatePageIndex = (
   page: Page<{ excerpt?: string }>,
   customFieldsGetter: SearchProCustomFieldOptions[] = [],
-  indexContent = false
+  indexContent = false,
 ): IndexItem[] => {
   const { contentRendered, data, title } = page;
   const key = <PageIndexId>page.key;
   const hasExcerpt = "excerpt" in data && data["excerpt"].length;
 
-  const pageIndex: IndexItem = { id: key, h: title };
+  const pageIndex: PageIndexItem = { id: key, h: title };
   const results: IndexItem[] = [pageIndex];
 
   // here are some variables holding the current state of the parser
   let shouldIndexContent = hasExcerpt || indexContent;
-  let currentHeaderIndex = 0;
-  let currentContentIndex = 0;
+  let currentSectionIndex: PageIndexItem | SectionIndexItem | null = null;
   let currentContent = "";
   let isContentBeforeFirstHeader = true;
 
   const render = (node: AnyNode, preserveSpace = false): void => {
     if (node.type === "tag") {
       if (HEADING_TAGS.includes(node.name)) {
+        const id = node.attribs["id"];
+        const header = renderHeader(node);
+
         if (currentContent && shouldIndexContent) {
           // add last content
-          results.push({
-            id: `${key}#${currentHeaderIndex}/${currentContentIndex}`,
-            t: currentContent.replace(/\s+/gu, " "),
-          });
-          currentContentIndex = 0;
+          // add last content
+          ((isContentBeforeFirstHeader ? pageIndex : currentSectionIndex!).t ??=
+            []).push(currentContent.replace(/\s+/gu, " "));
           currentContent = "";
         }
 
-        if (isContentBeforeFirstHeader) isContentBeforeFirstHeader = false;
+        // update current section index only if it has an id
+        if (id) {
+          if (isContentBeforeFirstHeader) isContentBeforeFirstHeader = false;
+          else results.push(currentSectionIndex!);
 
-        // update current section index
-        currentHeaderIndex += 1;
-        results.push({
-          id: `${key}#${currentHeaderIndex}`,
-          a: node.attribs["id"],
-          h: renderHeader(node),
-        });
+          currentSectionIndex = {
+            id: `${key}#${id}`,
+            h: header,
+          };
+        } else if (header) {
+          ((currentSectionIndex ?? pageIndex).t ??= []).push(header);
+        }
       } else if (CONTENT_BLOCK_TAGS.includes(node.name)) {
         if (currentContent && shouldIndexContent) {
           // add last content
-          results.push({
-            id: `${key}#${currentHeaderIndex}/${currentContentIndex}`,
-            t: currentContent.replace(/\s+/gu, " "),
-          });
-          currentContentIndex += 1;
+          ((isContentBeforeFirstHeader ? pageIndex : currentSectionIndex)!.t ??=
+            []).push(currentContent.replace(/\s+/gu, " "));
           currentContent = "";
         }
         node.childNodes.forEach((item) =>
-          render(item, preserveSpace || node.name === "pre")
+          render(item, preserveSpace || node.name === "pre"),
         );
       } else if (CONTENT_INLINE_TAGS.includes(node.name)) {
         node.childNodes.forEach((item) => render(item, preserveSpace));
@@ -147,7 +150,7 @@ export const generatePageIndex = (
           ? [index.toString(), [result]]
           : null;
       })
-      .filter((item): item is [string, string[]] => item !== null)
+      .filter((item): item is [string, string[]] => item !== null),
   );
 
   // no content in page and no customFields
@@ -160,10 +163,11 @@ export const generatePageIndex = (
 
   // push contents in last block tags
   if (shouldIndexContent && currentContent)
-    results.push({
-      id: `${key}#${currentHeaderIndex}/${currentContentIndex}`,
-      t: currentContent.replace(/\s+/gu, " "),
-    });
+    ((isContentBeforeFirstHeader ? pageIndex : currentSectionIndex)!.t ??=
+      []).push(currentContent);
+
+  // push last section
+  if (currentSectionIndex) results.push(currentSectionIndex);
 
   // add custom fields
   entries(customFields).forEach(([customField, values]) => {
@@ -183,7 +187,7 @@ export const getSearchIndexStore = async (
     indexContent,
     indexOptions,
     indexLocaleOptions,
-  }: SearchProOptions
+  }: SearchProOptions,
 ): Promise<SearchIndexStore> => {
   const indexesByLocale: LocaleIndex = {};
 
@@ -212,7 +216,7 @@ export const getSearchIndexStore = async (
       await addAllAsync(index, indexes);
 
       searchIndex[localePath] = index;
-    })
+    }),
   );
 
   return searchIndex;

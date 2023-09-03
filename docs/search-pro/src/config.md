@@ -156,7 +156,7 @@ Max stored query history count, set `0` to disable it.
 
 Max stored matched result history count, set `0` to disable it.
 
-### delay
+### searchDelay
 
 - Type: `number`
 - Default: `150`
@@ -168,6 +168,15 @@ Delay to start searching after input.
 Performing client search with huge contents could be slow, so under this case you might need to increase this value to ensure user finish input before searching.
 
 :::
+
+### sortStrategy
+
+- Type: `"max" | "total"`
+- Default: `"max"`
+
+Result Sort strategy.
+
+When there are multiple matched results, the result will be sorted by the strategy. `max` means that page having higher total score will be placed in front. `total` means that page having higher max score will be placed in front.
 
 ### worker
 
@@ -191,7 +200,7 @@ Usually in development, users do not need to update the index database in real t
 
 :::
 
-## indexOptions
+### indexOptions
 
 - Type: `SearchProIndexOptions`
 
@@ -205,7 +214,7 @@ Usually in development, users do not need to update the index database in real t
      * Function to process or normalize terms in the index field.
      */
     processTerm?: (
-      term: string
+      term: string,
     ) => string | string[] | null | undefined | false;
   }
   ```
@@ -214,7 +223,7 @@ Usually in development, users do not need to update the index database in real t
 
 Options used to create index.
 
-## indexLocaleOptions
+### indexLocaleOptions
 
 - Type: `Record<string, SearchProIndexOptions>`
 
@@ -228,7 +237,7 @@ Options used to create index.
      * Function to process or normalize terms in the index field.
      */
     processTerm?: (
-      term: string
+      term: string,
     ) => string | string[] | null | undefined | false;
   }
   ```
@@ -247,7 +256,7 @@ Options used to create index per locale.
    */
   interface SearchProLocaleData {
     /**
-     * Search box placeholder text
+     * Search box placeholder
      */
     placeholder: string;
 
@@ -257,9 +266,19 @@ Options used to create index per locale.
     search: string;
 
     /**
-     * Close text
+     * Searching text
      */
-    close: string;
+    searching: string;
+
+    /**
+     * Cancel text
+     */
+    cancel: string;
+
+    /**
+     * Default title
+     */
+    defaultTitle: string;
 
     /**
      * Select hint
@@ -272,6 +291,11 @@ Options used to create index per locale.
     navigate: string;
 
     /**
+     * Autocomplete hint
+     */
+    autocomplete: string;
+
+    /**
      * Close hint
      */
     exit: string;
@@ -282,9 +306,19 @@ Options used to create index per locale.
     loading: string;
 
     /**
+     * Search history text
+     */
+    history: string;
+
+    /**
+     * Search history empty hint
+     */
+    emptyHistory: string;
+
+    /**
      * Empty hint
      */
-    empty: string;
+    emptyResult: string;
   }
 
   interface SearchProLocaleConfig {
@@ -385,12 +419,12 @@ export interface SearchWorker {
   search: (
     query: string,
     locale: string,
-    searchOptions?: SearchOptions
+    searchOptions?: SearchOptions,
   ) => Promise<SearchResult[]>;
   terminate: () => void;
 }
 
 declare const createSearchWorker: (
-  options: SearchWorkerOptions
+  options: SearchWorkerOptions,
 ) => SearchWorker;
 ```

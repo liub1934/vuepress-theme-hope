@@ -1,13 +1,6 @@
-import { type ChartConfiguration } from "chart.js";
-import {
-  type PropType,
-  type VNode,
-  defineComponent,
-  h,
-  onMounted,
-  ref,
-  shallowRef,
-} from "vue";
+import type { ChartConfiguration } from "chart.js";
+import type { PropType, VNode } from "vue";
+import { defineComponent, h, onMounted, ref, shallowRef } from "vue";
 import { LoadingIcon, atou } from "vuepress-shared/client";
 
 import "../styles/chart.scss";
@@ -16,7 +9,7 @@ declare const MARKDOWN_ENHANCE_DELAY: number;
 
 const parseChartConfig = (
   config: string,
-  type: "js" | "json"
+  type: "js" | "json",
 ): ChartConfiguration => {
   if (type === "json") return <ChartConfiguration>JSON.parse(config);
 
@@ -29,7 +22,7 @@ ${config}
 __chart_js_config__=config;
 }
 return __chart_js_config__;\
-`
+`,
   );
 
   return <ChartConfiguration>runner();
@@ -123,7 +116,7 @@ export default defineComponent({
         h("canvas", {
           ref: chartCanvasElement,
           height: 400,
-        })
+        }),
       ),
     ];
   },

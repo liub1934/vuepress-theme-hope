@@ -1,6 +1,6 @@
 import { colors } from "@vuepress/utils";
 
-import { logger } from "../utils.js";
+import { logger } from "../utils/index.js";
 
 export interface DeprecatedLoggerOptions {
   options: Record<string, unknown>;
@@ -23,7 +23,7 @@ export const deprecatedLogger = ({
         scope ? ` in ${scope}` : ""
       }, please use "${colors.magenta(newOption)}" instead.${
         msg ? `\n${msg}` : ""
-      }`
+      }`,
     );
 
     if (newOption.includes(".")) {

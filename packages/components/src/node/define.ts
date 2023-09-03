@@ -1,4 +1,4 @@
-import { type App } from "@vuepress/core";
+import type { App } from "@vuepress/core";
 import { getLocales } from "vuepress-shared/node";
 
 import { catalogLocales } from "./compact/index.js";
@@ -8,12 +8,12 @@ import {
   pdfLocaleConfig,
   siteInfoLocaleConfig,
 } from "./locales/index.js";
-import { type ComponentOptions } from "./options/index.js";
+import type { ComponentOptions } from "./options/index.js";
 
 export const getDefine =
   (
     options: ComponentOptions,
-    legacy: boolean
+    legacy: boolean,
   ): ((app: App) => Record<string, unknown>) =>
   (app) => {
     const { assets, prefix } = options.componentOptions?.fontIcon || {};

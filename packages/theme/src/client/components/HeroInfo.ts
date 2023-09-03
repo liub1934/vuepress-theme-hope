@@ -3,13 +3,14 @@ import {
   useSiteLocaleData,
   withBase,
 } from "@vuepress/client";
-import { type SlotsType, type VNode, computed, defineComponent, h } from "vue";
+import type { SlotsType, VNode } from "vue";
+import { computed, defineComponent, h } from "vue";
 import { isString } from "vuepress-shared/client";
 
 import AutoLink from "@theme-hope/components/AutoLink";
 import DropTransition from "@theme-hope/components/transitions/DropTransition";
 
-import { type ThemeProjectHomePageFrontmatter } from "../../shared/index.js";
+import type { ThemeProjectHomePageFrontmatter } from "../../shared/index.js";
 
 import "../styles/hero-info.scss";
 
@@ -47,7 +48,7 @@ export default defineComponent({
     const siteLocale = useSiteLocaleData();
 
     const isFullScreen = computed(
-      () => frontmatter.value.heroFullScreen ?? false
+      () => frontmatter.value.heroFullScreen ?? false,
     );
 
     const heroInfo = computed(() => {
@@ -96,9 +97,7 @@ export default defineComponent({
               ? h("div", {
                   class: ["vp-hero-mask", { light: bgInfo.value.imageDark }],
                   style: [
-                    {
-                      "background-image": `url(${bgInfo.value.image})`,
-                    },
+                    { "background-image": `url(${bgInfo.value.image})` },
                     bgInfo.value.bgStyle,
                   ],
                 })
@@ -145,7 +144,7 @@ export default defineComponent({
               h("div", { class: "vp-hero-infos" }, [
                 heroInfo.value.text
                   ? h(DropTransition, { appear: true, delay: 0.04 }, () =>
-                      h("h1", { id: "main-title" }, heroInfo.value.text)
+                      h("h1", { id: "main-title" }, heroInfo.value.text),
                     )
                   : null,
                 heroInfo.value.tagline
@@ -153,7 +152,7 @@ export default defineComponent({
                       h("p", {
                         class: "vp-description",
                         innerHTML: heroInfo.value.tagline,
-                      })
+                      }),
                     )
                   : null,
                 actions.value.length
@@ -166,14 +165,14 @@ export default defineComponent({
                             class: ["vp-action", action.type || "default"],
                             config: action,
                             noExternalLinkIcon: true,
-                          })
-                        )
-                      )
+                          }),
+                        ),
+                      ),
                     )
                   : null,
               ]),
           ]),
-        ]
+        ],
       );
   },
 });

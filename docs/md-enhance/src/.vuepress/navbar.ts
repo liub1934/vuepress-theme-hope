@@ -3,11 +3,11 @@ import { fs, navbar } from "docs-shared";
 
 const { version } = fs.readJsonSync(
   createRequire(import.meta.url).resolve(
-    "vuepress-plugin-md-enhance/package.json"
-  )
+    "vuepress-plugin-md-enhance/package.json",
+  ),
 );
 
-export const enNavbarConfig = navbar([
+export const enNavbar = navbar([
   "/",
   "/guide/",
   "/config",
@@ -25,7 +25,7 @@ export const enNavbarConfig = navbar([
   },
 ]);
 
-export const zhNavbarConfig = navbar([
+export const zhNavbar = navbar([
   "/zh/",
   "/zh/guide/",
   "/zh/config",

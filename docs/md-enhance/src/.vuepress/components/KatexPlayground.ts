@@ -1,5 +1,6 @@
 import katex from "katex";
-import { type VNode, defineComponent, h, ref, watch } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h, ref, watch } from "vue";
 import { useLocaleConfig } from "vuepress-shared/client";
 
 import "katex/dist/katex.css";
@@ -30,10 +31,14 @@ export default defineComponent({
 
     const katexRender = () => {
       try {
-        result.value = katex.renderToString(input.value, {
-          displayMode: true,
-          throwOnError: true,
-        });
+        result.value = // FIXME: Type issues
+          (katex as unknown as typeof katex.default).renderToString(
+            input.value,
+            {
+              displayMode: true,
+              throwOnError: true,
+            },
+          );
         inError.value = false;
       } catch (err) {
         result.value = (<Error>err).toString();

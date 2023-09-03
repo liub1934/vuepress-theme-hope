@@ -1,12 +1,9 @@
 import { hash } from "@vuepress/utils";
-import { type PluginWithOptions } from "markdown-it";
-import { type RuleBlock } from "markdown-it/lib/parser_block.js";
+import type { PluginWithOptions } from "markdown-it";
+import type { RuleBlock } from "markdown-it/lib/parser_block.js";
 import { entries } from "vuepress-shared/node";
 
-import {
-  type PlaygroundData,
-  type PlaygroundOptions,
-} from "../../typings/index.js";
+import type { PlaygroundData, PlaygroundOptions } from "../../typings/index.js";
 import { escapeHtml } from "../utils.js";
 
 const AT_MARKER = `@`;
@@ -110,7 +107,7 @@ const getPlaygroundRule =
     state.md.block.tokenize(
       state,
       startLine + 1,
-      nextLine - (autoClosed ? 1 : 0)
+      nextLine - (autoClosed ? 1 : 0),
     );
 
     const closeToken = state.push(`${name}_close`, "template", -1);
@@ -225,7 +222,7 @@ const atMarkerRule =
   };
 
 const defaultPropsGetter = (
-  playgroundData: PlaygroundData
+  playgroundData: PlaygroundData,
 ): Record<string, string> => ({
   key: playgroundData.key,
   title: playgroundData.title || "",
@@ -243,7 +240,7 @@ export const playground: PluginWithOptions<PlaygroundOptions> = (
     name: "playground",
     component: "Playground",
     propsGetter: defaultPropsGetter,
-  }
+  },
 ) => {
   md.block.ruler.before("fence", `${name}`, getPlaygroundRule(name), {
     alt: ["paragraph", "reference", "blockquote", "list"],

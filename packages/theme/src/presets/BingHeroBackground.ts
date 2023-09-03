@@ -1,8 +1,8 @@
 import { ClientOnly, usePageLang } from "@vuepress/client";
 import { onClickOutside, useStorage } from "@vueuse/core";
+import type { VNode } from "vue";
 import {
   Transition,
-  type VNode,
   computed,
   defineComponent,
   h,
@@ -70,7 +70,7 @@ export default defineComponent({
 
     const getImage = (): Promise<BingWallpaperInfo[]> => {
       return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then(
-        (response) => <Promise<BingWallpaperInfo[]>>response.json()
+        (response) => <Promise<BingWallpaperInfo[]>>response.json(),
       );
     };
 
@@ -100,7 +100,7 @@ export default defineComponent({
         url
           ? [
               h("div", {
-                class: "mask",
+                class: "vp-blog-mask",
                 style: {
                   background: `url(${url}) center/cover no-repeat`,
                 },
@@ -124,13 +124,13 @@ export default defineComponent({
                               target: "_blank",
                               class: "bing-info-header",
                             },
-                            headline
+                            headline,
                           ),
                           h("hr"),
                           h("div", { class: "bing-info-body" }, quickFact),
                           h("div", { class: "bing-info-copyright" }, copyright),
                         ])
-                      : null
+                      : null,
                   ),
                   h("div", { class: "bing-location" }, [
                     h("span", { class: "bing-location-icon" }),
@@ -149,10 +149,10 @@ export default defineComponent({
                       bingStorage.value.data.length - 1,
                     onClick: () => next(),
                   }),
-                ]
+                ],
               ),
             ]
-          : null
+          : null,
       );
     };
   },

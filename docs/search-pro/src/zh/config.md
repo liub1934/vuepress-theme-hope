@@ -156,7 +156,7 @@ export default defineUserConfig({
 
 存储搜索结果历史的最大数量，可以设置为 `0` 以禁用。
 
-### delay
+### searchDelay
 
 - 类型: `number`
 - 默认值: `150`
@@ -168,6 +168,15 @@ export default defineUserConfig({
 有大量内容时，进行客户端搜素可能会很慢，在这种情况下你可能需要增加此值来确保开始搜索时用户已完成输入。
 
 :::
+
+### sortStrategy
+
+- 类型: `"max" | "total"`
+- 默认值: `"max"`
+
+结果排序策略
+
+当有多个匹配的结果时，会按照策略对结果进行排序。`max` 表示总分更高的页面会排在前面。`total` 表示最高分更高的页面会排在前面。
 
 ### worker
 
@@ -191,7 +200,7 @@ export default defineUserConfig({
 
 :::
 
-## indexOptions
+### indexOptions
 
 - 类型: `SearchProIndexOptions`
 
@@ -205,7 +214,7 @@ export default defineUserConfig({
      * 用于处理或规范索引字段中的术语的函数。
      */
     processTerm?: (
-      term: string
+      term: string,
     ) => string | string[] | null | undefined | false;
   }
   ```
@@ -214,7 +223,7 @@ export default defineUserConfig({
 
 创建索引选项。
 
-## indexLocaleOptions
+### indexLocaleOptions
 
 - 类型: `Record<string, SearchProIndexOptions>`
 
@@ -228,7 +237,7 @@ export default defineUserConfig({
      * 用于处理或规范索引字段中的术语的函数。
      */
     processTerm?: (
-      term: string
+      term: string,
     ) => string | string[] | null | undefined | false;
   }
   ```
@@ -257,9 +266,19 @@ export default defineUserConfig({
     search: string;
 
     /**
-     * 关闭文字
+     * 搜素中文字
      */
-    close: string;
+    searching: string;
+
+    /**
+     * 取消文字
+     */
+    cancel: string;
+
+    /**
+     * 默认标题
+     */
+    defaultTitle: string;
 
     /**
      * 选择提示
@@ -272,6 +291,11 @@ export default defineUserConfig({
     navigate: string;
 
     /**
+     * 自动补全提示
+     */
+    autocomplete: string;
+
+    /**
      * 关闭提示
      */
     exit: string;
@@ -282,9 +306,19 @@ export default defineUserConfig({
     loading: string;
 
     /**
+     * 搜索历史文字
+     */
+    history: string;
+
+    /**
+     * 无搜索历史提示
+     */
+    emptyHistory: string;
+
+    /**
      * 无结果提示
      */
-    empty: string;
+    emptyResult: string;
   }
 
   interface SearchProLocaleConfig {
@@ -361,12 +395,12 @@ export interface SearchWorker {
   search: (
     query: string,
     locale: string,
-    searchOptions?: SearchOptions
+    searchOptions?: SearchOptions,
   ) => Promise<SearchResult[]>;
   terminate: () => void;
 }
 
 declare const createSearchWorker: (
-  options: SearchWorkerOptions
+  options: SearchWorkerOptions,
 ) => SearchWorker;
 ```

@@ -263,7 +263,7 @@ declare module "reveal.js/dist/reveal.esm.js" {
      * Use this method for navigation when auto-sliding (defaults to navigateNext)
      */
 
-    autoSlideMethod: null | any;
+    autoSlideMethod: null | ((...args: any[]) => any);
 
     /**
      * Specify the average time in seconds that you think you will spend presenting each slide. This is used to show a pacing timer in the speaker view
@@ -662,7 +662,7 @@ declare module "reveal.js/dist/reveal.esm.js" {
      */
     getSlideBackground(
       x: number | HTMLElement,
-      y: number
+      y: number,
     ): HTMLElement[] | undefined;
 
     /**
@@ -738,13 +738,13 @@ declare module "reveal.js/dist/reveal.esm.js" {
     addEventListener(
       type: string,
       listener: () => void,
-      useCapture: boolean
+      useCapture: boolean,
     ): void;
 
     removeEventListener(
       type: string,
       listener: () => void,
-      useCapture: boolean
+      useCapture: boolean,
     ): void;
 
     /**

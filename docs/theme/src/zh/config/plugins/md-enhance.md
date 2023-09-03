@@ -283,12 +283,12 @@ interface TaskListOptions {
 
 ### katex
 
-- 类型: `KatexOptions | boolean`
+- 类型: `KatexOptions & { copy?: boolean; mhchem?: boolean } | boolean`
 - 默认值: `false`
 
 是否通过 KaTeX 启用 $\TeX$ 语法支持。你可以传入一个对象作为 KaTeX 的配置选项。
 
-特别低，你可以通过 `katex.mhchem: true` 来启用 mhchem 扩展。
+特别地，你可以通过 `katex.copy: true` 和 `katex.mhchem: true` 来启用 copy 和 mhchem 扩展。
 
 可用的选项，详见 [Katex 文档](https://katex.org/docs/options.html)。
 
@@ -467,6 +467,17 @@ interface TaskListOptions {
      * 交互演示外部地址
      *
      * @default "https://www.typescriptlang.org/play"
+     */
+    service?: string;
+  }
+
+  interface UnoPresetPlaygroundOptions {
+    /**
+     * external playground service url
+     *
+     * 交互演示外部地址
+     *
+     * @default "https://unocss.dev/play"
      */
     service?: string;
   }
@@ -671,24 +682,17 @@ CodePen 编辑器显示情况，第一位代表 HTML ，第二位代表 JS，第
 
 ### presentation
 
-- 类型: `PresentationOptions | boolean`
-- 默认值: `false`
-
-是否启用幻灯片支持。
-
-你可以传入一个对象，这个对象将用于 reveal.js 配置。
-
-#### presentation.plugins
-
-- 类型: `RevealPlugin[]`
+- 类型: `RevealPlugin[] | boolean`
 
   ```ts
   type RevealPlugin = "highlight" | "math" | "search" | "notes" | "zoom";
   ```
 
-- 必填: 否
+- 默认值: `false`
 
-你想启用的 Reveal.js 插件
+是否启用幻灯片支持。
+
+你可以传入一个数组，它将决定启用的 Reveal.js 插件
 
 可接受的插件有:
 
@@ -701,13 +705,6 @@ CodePen 编辑器显示情况，第一位代表 HTML ，第二位代表 JS，第
 <!-- - `"anything"`
 - `"audio"`
 - `"chalkboard"` -->
-
-#### presentation.revealConfig
-
-- 类型: `Partial<RevealOptions>`
-- 必填: 否
-
-你想要传递给 Reveal.js 的配置选项
 
 ### delay
 

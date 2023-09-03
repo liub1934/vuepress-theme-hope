@@ -1,7 +1,6 @@
+import type { SlotsType, VNode } from "vue";
 import {
-  type SlotsType,
   Transition,
-  type VNode,
   computed,
   defineComponent,
   h,
@@ -69,9 +68,9 @@ export default defineComponent({
                 [
                   locale.value.update,
                   h("span", { class: "icon-wrapper" }, h(UpdateIcon)),
-                ]
+                ],
               )
-            : null)
+            : null),
       );
   },
 });

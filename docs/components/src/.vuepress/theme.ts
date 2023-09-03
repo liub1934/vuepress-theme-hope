@@ -3,12 +3,13 @@ import { fs, theme } from "docs-shared";
 
 const { version } = fs.readJsonSync(
   createRequire(import.meta.url).resolve(
-    "vuepress-plugin-components/package.json"
-  )
+    "vuepress-plugin-components/package.json",
+  ),
 );
 
 const IS_NETLIFY = "NETLIFY" in process.env;
 
+// the theme wrapper is located in <root>/docs-shared/src/theme-wrapper.ts
 export default theme("components", {
   locales: {
     "/": {
@@ -85,6 +86,7 @@ export default theme("components", {
         "Share",
         "SiteInfo",
         "StackBlitz",
+        // "VidStack",
         "VideoPlayer",
         "XiGua",
         "YouTube",
@@ -131,6 +133,7 @@ export default theme("components", {
 
     mdEnhance: {
       codetabs: true,
+      imgMark: true,
       include: true,
     },
   },

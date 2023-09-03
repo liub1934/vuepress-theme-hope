@@ -6,6 +6,7 @@ const __dirname = getDirname(import.meta.url);
 
 const IS_NETLIFY = "NETLIFY" in process.env;
 
+// the theme wrapper is located in <root>/docs-shared/src/theme-wrapper.ts
 export default theme("theme", {
   repo: "vuepress-theme-hope/vuepress-theme-hope",
 
@@ -53,8 +54,10 @@ export default theme("theme", {
         "CodePen",
         "PDF",
         "Replit",
+        "Share",
         "SiteInfo",
         "StackBlitz",
+        // "VidStack",
         "VideoPlayer",
         "YouTube",
       ],
@@ -127,7 +130,7 @@ export default theme("theme", {
           if (file.startsWith("@echarts"))
             return file.replace(
               "@echarts",
-              path.resolve(__dirname, "../echarts")
+              path.resolve(__dirname, "../echarts"),
             );
 
           return file;
@@ -137,11 +140,9 @@ export default theme("theme", {
       mark: true,
       mermaid: true,
       playground: {
-        presets: ["ts", "vue"],
+        presets: ["ts", "vue", "unocss"],
       },
-      presentation: {
-        plugins: ["highlight", "math", "search", "notes", "zoom"],
-      },
+      presentation: ["highlight", "math", "search", "notes", "zoom"],
       stylize: [
         {
           matcher: "Recommended",

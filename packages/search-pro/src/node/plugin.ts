@@ -1,4 +1,4 @@
-import { type PluginFunction } from "@vuepress/core";
+import type { PluginFunction } from "@vuepress/core";
 import { watch } from "chokidar";
 import { useSassPalettePlugin } from "vuepress-plugin-sass-palette";
 import {
@@ -13,7 +13,7 @@ import { convertOptions } from "./compact/index.js";
 import { setPageExcerpt } from "./excerpt.js";
 import { generateWorker } from "./generateWorker.js";
 import { searchProLocales } from "./locales.js";
-import { type SearchProOptions } from "./options.js";
+import type { SearchProOptions } from "./options.js";
 import {
   prepareSearchIndex,
   removeSearchIndex,
@@ -30,7 +30,7 @@ export const searchProPlugin =
 
     useSassPalettePlugin(app, { id: "hope" });
 
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.62");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.67");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
@@ -46,9 +46,9 @@ export const searchProPlugin =
         SEARCH_PRO_CUSTOM_FIELDS: fromEntries(
           (options.customFields || [])
             .map(({ formatter }, index) =>
-              formatter ? [index.toString(), formatter] : null
+              formatter ? [index.toString(), formatter] : null,
             )
-            .filter((item): item is [string, string] => item !== null)
+            .filter((item): item is [string, string] => item !== null),
         ),
         SEARCH_PRO_LOCALES: getLocales({
           app,
@@ -67,6 +67,7 @@ export const searchProPlugin =
           ],
           worker: options.worker || "search-pro.worker.js",
         },
+        SEARCH_PRO_SORT_STRATEGY: JSON.stringify(options.sortStrategy || "max"),
       },
 
       clientConfigFile: `${CLIENT_FOLDER}config.js`,

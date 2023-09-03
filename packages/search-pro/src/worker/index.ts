@@ -1,10 +1,11 @@
-import { type IndexObject, loadIndex } from "slimsearch";
+import type { IndexObject } from "slimsearch";
+import { loadIndex } from "slimsearch";
 import { entries, fromEntries } from "vuepress-shared/client";
 
-import { type MessageData } from "../client/typings/index.js";
+import type { MessageData } from "../client/typings/index.js";
 import { getResults } from "../client/worker/result.js";
 import { getSuggestions } from "../client/worker/suggestion.js";
-import { type IndexItem, type SearchIndexStore } from "../shared/index.js";
+import type { IndexItem, SearchIndexStore } from "../shared/index.js";
 
 declare const SEARCH_PRO_INDEX: string;
 
@@ -20,8 +21,8 @@ const searchIndex: SearchIndexStore = fromEntries(
           /** customFields */ "c",
         ],
       }),
-    ]
-  )
+    ],
+  ),
 );
 
 self.onmessage = ({

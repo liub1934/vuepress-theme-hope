@@ -1,7 +1,7 @@
 import { useSiteLocaleData } from "@vuepress/client";
-import { useEventListener, useScrollLock } from "@vueuse/core";
+import { onClickOutside, useEventListener, useScrollLock } from "@vueuse/core";
+import type { VNode } from "vue";
 import {
-  type VNode,
   defineAsyncComponent,
   defineComponent,
   h,
@@ -65,6 +65,7 @@ export default defineComponent({
     } = useArrayCycle(suggestions);
 
     const inputElement = shallowRef<HTMLInputElement>();
+    const suggestionsElement = shallowRef<HTMLDivElement>();
 
     const applySuggestion = (index = activeSuggestionIndex.value): void => {
       input.value = suggestions.value[index];
@@ -93,6 +94,10 @@ export default defineComponent({
           });
       });
 
+      onClickOutside(suggestionsElement, () => {
+        displaySuggestion.value = false;
+      });
+
       onUnmounted(() => {
         isLocked.value = false;
       });
@@ -114,7 +119,7 @@ export default defineComponent({
                   h(
                     "label",
                     { for: "search-pro", "aria-label": locale.value.search },
-                    h(SearchIcon)
+                    h(SearchIcon),
                   ),
                   h("input", {
                     ref: inputElement,
@@ -136,7 +141,11 @@ export default defineComponent({
                         if (key === "Tab") {
                           applySuggestion();
                           event.preventDefault();
-                        } else if (key === "ArrowDown" || key === "ArrowUp") {
+                        } else if (
+                          key === "ArrowDown" ||
+                          key === "ArrowUp" ||
+                          key === "Escape"
+                        ) {
                           event.preventDefault();
                         }
                     },
@@ -149,7 +158,7 @@ export default defineComponent({
                   input.value
                     ? h("button", {
                         type: "reset",
-                        class: "clear-button",
+                        class: "search-pro-clear-button",
                         innerHTML: CLOSE_ICON,
                         onClick: () => {
                           input.value = "";
@@ -159,57 +168,53 @@ export default defineComponent({
                   enableAutoSuggestions &&
                   displaySuggestion.value &&
                   suggestions.value.length
-                    ? h("div", { class: "search-pro-suggestions-wrapper" }, [
-                        h("ul", { class: "search-pro-suggestions" }, [
-                          suggestions.value.map((suggestion, index) =>
-                            h(
-                              "li",
-                              {
-                                class: [
-                                  "search-pro-suggestion",
-                                  {
-                                    active:
-                                      index === activeSuggestionIndex.value,
-                                  },
-                                ],
-                                onClick: () => {
-                                  applySuggestion(index);
+                    ? h(
+                        "ul",
+                        {
+                          class: "search-pro-suggestions",
+                          ref: suggestionsElement,
+                        },
+                        suggestions.value.map((suggestion, index) =>
+                          h(
+                            "li",
+                            {
+                              class: [
+                                "search-pro-suggestion",
+                                {
+                                  active: index === activeSuggestionIndex.value,
                                 },
+                              ],
+                              onClick: () => {
+                                applySuggestion(index);
                               },
-                              suggestion
-                            )
-                          ),
-                        ]),
-                        h(
-                          "button",
-                          {
-                            type: "button",
-                            class: "search-pro-close-suggestion",
-                            onClick: () => {
-                              displaySuggestion.value = false;
                             },
-                          },
-                          [
-                            h("kbd", "Tab"),
-                            locale.value.autocomplete,
-                            h("kbd", { innerHTML: ESC_KEY_ICON }),
-                            locale.value.exit,
-                          ]
+                            [
+                              h(
+                                "kbd",
+                                {
+                                  class: "search-pro-auto-complete",
+                                  title: `Tab ${locale.value.autocomplete}`,
+                                },
+                                "Tab",
+                              ),
+                              suggestion,
+                            ],
+                          ),
                         ),
-                      ])
+                      )
                     : null,
                 ]),
                 h(
                   "button",
                   {
                     type: "button",
-                    class: "close-button",
+                    class: "search-pro-close-button",
                     onClick: () => {
                       isActive.value = false;
                       input.value = "";
                     },
                   },
-                  locale.value.cancel
+                  locale.value.cancel,
                 ),
               ]),
 

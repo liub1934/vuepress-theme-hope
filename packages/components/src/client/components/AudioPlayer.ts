@@ -1,7 +1,6 @@
-import { type Options as PlyrOptions } from "plyr";
+import type { Options as PlyrOptions } from "plyr";
+import type { PropType, VNode } from "vue";
 import {
-  type PropType,
-  type VNode,
   computed,
   defineComponent,
   h,
@@ -146,10 +145,10 @@ export default defineComponent({
                 controls: "",
                 ...(props.loop ? { loop: "" } : {}),
               },
-              h("source", { src: getLink(props.src), type: props.type })
+              h("source", { src: getLink(props.src), type: props.type }),
             ),
           ]),
-        ]
+        ],
       );
   },
 });

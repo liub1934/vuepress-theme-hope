@@ -1,13 +1,7 @@
-import { type Repl, type ReplProps, type ReplStore } from "@vue/repl";
-import {
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  onMounted,
-  ref,
-  shallowRef,
-} from "vue";
+import type { Repl, ReplProps, ReplStore } from "@vue/repl";
+import type { EditorComponentType } from "@vue/repl/codemirror-editor";
+import type { VNode } from "vue";
+import { computed, defineComponent, h, onMounted, ref, shallowRef } from "vue";
 import { LoadingIcon, deepAssign } from "vuepress-shared/client";
 
 import { useVuePlaygroundConfig } from "../helpers/index.js";
@@ -50,21 +44,26 @@ export default defineComponent({
     const loading = ref(true);
     const component = shallowRef<typeof Repl>();
     const store = shallowRef<ReplStore>();
+    const editor = shallowRef<EditorComponentType>();
 
     const playgroundOptions = computed(() =>
       deepAssign(
         {},
         vuePlaygroundOptions,
-        getVuePlaygroundSettings(props.settings)
-      )
+        getVuePlaygroundSettings(props.settings),
+      ),
     );
 
     const setupRepl = async (): Promise<void> => {
-      const { ReplStore, Repl } = await import(
-        /* webpackChunkName: "vue-repl" */ "@vue/repl"
-      );
+      const [{ ReplStore, Repl }, { default: codeMirror }] = await Promise.all([
+        import(/* webpackChunkName: "vue-repl" */ "@vue/repl"),
+        import(
+          /* webpackChunkName: "vue-repl" */ "@vue/repl/codemirror-editor"
+        ),
+      ]);
 
       component.value = Repl;
+      editor.value = codeMirror;
       store.value = new ReplStore({
         serializedState: decodeURIComponent(props.files),
       });
@@ -94,13 +93,14 @@ export default defineComponent({
               : null,
             component.value
               ? h(component.value, <ReplProps>{
+                  editor: editor.value,
                   store: store.value,
                   autoResize: true,
                   ...playgroundOptions.value,
                   layout: "horizontal",
                 })
               : null,
-          ]
+          ],
         ),
       ]),
     ];

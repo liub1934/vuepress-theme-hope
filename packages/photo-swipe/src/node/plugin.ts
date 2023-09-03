@@ -1,4 +1,4 @@
-import { type PluginFunction } from "@vuepress/core";
+import type { PluginFunction } from "@vuepress/core";
 import { getDirname, path } from "@vuepress/utils";
 import { useSassPalettePlugin } from "vuepress-plugin-sass-palette";
 import {
@@ -10,7 +10,7 @@ import {
 } from "vuepress-shared/node";
 
 import { photoSwipeLocales } from "./locales.js";
-import { type PhotoSwipeOptions } from "./options.js";
+import type { PhotoSwipeOptions } from "./options.js";
 import { PLUGIN_NAME, logger } from "./utils.js";
 
 const __dirname = getDirname(import.meta.url);
@@ -18,7 +18,7 @@ const __dirname = getDirname(import.meta.url);
 export const photoSwipePlugin =
   (options: PhotoSwipeOptions = {}): PluginFunction =>
   (app) => {
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.62");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.67");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
@@ -40,16 +40,16 @@ export const photoSwipePlugin =
               name: PLUGIN_NAME,
               default: photoSwipeLocales,
               config: options.locales,
-            })
+            }),
           ).map(([localePath, localeOptions]) => [
             localePath,
             fromEntries(
               entries(localeOptions).map(([key, value]) => [
                 `${key}Title`,
                 value,
-              ])
+              ]),
             ),
-          ])
+          ]),
         ),
       }),
 

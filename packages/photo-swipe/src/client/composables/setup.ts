@@ -1,6 +1,7 @@
 import { usePageData } from "@vuepress/client";
 import { useEventListener, useFullscreen } from "@vueuse/core";
-import PhotoSwipe, { type SlideData } from "photoswipe";
+import type { SlideData } from "photoswipe";
+import PhotoSwipe from "photoswipe";
 import { nextTick, onMounted, watch } from "vue";
 import { useLocaleConfig } from "vuepress-shared/client";
 
@@ -97,8 +98,8 @@ export const setupPhotoSwipe = (): void => {
       import(/* webpackChunkName: "photo-swipe" */ "photoswipe"),
       nextTick().then(() =>
         new Promise<void>((resolve) => setTimeout(resolve, delay)).then(() =>
-          getImages(imageSelector)
-        )
+          getImages(imageSelector),
+        ),
       ),
     ]).then(([{ default: PhotoSwipe }, images]) => {
       const dataSource = images.map<SlideData>((image) => ({
@@ -155,7 +156,7 @@ export const setupPhotoSwipe = (): void => {
 
     watch(
       () => page.value.path,
-      () => initPhotoSwipe()
+      () => initPhotoSwipe(),
     );
   });
 };

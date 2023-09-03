@@ -1,11 +1,6 @@
 import { withBase } from "@vuepress/client";
-import {
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  resolveComponent,
-} from "vue";
+import type { VNode } from "vue";
+import { computed, defineComponent, h, resolveComponent } from "vue";
 import {
   BitbucketIcon,
   GitHubIcon,
@@ -16,7 +11,7 @@ import {
   useLocaleConfig,
 } from "vuepress-shared/client";
 
-import { type SiteInfoLocaleConfig } from "../../shared/index.js";
+import type { SiteInfoLocaleConfig } from "../../shared/index.js";
 
 import "balloon-css/balloon.css";
 import "../styles/site-info.scss";
@@ -99,7 +94,7 @@ export default defineComponent({
   setup(props) {
     const locale = useLocaleConfig(SITE_INFO_LOCALES);
     const repoType = computed(() =>
-      props.repo ? resolveRepoType(props.repo) : null
+      props.repo ? resolveRepoType(props.repo) : null,
     );
 
     return (): VNode =>
@@ -114,7 +109,7 @@ export default defineComponent({
           class: "vp-site-info-preview",
           style: {
             background: `url(${withBase(
-              props.preview
+              props.preview,
             )}) center/cover no-repeat`,
           },
         }),
@@ -146,8 +141,8 @@ export default defineComponent({
                   title: locale.value.source,
                   target: "_blank",
                 },
-                h(resolveComponent(`${repoType.value!}Icon`))
-              )
+                h(resolveComponent(`${repoType.value!}Icon`)),
+              ),
             )
           : null,
       ]);

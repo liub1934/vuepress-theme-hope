@@ -1,5 +1,6 @@
 import { useRouteLocale } from "@vuepress/client";
-import { type SlotsType, type VNode, defineComponent, h } from "vue";
+import type { SlotsType, VNode } from "vue";
+import { defineComponent, h } from "vue";
 import { useLink } from "vue-router";
 
 import CommonWrapper from "@theme-hope/components/CommonWrapper";
@@ -42,7 +43,7 @@ export default defineComponent({
                     window.history.go(-1);
                   },
                 },
-                themeLocale.value.routeLocales.back
+                themeLocale.value.routeLocales.back,
               ),
               h(
                 "button",
@@ -51,11 +52,11 @@ export default defineComponent({
                   class: "action-button",
                   onClick: () => navigate(),
                 },
-                themeLocale.value.routeLocales.home
+                themeLocale.value.routeLocales.home,
               ),
             ]),
-          ]
-        )
+          ],
+        ),
       ),
     ];
   },

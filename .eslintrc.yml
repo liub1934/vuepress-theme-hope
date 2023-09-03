@@ -40,6 +40,7 @@ ignorePatterns:
   - "docs-shared/lib/**"
   - "packages/*/assets/**"
   - "packages/*/lib/**"
+  - "packages/create/template/**"
   - "!**/.vuepress/**"
   - "**/.vuepress/.cache/**"
   - "**/.vuepress/.temp/**"
@@ -108,6 +109,9 @@ rules:
   "@typescript-eslint/no-non-null-assertion":
     - off
 
+  "@typescript-eslint/no-unsafe-enum-comparison":
+    - off
+
   "@typescript-eslint/no-unsafe-member-access":
     - warn
 
@@ -118,7 +122,7 @@ rules:
 
   import/consistent-type-specifier-style:
     - error
-    - prefer-inline
+    - prefer-top-level
 
   import/dynamic-import-chunkname:
     - error
@@ -138,7 +142,6 @@ rules:
   import/no-duplicates:
     - error
     - considerQueryString: true
-      prefer-inline: true
 
   import/no-named-default:
     - error
@@ -167,7 +170,7 @@ rules:
       newlines-between: always
 
   no-duplicate-imports:
-    - error
+    - off
 
   no-unmodified-loop-condition:
     - error

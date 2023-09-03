@@ -27,6 +27,7 @@ export default [
         "components/Tabs",
         "components/VPCard",
         "components/VuePlayground",
+        "composables/katex",
         "SlidePage",
       ],
     },
@@ -35,10 +36,12 @@ export default [
       external: [
         "@mermaid",
         "@vue/repl",
+        "@vue/repl/codemirror-editor",
         "balloon-css/balloon.css",
         "chart.js/auto",
         "echarts",
         "flowchart.ts",
+        "katex/dist/contrib/copy-tex.min.js",
         "mermaid",
         /^reveal\.js/,
       ],
@@ -46,6 +49,6 @@ export default [
         ["client/styles", "client"],
         ["client/compact/styles", "client/compact"],
       ],
-    }
+    },
   ),
 ];

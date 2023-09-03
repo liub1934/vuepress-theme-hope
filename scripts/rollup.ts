@@ -1,8 +1,10 @@
-import alias, { type Alias } from "@rollup/plugin-alias";
+import type { Alias } from "@rollup/plugin-alias";
+import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import replace, { type RollupReplaceOptions } from "@rollup/plugin-replace";
-import { type ModuleSideEffectsOption, type RollupOptions } from "rollup";
+import type { RollupReplaceOptions } from "@rollup/plugin-replace";
+import replace from "@rollup/plugin-replace";
+import type { ModuleSideEffectsOption, RollupOptions } from "rollup";
 import copy from "rollup-plugin-copy";
 import dts from "rollup-plugin-dts";
 import esbuild from "rollup-plugin-esbuild";
@@ -50,7 +52,7 @@ export const bundle = (
     replace: replaceOptions,
     moduleSideEffects = (id): boolean =>
       id.endsWith(".css") || id.endsWith(".scss"),
-  }: BundleOptions = {}
+  }: BundleOptions = {},
 ): RollupOptions[] => [
   {
     input:
@@ -59,7 +61,7 @@ export const bundle = (
             filePath.files.map((item) => [
               item,
               `./src/${filePath.base}/${item}.ts`,
-            ])
+            ]),
           )
         : `./src/${filePath}.ts`,
 
@@ -87,7 +89,7 @@ export const bundle = (
           })
         : null,
       entries
-        ? // FIXME: This is an issue of ts NodeNext
+        ? // FIXME: Types issue
           (alias as unknown as typeof alias.default)({
             entries,
           })
@@ -96,23 +98,23 @@ export const bundle = (
       ...(resolve
         ? [
             nodeResolve({ preferBuiltins: true }),
-            // FIXME: This is an issue of ts NodeNext
+            // FIXME: Types issue
             (commonjs as unknown as typeof commonjs.default)(),
           ]
         : []),
-      // FIXME: This is an issue of ts NodeNext
+      // FIXME: Types issue
       (esbuild as unknown as typeof esbuild.default)({
         charset: "utf8",
         minify: isProduction,
         target: "node16",
       }),
       copyOptions.length
-        ? // FIXME: This is an issue of ts NodeNext
+        ? // FIXME: Types issue
           (copy as unknown as typeof copy.default)({
             targets: copyOptions.map((item) =>
               typeof item === "string"
                 ? { src: `./src/${item}`, dest: `./lib/${item}` }
-                : { src: `./src/${item[0]}`, dest: `./lib/${item[1]}` }
+                : { src: `./src/${item[0]}`, dest: `./lib/${item[1]}` },
             ),
           })
         : null,
@@ -169,7 +171,7 @@ export const bundle = (
                   filePath.files.map((item) => [
                     item,
                     `./src/${filePath.base}/${item}.ts`,
-                  ])
+                  ]),
                 )
               : `./src/${filePath}.ts`,
           output: [
@@ -186,7 +188,7 @@ export const bundle = (
           ],
           plugins: [
             entries
-              ? // FIXME: This is an issue of ts NodeNext
+              ? // FIXME: Types issue
                 (alias as unknown as typeof alias.default)({
                   entries,
                 })

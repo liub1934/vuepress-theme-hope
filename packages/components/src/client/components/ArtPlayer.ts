@@ -1,19 +1,12 @@
 /* eslint-disable vue/no-unused-properties */
 import { usePageLang } from "@vuepress/client";
 import type Artplayer from "artplayer";
-import { type Option as ArtPlayerInitOptions } from "artplayer/types/option.js";
-import {
-  type PropType,
-  type VNode,
-  camelize,
-  defineComponent,
-  h,
-  onMounted,
-  onUnmounted,
-} from "vue";
-import { keys } from "vuepress-shared/client";
+import type { Option as ArtPlayerInitOptions } from "artplayer/types/option.js";
+import type { PropType, VNode } from "vue";
+import { camelize, defineComponent, h, onMounted, onUnmounted, ref } from "vue";
+import { LoadingIcon, keys } from "vuepress-shared/client";
 
-import { type ArtPlayerOptions } from "../../shared/index.js";
+import type { ArtPlayerOptions } from "../../shared/index.js";
 import { useSize } from "../composables/index.js";
 import {
   SUPPORTED_VIDEO_TYPES,
@@ -22,6 +15,8 @@ import {
   registerMseFlv,
   registerMseHls,
 } from "../utils/mse.js";
+
+import "../styles/art-player.scss";
 
 const BOOLEAN_TRUE_ATTRS = [
   "no-fullscreen",
@@ -59,7 +54,7 @@ const SUPPORTED_LANG_CODE = ["zh-cn", "zh-tw"];
 
 type KebabCaseToCamelCase<
   S extends string,
-  Cap extends boolean = false
+  Cap extends boolean = false,
 > = S extends `${infer Head}-${infer Tail}`
   ? `${Cap extends true ? Capitalize<Head> : Head}${KebabCaseToCamelCase<
       Tail,
@@ -96,6 +91,8 @@ const getLang = (lang: string): string => {
 
 export default defineComponent({
   name: "ArtPlayer",
+
+  inheritAttrs: false,
 
   props: {
     /**
@@ -186,7 +183,7 @@ export default defineComponent({
     customPlayer: {
       type: Function as PropType<
         (
-          player: Artplayer
+          player: Artplayer,
         ) => Artplayer | void | Promise<Artplayer> | Promise<void>
       >,
 
@@ -198,6 +195,7 @@ export default defineComponent({
     const lang = usePageLang();
     const { el, width, height } = useSize<HTMLDivElement>(props, 0);
 
+    const loaded = ref(false);
     let artPlayerInstance: Artplayer;
 
     const getInitOptions = (): ArtPlayerInitOptions => {
@@ -238,7 +236,7 @@ export default defineComponent({
               customType[initOptions.type] ??= (
                 video: HTMLVideoElement,
                 src: string,
-                player: Artplayer
+                player: Artplayer,
               ): Promise<void> =>
                 registerMseHls(video, src, (destroy) => {
                   player.on("destroy", destroy);
@@ -249,7 +247,7 @@ export default defineComponent({
               customType[initOptions.type] ??= (
                 video: HTMLVideoElement,
                 src: string,
-                player: Artplayer
+                player: Artplayer,
               ): Promise<void> =>
                 registerMseFlv(video, src, (destroy) => {
                   player.on("destroy", destroy);
@@ -261,7 +259,7 @@ export default defineComponent({
               customType[initOptions.type] ??= (
                 video: HTMLVideoElement,
                 src: string,
-                player: Artplayer
+                player: Artplayer,
               ): Promise<void> =>
                 registerMseDash(video, src, (destroy) => {
                   player.on("destroy", destroy);
@@ -270,14 +268,13 @@ export default defineComponent({
           }
         else
           console.warn(
-            `[components]: ArtPlayer does not support current file type ${initOptions.type}!`
+            `[components]: ArtPlayer does not support current file type ${initOptions.type}!`,
           );
       }
 
       return initOptions;
     };
 
-    // FIXME: Related issue https://github.com/zhw2590582/ArtPlayer/issues/450
     onMounted(async () => {
       const { default: Artplayer } = await import(
         /* webpackChunkName: "artplayer" */ "artplayer"
@@ -285,24 +282,23 @@ export default defineComponent({
       const player = new Artplayer(getInitOptions());
 
       artPlayerInstance = (await props.customPlayer(player)) || player;
+      loaded.value = true;
     });
 
     onUnmounted(() => {
       artPlayerInstance?.destroy();
     });
 
-    return (): VNode =>
-      h(
-        "div",
-        {
-          ref: el,
-          class: "vp-artplayer",
-          style: {
-            width: width.value,
-            height: height.value,
-          },
+    return (): (VNode | null)[] => [
+      h("div", {
+        ref: el,
+        class: "vp-artplayer",
+        style: {
+          width: width.value,
+          height: height.value,
         },
-        "Loading..."
-      );
+      }),
+      loaded.value ? null : h(LoadingIcon),
+    ];
   },
 });

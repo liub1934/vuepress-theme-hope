@@ -1,18 +1,18 @@
-import { type Page } from "@vuepress/core";
+import type { Page } from "@vuepress/core";
 import { getDateInfo, timeTransformer } from "vuepress-shared/node";
 
-import {
-  ArticleInfoType,
-  type ThemeBlogHomePageFrontmatter,
-  type ThemeNormalPageFrontmatter,
-  type ThemePageData,
-  type ThemeProjectHomePageFrontmatter,
+import type {
+  ThemeBlogHomePageFrontmatter,
+  ThemeNormalPageFrontmatter,
+  ThemePageData,
+  ThemeProjectHomePageFrontmatter,
 } from "../../../shared/index.js";
+import { ArticleInfoType } from "../../../shared/index.js";
 
 /** @private */
 export const injectBlogBasicInfo = (
   page: Page<ThemePageData>,
-  info: Record<string, unknown>
+  info: Record<string, unknown>,
 ): void => {
   const frontmatter = page.frontmatter as
     | ThemeProjectHomePageFrontmatter

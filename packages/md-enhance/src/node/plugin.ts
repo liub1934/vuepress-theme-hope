@@ -13,8 +13,8 @@ import { stylize } from "@mdit/plugin-stylize";
 import { sub } from "@mdit/plugin-sub";
 import { sup } from "@mdit/plugin-sup";
 import { tasklist } from "@mdit/plugin-tasklist";
-import { type PluginFunction } from "@vuepress/core";
-import { type MarkdownEnv } from "@vuepress/markdown";
+import type { PluginFunction } from "@vuepress/core";
+import type { MarkdownEnv } from "@vuepress/markdown";
 import { colors } from "@vuepress/utils";
 import { useSassPalettePlugin } from "vuepress-plugin-sass-palette";
 import {
@@ -50,6 +50,7 @@ import {
   echarts,
   flowchart,
   getTSPlaygroundPreset,
+  getUnoPlaygroundPreset,
   getVuePlaygroundPreset,
   hint,
   mermaid,
@@ -62,34 +63,34 @@ import {
   vueDemo,
   vuePlayground,
 } from "./markdown-it/index.js";
-import { type MarkdownEnhanceOptions } from "./options.js";
+import type { MarkdownEnhanceOptions } from "./options.js";
 import {
   prepareConfigFile,
   prepareMathjaxStyleFile,
   prepareRevealPluginFile,
 } from "./prepare/index.js";
-import { type KatexOptions } from "./typings/index.js";
+import type { KatexOptions } from "./typings/index.js";
 import { PLUGIN_NAME, logger } from "./utils.js";
 
 export const mdEnhancePlugin =
   (
     options: MarkdownEnhanceOptions = { gfm: true },
-    legacy = true
+    legacy = true,
   ): PluginFunction =>
   (app) => {
     // TODO: Remove this in v2 stable
     if (legacy)
       convertOptions(
-        options as MarkdownEnhanceOptions & Record<string, unknown>
+        options as MarkdownEnhanceOptions & Record<string, unknown>,
       );
 
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.62");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.67");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
     const getStatus = (
       key: keyof MarkdownEnhanceOptions,
-      gfm = false
+      gfm = false,
     ): boolean =>
       key in options ? Boolean(options[key]) : (gfm && options.gfm) || false;
 
@@ -115,7 +116,7 @@ export const mdEnhancePlugin =
 
     const { enabled: linksCheckEnabled, isIgnoreLink } = getLinksCheckStatus(
       app,
-      options
+      options,
     );
 
     const katexOptions: KatexOptions<MarkdownEnv> = {
@@ -137,7 +138,7 @@ export const mdEnhancePlugin =
           logger.warn(
             `Found unicode character ${token.text} inside tex${
               filePathRelative ? ` in ${colors.cyan(filePathRelative)}` : ""
-            }. You should use ${colors.magenta(`\\text{${token.text}}`)}`
+            }. You should use ${colors.magenta(`\\text{${token.text}}`)}`,
           );
         else
           logger.warn(
@@ -145,7 +146,7 @@ export const mdEnhancePlugin =
               filePathRelative
                 ? `\nFound in ${colors.cyan(filePathRelative)}`
                 : ""
-            }`
+            }`,
           );
       },
       ...(isPlainObject(options.katex) ? options.katex : {}),
@@ -159,11 +160,9 @@ export const mdEnhancePlugin =
             ...(isPlainObject(options.mathjax) ? options.mathjax : {}),
           });
 
-    const revealPlugins =
-      isPlainObject(options.presentation) &&
-      isArray(options.presentation.plugins)
-        ? options.presentation.plugins
-        : [];
+    const revealPlugins = isArray(options.presentation)
+      ? options.presentation
+      : [];
 
     useSassPalettePlugin(app, { id: "hope" });
 
@@ -207,7 +206,7 @@ export const mdEnhancePlugin =
           addViteOptimizeDepsExclude(
             bundlerOptions,
             app,
-            "chart.js/auto/auto.mjs"
+            "chart.js/auto/auto.mjs",
           );
           addViteSsrExternal(bundlerOptions, app, "chart.js");
         }
@@ -232,7 +231,7 @@ export const mdEnhancePlugin =
             "reveal.js/dist/reveal.esm.js",
             "reveal.js/plugin/markdown/markdown.esm.js",
             ...revealPlugins.map(
-              (plugin) => `reveal.js/plugin/${plugin}/${plugin}.esm.js`
+              (plugin) => `reveal.js/plugin/${plugin}/${plugin}.esm.js`,
             ),
           ]);
 
@@ -253,20 +252,21 @@ export const mdEnhancePlugin =
 
       extendsMarkdown: (md): void => {
         // syntax
-        if (getStatus("gfm")) md.options.linkify = true;
         if (getStatus("attrs"))
           md.use(attrs, isPlainObject(options.attrs) ? options.attrs : {});
         if (getStatus("align")) md.use(align);
+        if (getStatus("breaks", true)) md.options.breaks = true;
         if (getStatus("container")) md.use(hint, locales);
         if (getStatus("imgLazyload")) md.use(imgLazyload);
         if (getStatus("figure")) md.use(figure);
         if (imgMarkEnable)
           md.use(
             imgMark,
-            isPlainObject(options.imgMark) ? options.imgMark : {}
+            isPlainObject(options.imgMark) ? options.imgMark : {},
           );
 
         if (getStatus("imgSize")) md.use(imgSize);
+        if (getStatus("linkify", true)) md.options.linkify = true;
         if (getStatus("obsidianImgSize")) md.use(obsidianImageSize);
         if (getStatus("sup")) md.use(sup);
         if (getStatus("sub")) md.use(sub);
@@ -352,6 +352,8 @@ export const mdEnhancePlugin =
               md.use(playground, getTSPlaygroundPreset(config.ts || {}));
             else if (preset === "vue")
               md.use(playground, getVuePlaygroundPreset(config.vue || {}));
+            else if (preset === "unocss")
+              md.use(playground, getUnoPlaygroundPreset(config.unocss || {}));
             else if (isPlainObject(preset)) md.use(playground, preset);
           });
         }

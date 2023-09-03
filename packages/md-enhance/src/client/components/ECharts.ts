@@ -1,8 +1,7 @@
 import { useDebounceFn, useEventListener } from "@vueuse/core";
-import { type EChartsOption, type EChartsType } from "echarts";
+import type { EChartsOption, EChartsType } from "echarts";
+import type { PropType, VNode } from "vue";
 import {
-  type PropType,
-  type VNode,
   defineComponent,
   h,
   onMounted,
@@ -28,7 +27,7 @@ const AsyncFunction = (async (): Promise<void> => {}).constructor;
 const parseEChartsConfig = (
   config: string,
   type: "js" | "json",
-  myChart: EChartsType
+  myChart: EChartsType,
 ): Promise<EchartsConfig> => {
   if (type === "js") {
     // eslint-disable-next-line
@@ -41,7 +40,7 @@ ${config}
 __echarts_config__={width,height,option};
 }
 return __echarts_config__;
-`
+`,
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -92,7 +91,7 @@ export default defineComponent({
 
     useEventListener(
       "resize",
-      useDebounceFn(() => chart?.resize(), 100)
+      useDebounceFn(() => chart?.resize(), 100),
     );
 
     onMounted(() => {
@@ -101,12 +100,12 @@ export default defineComponent({
         // delay
         new Promise((resolve) => setTimeout(resolve, MARKDOWN_ENHANCE_DELAY)),
       ]).then(async ([echarts]) => {
-        chart = echarts.init(echartsContainer.value!);
+        chart = echarts.init(echartsContainer.value);
 
         const { option, ...size } = await parseEChartsConfig(
           atou(props.config),
           props.type,
-          chart
+          chart,
         );
 
         chart.resize(size);

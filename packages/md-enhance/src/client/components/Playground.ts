@@ -1,4 +1,5 @@
-import { type VNode, defineComponent, h } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h } from "vue";
 
 import { PLAY_SVG } from "./icons.js";
 
@@ -32,7 +33,7 @@ export default defineComponent({
             ? h(
                 "div",
                 { class: "vp-playground-title" },
-                decodeURIComponent(props.title)
+                decodeURIComponent(props.title),
               )
             : null,
           h("div", { class: "vp-playground-actions" }, [
@@ -49,7 +50,7 @@ export default defineComponent({
           { class: "vp-playground-container" },
           h("iframe", {
             src: decodeURIComponent(props.link),
-          })
+          }),
         ),
       ]),
     ];

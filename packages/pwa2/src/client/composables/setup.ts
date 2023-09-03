@@ -5,7 +5,7 @@ import { pwaEventSymbol } from "./usePWAEvent.js";
 import { useRegisterSW } from "./useRegisterSW.js";
 import { forceUpdate } from "../utils/index.js";
 
-import { type PWAEvent } from "./index.js";
+import type { PWAEvent } from "./index.js";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 declare const __VUEPRESS_DEV__: boolean;
@@ -17,7 +17,8 @@ export const setupPWA = (): void => {
   if (__VUEPRESS_SSR__) return;
 
   // create event emitter and provide it
-  const event: PWAEvent = mitt();
+  // FIXME: Types issue
+  const event: PWAEvent = (mitt as unknown as typeof mitt.default)();
 
   provide(pwaEventSymbol, event);
 
