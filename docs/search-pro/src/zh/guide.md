@@ -258,6 +258,12 @@ export default defineUserConfig({
 });
 ```
 
+::: tip
+
+特别提示，我们没有办法在浏览器中使用分词功能，所以任何不基于单词的语言（如中文）的长文本搜索结果会明显表现不佳。
+
+:::
+
 ### 自定义搜索选项
 
 你可以通过在客户端配置文件中导入和调用 `defineSearchConfig` 来自定义搜索选项：
@@ -304,7 +310,7 @@ terminate();
 
 搜索服务由 Worker 提供支持，在开发模式下我们无法捆绑 Worker 文件。
 
-为了在开发模式下加载搜索索引，我们使用了带有 `type: "module"` 的现代 Worker，但是目前只有 Chrome 支持此功能，Firefox 和 Safari 不支持。 因此，如果你想尝试在 devServer 中搜索，你应该使用 Chrome，请参阅 [CanIUse](https://caniuse.com/mdn-api_worker_worker_options_type_parameter) 了解支持详情。
+为了在开发模式下加载搜索索引，我们使用了带有 `type: "module"` 的现代 Worker，但是目前 Safari 不支持此功能。 因此，如果你想尝试在 devServer 中搜索，你应该使用支持的浏览器，请参阅 [CanIUse](https://caniuse.com/mdn-api_worker_worker_options_type_parameter) 了解支持详情。
 
 为了更好的性能，在开发模式下添加/编辑/删除 Markdown 内容不会触发搜索索引的更新。如果你正在校对或优化你的搜索结果，你可以通过设置 `hotReload: true` 选项来启用热重载，参见 [配置 → 热重载](./config.md#hotreload)。
 
@@ -316,7 +322,7 @@ terminate();
 
 1. 你需要在构建阶段为你的网站建立索引，这会增长网站部署时间与网站的构建体积。
 1. 用户在搜索前需要从你的服务器拉取整个索引，会为你的网站服务器带来额外的流量与带宽压力。这通常比在服务端搜索下执行一个网络请求获得结果要慢得多。
-1. 为了进行一次搜索，用户必须等待搜索索引下载并在本地解析完毕。，这会为用户消耗不必要的流量、同时增加客户点耗电。
+1. 为了进行一次搜索，用户必须等待搜索索引下载并在本地解析完毕。这会为用户消耗不必要的流量、同时增加客户端耗电。
 1. 由于搜索是在用户设备上执行的，速度完全取决于设备性能。
 
 :::

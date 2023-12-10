@@ -1,8 +1,8 @@
-import { bundle } from "../../scripts/rollup.js";
+import { rollupBundle } from "../../scripts/rollup.js";
 
 export default [
-  ...bundle("node/index"),
-  ...bundle(
+  ...rollupBundle("node/index"),
+  ...rollupBundle(
     {
       base: "client",
       files: [
@@ -20,6 +20,8 @@ export default [
         "components/Share",
         "components/SiteInfo",
         "components/StackBlitz",
+        "components/VPBanner",
+        "components/VPCard",
         "components/VidStack",
         "components/VideoPlayer",
         "components/XiGua",

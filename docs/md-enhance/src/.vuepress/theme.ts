@@ -19,12 +19,16 @@ export default theme("md-enhance", {
   },
 
   plugins: {
+    components: {
+      components: ["Badge", "VPCard"],
+    },
+
     mdEnhance: {
       align: true,
       attrs: true,
-      card: true,
       chart: true,
       codetabs: true,
+      component: true,
       container: true,
       demo: true,
       echarts: true,
@@ -35,7 +39,7 @@ export default theme("md-enhance", {
       imgMark: true,
       imgSize: true,
       include: {
-        resolvePath: (file, cwd) => {
+        resolvePath: (file) => {
           if (file.startsWith("@echarts"))
             return file.replace(
               "@echarts",
@@ -45,13 +49,31 @@ export default theme("md-enhance", {
           return file;
         },
       },
+      kotlinPlayground: true,
       mathjax: true,
       mark: true,
+      markmap: true,
       mermaid: true,
       playground: {
         presets: ["ts", "vue", "unocss"],
       },
-      presentation: ["highlight", "math", "search", "notes", "zoom"],
+      revealJs: {
+        plugins: ["highlight", "math", "search", "notes", "zoom"],
+        themes: [
+          "auto",
+          "beige",
+          "black",
+          "blood",
+          "league",
+          "moon",
+          "night",
+          "serif",
+          "simple",
+          "sky",
+          "solarized",
+          "white",
+        ],
+      },
       stylize: [
         {
           matcher: "Recommended",

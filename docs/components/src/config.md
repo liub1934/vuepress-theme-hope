@@ -20,7 +20,9 @@ icon: gears
     | "Share"
     | "StackBlitz"
     | "SiteInfo"
-    // | "VidStack"
+    | "VPBanner"
+    | "VPCard"
+    | "VidStack"
     | "VideoPlayer"
     | "XiGua"
     | "YouTube";
@@ -43,7 +45,9 @@ Available component names:
 - `"Share"`
 - `"StackBlitz"`
 - `"SiteInfo"`
-<!-- - `"VidStack"` -->
+- `"VPBanner"`
+- `"VPCard"`
+- `"VidStack"`
 - `"VideoPlayer"`
 - `"XiGua"`
 - `"YouTube"`
@@ -57,13 +61,13 @@ Global config for components.
 - Type: `ComponentsArtPlayerOptions`
 - Required: No
 - Details:
-  - [Guide → ArtPlayer](./guide/artplayer.md#global-config)
+  - [Guide → ArtPlayer](./guide/media/art-player.md#global-config)
 
 ### componentsOptions.share.services
 
 - Type: `(string | ShareService)[]`
 - Details:
-  - [Guide → Share → Setting component](./guide/share.md#setting-component)
+  - [Guide → Share → Setting component](./guide/utilities/share.md#setting-component)
 
 Share services
 
@@ -103,7 +107,7 @@ Twitter username.
 
 - Required: No
 - Details:
-  - [Guide → FontIcon](./guide/fonticon.md)
+  - [Guide → FontIcon](./guide/utilities/font-icon.md)
 
 Link of font icon asset, `'iconfont'` and `'fontawesome'` keywords are supported.
 
@@ -112,7 +116,7 @@ Link of font icon asset, `'iconfont'` and `'fontawesome'` keywords are supported
 - Type: `string`
 - Default: Inferred from assets
 - Details:
-  - [Guide → FontIcon](./guide/fonticon.md)
+  - [Guide → FontIcon](./guide/utilities/font-icon.md)
 
 Class prefix of font icon
 
@@ -121,22 +125,13 @@ Class prefix of font icon
 - Type: `string`
 - Required: No
 - Details:
-  - [Guide → PDF → PDFJS](./guide/pdf.md#pdfjs-viewer)
+  - [Guide → PDF → PDFJS](./guide/media/p-d-f.md#pdfjs-viewer)
 
 Location to pdfjs viewer.
 
 ## rootComponents
 
 Components to be mounted at root.
-
-### rootComponents.addThis
-
-- Type: `string | false`
-- Default: `false`
-- Details:
-  - [Guide → AddThis](./guide/addthis.md#usage)
-
-Public ID of addThis.
 
 ### rootComponents.backToTop
 
@@ -162,7 +157,7 @@ Public ID of addThis.
 
 - Default: `false`
 - Details:
-  - [Guide → BackToTop](./guide/backtotop.md)
+  - [Guide → BackToTop](./guide/utilities/back-to-top.md)
 
 Whether enabling backToTop button. When setting a number, it will be used as BackToTop button threshold distance (in pixels), default is 300.
 
@@ -241,7 +236,7 @@ Whether enabling backToTop button. When setting a number, it will be used as Bac
 
 - Required: No
 - Details:
-  - [Guide → Notice](./guide/notice.md)
+  - [Guide → Notice](./guide/utilities/notice.md)
 
 Config for global notice.
 

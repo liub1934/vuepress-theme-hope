@@ -1,14 +1,17 @@
 import type { Page, PluginFunction } from "@vuepress/core";
-import { colors, getDirname, path } from "@vuepress/utils";
-import { checkVersion, getLocales, isFunction } from "vuepress-shared/node";
+import { colors } from "@vuepress/utils";
+import {
+  addViteSsrNoExternal,
+  checkVersion,
+  getLocales,
+  isFunction,
+} from "vuepress-shared/node";
 
-import { convertOptions } from "./compact/index.js";
+import { convertOptions } from "./compact.js";
 import { copyrightLocales } from "./locales.js";
 import type { CopyrightOptions } from "./options.js";
-import { PLUGIN_NAME, logger } from "./utils.js";
+import { CLIENT_FOLDER, PLUGIN_NAME, logger } from "./utils.js";
 import type { CopyrightPluginPageData } from "../shared/index.js";
-
-const __dirname = getDirname(import.meta.url);
 
 export const copyrightPlugin =
   (options: CopyrightOptions, legacy = true): PluginFunction =>
@@ -17,7 +20,7 @@ export const copyrightPlugin =
     if (legacy)
       convertOptions(options as CopyrightOptions & Record<string, unknown>);
 
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.67");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-rc.0");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
@@ -79,6 +82,10 @@ export const copyrightPlugin =
         };
       },
 
-      clientConfigFile: path.resolve(__dirname, "../client/config.js"),
+      extendsBundlerOptions: (bundlerOptions: unknown, app): void => {
+        addViteSsrNoExternal(bundlerOptions, app, "vuepress-shared");
+      },
+
+      clientConfigFile: `${CLIENT_FOLDER}config.js`,
     };
   };

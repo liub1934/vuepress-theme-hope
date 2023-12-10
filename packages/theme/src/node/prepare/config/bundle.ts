@@ -1,12 +1,11 @@
-import { createRequire } from "node:module";
-
 import type { App } from "@vuepress/core";
-import { path } from "@vuepress/utils";
+import { getRealPath } from "vuepress-shared/node";
 
+import { ArticleInfoType } from "../../../shared/index.js";
 import type { ThemeStatus } from "../../config/index.js";
 import { BUNDLE_FOLDER } from "../../utils.js";
 
-const require = createRequire(import.meta.url);
+const { url } = import.meta;
 
 /**
  * @private
@@ -23,11 +22,25 @@ export const prepareBundleConfigFile = (
 
   if (enableAutoCatalog) {
     imports.push(
-      `import { defineAutoCatalogIconComponent } from "${path.resolve(
-        require.resolve("vuepress-plugin-auto-catalog/client"),
+      `import { defineAutoCatalogGetter } from "${getRealPath(
+        "vuepress-plugin-auto-catalog/client",
+        url,
       )}"`,
+      `import { h } from "vue"`,
     );
-    actions.push(`defineAutoCatalogIconComponent(HopeIcon);`);
+    actions.push(`\
+defineAutoCatalogGetter((meta) => {
+  const title = meta.${ArticleInfoType.title};
+  const shouldIndex = meta.${ArticleInfoType.index} !== false;
+  const icon = meta.${ArticleInfoType.icon};
+
+  return shouldIndex ? {
+    title,
+    content: icon ? () =>[h(HopeIcon, { icon }), title] : null,
+    order: meta.${ArticleInfoType.order},
+    index: meta.${ArticleInfoType.index},
+  } : null;
+});`);
   }
 
   if (enableBlog) {
@@ -57,8 +70,9 @@ export const prepareBundleConfigFile = (
 
   if (enableSlide) {
     imports.push(
-      `import Slide from "${path.resolve(
-        require.resolve("vuepress-plugin-md-enhance/SlidePage"),
+      `import Slide from "${getRealPath(
+        "vuepress-plugin-md-enhance/SlidePage",
+        url,
       )}";`,
     );
     layouts.push("Slide,");
@@ -68,9 +82,7 @@ export const prepareBundleConfigFile = (
     `theme-hope/config.js`,
     `\
 import { defineClientConfig } from "@vuepress/client";
-import { VPLink } from "${path.resolve(
-      require.resolve("vuepress-shared/client"),
-    )}";
+import { VPLink } from "${getRealPath("vuepress-shared/client", url)}";
 
 import { HopeIcon, Layout, NotFound, useScrollPromise, injectDarkmode, setupDarkmode, setupSidebarItems } from "${BUNDLE_FOLDER}export.js";
 

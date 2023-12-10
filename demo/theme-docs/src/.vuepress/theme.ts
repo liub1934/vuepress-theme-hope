@@ -16,7 +16,7 @@ export default hopeTheme(
 
     iconAssets: "fontawesome-with-brands",
 
-    logo: "/logo.svg",
+    logo: "https://theme-hope-assets.vuejs.press/logo.svg",
 
     repo: "vuepress-theme-hope/vuepress-theme-hope",
 
@@ -76,12 +76,17 @@ export default hopeTheme(
         categoryId: "DIC_kwDOG_Pt2M4COD69",
       },
 
+      components: {
+        components: ["Badge", "VPCard"],
+      },
+
       // All features are enabled for demo, only preserve features you need here
       mdEnhance: {
         align: true,
         attrs: true,
         chart: true,
         codetabs: true,
+        component: true,
         demo: true,
         echarts: true,
         figure: true,
@@ -96,7 +101,9 @@ export default hopeTheme(
         playground: {
           presets: ["ts", "vue"],
         },
-        presentation: ["highlight", "math", "search", "notes", "zoom"],
+        revealJs: {
+          plugins: ["highlight", "math", "search", "notes", "zoom"],
+        },
         stylize: [
           {
             matcher: "Recommended",

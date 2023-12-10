@@ -105,8 +105,12 @@ export const getDateInfo = (
         info: isDate
           ? { year: detail.year, month: detail.month, day: detail.day }
           : isTime
-          ? { hour: detail.hour, minute: detail.minute, second: detail.second }
-          : detail,
+            ? {
+                hour: detail.hour,
+                minute: detail.minute,
+                second: detail.second,
+              }
+            : detail,
         type: isTime ? "time" : isDate ? "date" : "full",
       };
     }
@@ -135,8 +139,8 @@ export const compareDate = (
     typeof dateB === "number" ? new Date(dateB) : dateB,
   );
 
-  if (!parsedDateA || !parsedDateA.value) return 1;
-  if (!parsedDateB || !parsedDateB.value) return -1;
+  if (!parsedDateA?.value) return parsedDateB?.value ? 1 : 0;
+  if (!parsedDateB?.value) return -1;
 
   return parsedDateB.value.getTime() - parsedDateA.value.getTime();
 };
@@ -199,3 +203,12 @@ export const injectLocalizedDate = (
       );
     }
 };
+
+export const getDateString = (date: Date): string =>
+  dayjs(date).format("YYYY-MM-DD");
+
+export const getTimeString = (date: Date): string =>
+  dayjs(date).format("HH:mm:ss");
+
+export const getFullDateString = (date: Date): string =>
+  dayjs(date).format("YYYY-MM-DD HH:mm:ss");

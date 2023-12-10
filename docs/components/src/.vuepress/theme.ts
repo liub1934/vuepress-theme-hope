@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { fs, theme } from "docs-shared";
+import { AVAILABLE_SERVICES } from "vuepress-plugin-components";
 
 const { version } = fs.readJsonSync(
   createRequire(import.meta.url).resolve(
@@ -86,7 +87,9 @@ export default theme("components", {
         "Share",
         "SiteInfo",
         "StackBlitz",
-        // "VidStack",
+        "VPBanner",
+        "VPCard",
+        "VidStack",
         "VideoPlayer",
         "XiGua",
         "YouTube",
@@ -96,10 +99,12 @@ export default theme("components", {
         pdf: {
           pdfjs: "/assets/lib/pdfjs/",
         },
+        share: {
+          services: AVAILABLE_SERVICES,
+        },
       },
 
       rootComponents: {
-        addThis: "ra-5f829c59e6c6bc9a",
         ...(IS_NETLIFY
           ? {}
           : {
@@ -133,6 +138,7 @@ export default theme("components", {
 
     mdEnhance: {
       codetabs: true,
+      demo: true,
       imgMark: true,
       include: true,
     },

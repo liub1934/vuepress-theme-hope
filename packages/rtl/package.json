@@ -1,13 +1,12 @@
 {
   "name": "vuepress-plugin-rtl",
-  "version": "2.0.0-beta.236",
+  "version": "2.0.0-rc.3",
   "description": "rtl plugin for VuePress",
   "keywords": [
     "vuepress",
     "vuepress2",
     "vuepress-plugin",
-    "rtl",
-    "mr-hope"
+    "rtl"
   ],
   "homepage": "https://plugin-rtl.vuejs.press",
   "bugs": {
@@ -29,8 +28,8 @@
     ".": "./lib/node/index.js",
     "./package.json": "./package.json"
   },
-  "main": "lib/node/index.js",
-  "types": "lib/node/index.d.ts",
+  "main": "./lib/node/index.js",
+  "types": "./lib/node/index.d.ts",
   "files": [
     "lib"
   ],
@@ -41,24 +40,25 @@
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
   "engines": {
-    "node": ">=16.19.0",
+    "node": ">=18.16.0",
     "npm": ">=8",
-    "pnpm": ">=7"
+    "pnpm": ">=7",
+    "yarn": ">=2"
   },
   "dependencies": {
-    "@vuepress/client": "2.0.0-beta.67",
-    "@vuepress/shared": "2.0.0-beta.67",
-    "@vuepress/utils": "2.0.0-beta.67",
-    "vue": "^3.3.4",
+    "@vuepress/client": "2.0.0-rc.0",
+    "@vuepress/shared": "2.0.0-rc.0",
+    "@vuepress/utils": "2.0.0-rc.0",
+    "vue": "^3.3.11",
     "vuepress-shared": "workspace:*"
   },
   "devDependencies": {
-    "@vuepress/core": "2.0.0-beta.67"
+    "@vuepress/core": "2.0.0-rc.0"
   },
   "peerDependencies": {
-    "vuepress": "2.0.0-beta.67",
-    "vuepress-vite": "2.0.0-beta.67",
-    "vuepress-webpack": "2.0.0-beta.67"
+    "vuepress": "2.0.0-rc.0",
+    "vuepress-vite": "2.0.0-rc.0",
+    "vuepress-webpack": "2.0.0-rc.0"
   },
   "peerDependenciesMeta": {
     "vuepress": {

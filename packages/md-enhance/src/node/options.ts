@@ -1,5 +1,4 @@
 import type { LocaleConfig } from "@vuepress/core";
-import type { MermaidConfig } from "mermaid";
 
 import type {
   AttrsOptions,
@@ -10,7 +9,7 @@ import type {
   MarkdownEnhanceLocaleData,
   MathjaxOptions,
   PlaygroundOptions,
-  RevealPlugin,
+  RevealJsOptions,
   StylizeOptions,
   TSPresetPlaygroundOptions,
   TasklistOptions,
@@ -60,31 +59,33 @@ export interface MarkdownEnhanceOptions {
   gfm?: boolean;
 
   /**
-   * Whether to enable custom container including
+   * Whether to enable hint container including
    *
+   * - important
    * - info
    * - note
    * - tip
    * - warning
-   * - danger
+   * - caution
    * - details
    *
    * ⚠ The last 4 items conflict with default theme and will override it’s style.
    *
-   * 是否启用自定义容器
+   * 是否启用提示容器
    *
+   * - important
    * - info
    * - note
    * - tip
    * - warning
-   * - danger
+   * - caution
    * - details
    *
    * ⚠ 最后四个会和默认主题冲突，且会覆盖默认主题的样式与行为。
    *
    * @default false
    */
-  container?: boolean;
+  hint?: boolean;
 
   /**
    * Whether to enable v-pre wrapper.
@@ -116,6 +117,15 @@ export interface MarkdownEnhanceOptions {
    * @default false
    */
   linkify?: boolean;
+
+  /**
+   * Wether enable gfm alerts
+   *
+   * 是否启用 gfm 警告
+   *
+   * @default false
+   */
+  alert?: boolean;
 
   /**
    * Whether to enable tabs.
@@ -288,13 +298,13 @@ export interface MarkdownEnhanceOptions {
   mathjax?: MathjaxOptions | boolean;
 
   /**
-   * Whether to enable card support
+   * Whether to enable component support
    *
-   * 是否启用卡片支持
+   * 是否启用组件支持
    *
    * @default false
    */
-  card?: boolean;
+  component?: boolean;
 
   /**
    * Whether to enable chart support
@@ -319,11 +329,18 @@ export interface MarkdownEnhanceOptions {
    *
    * 是否启用 flowchart 流程图支持
    *
-   * @deprecated The lib is lack of maintenance, use mermaid instead.
-   *
    * @default false
    */
   flowchart?: boolean;
+
+  /**
+   * Whether to enable markmap support
+   *
+   * 是否启用 markmap 流程图支持
+   *
+   * @default false
+   */
+  markmap?: boolean;
 
   /**
    * Whether to enable mermaid support
@@ -332,7 +349,7 @@ export interface MarkdownEnhanceOptions {
    *
    * @default false
    */
-  mermaid?: MermaidConfig | boolean;
+  mermaid?: boolean;
 
   /**
    * Whether to enable code-demo support
@@ -344,13 +361,13 @@ export interface MarkdownEnhanceOptions {
   demo?: Partial<CodeDemoOptions> | boolean;
 
   /**
-   * Whether to enable presentation support
+   * Whether to enable reveal.js support
    *
-   * 是否启用幻灯片支持
+   * 是否启用 Reveal.js 支持
    *
    * @default false
    */
-  presentation?: RevealPlugin[] | boolean;
+  revealJs?: RevealJsOptions | boolean;
 
   /**
    * Keyword enhancement
@@ -374,6 +391,15 @@ export interface MarkdownEnhanceOptions {
       unocss?: UnoPresetPlaygroundOptions;
     };
   };
+
+  /**
+   * Whether to enable kotlin playground support
+   *
+   * 是否启用 kotlin Playground 支持
+   *
+   * @default false
+   */
+  kotlinPlayground?: boolean;
 
   /**
    * Whether to enable vue playground support

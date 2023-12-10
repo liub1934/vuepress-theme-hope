@@ -306,9 +306,14 @@ Options used to create index per locale.
     loading: string;
 
     /**
-     * Search history text
+     * Search query history title
      */
-    history: string;
+    queryHistory: string;
+
+    /**
+     * Search result history title
+     */
+    resultHistory: string;
 
     /**
      * Search history empty hint
@@ -358,7 +363,7 @@ Multilingual configuration of the search plugin.
 
 ### defineSearchConfig
 
-Customize [search options](https://mister-hope.github.io/slimsearch/types/SearchOptions.html).
+Customize [search options](https://mister-hope.github.io/slimsearch/interfaces/SearchOptions.html).
 
 ```ts
 // .vuepress/client.ts
@@ -424,7 +429,5 @@ export interface SearchWorker {
   terminate: () => void;
 }
 
-declare const createSearchWorker: (
-  options: SearchWorkerOptions,
-) => SearchWorker;
+declare const createSearchWorker: () => SearchWorker;
 ```

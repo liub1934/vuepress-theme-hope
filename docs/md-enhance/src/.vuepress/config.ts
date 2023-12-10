@@ -33,12 +33,14 @@ export default config(
     alias: {
       "@FlowChartPlayground": path.resolve(
         __dirname,
-        "./components/FlowChartPlayground",
+        "./components/FlowChartPlayground.js",
       ),
       "@KatexPlayground": path.resolve(
         __dirname,
-        "./components/KatexPlayground",
+        "./components/KatexPlayground.js",
       ),
     },
+
+    clientConfigFile: path.resolve(__dirname, "./client.ts"),
   },
 );

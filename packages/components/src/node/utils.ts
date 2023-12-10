@@ -1,5 +1,9 @@
 import { getDirname, path } from "@vuepress/utils";
-import { Logger, ensureEndingSlash } from "vuepress-shared/node";
+import {
+  Logger,
+  checkInstalled,
+  ensureEndingSlash,
+} from "vuepress-shared/node";
 
 import type { AvailableComponent } from "./options/index.js";
 
@@ -17,11 +21,20 @@ export const AVAILABLE_COMPONENTS: AvailableComponent[] = [
   "Share",
   "SiteInfo",
   "StackBlitz",
+  "VPBanner",
+  "VPCard",
   "VidStack",
   "VideoPlayer",
   "XiGua",
   "YouTube",
 ];
+
+export const COMPONENT_PKG: Record<string, string[]> = {
+  ArtPlayer: ["artplayer"],
+  AudioPlayer: ["plyr"],
+  VidStack: ["vidstack"],
+  VideoPlayer: ["plyr"],
+};
 
 export const CLIENT_FOLDER = ensureEndingSlash(
   path.resolve(__dirname, "../client"),
@@ -30,3 +43,14 @@ export const CLIENT_FOLDER = ensureEndingSlash(
 export const PLUGIN_NAME = "vuepress-plugin-components";
 
 export const logger = new Logger(PLUGIN_NAME);
+
+export const isInstalled = (pkg: string, hint = true): boolean => {
+  const isInstalled = checkInstalled(pkg, import.meta.url);
+
+  if (hint && !isInstalled)
+    logger.error(
+      `Package ${pkg} is not installed, please install it manually!`,
+    );
+
+  return isInstalled;
+};

@@ -1,4 +1,5 @@
 import { getDirname, theme, path } from "docs-shared";
+import { AVAILABLE_SERVICES } from "vuepress-plugin-components";
 import { enNavbarConfig, zhNavbarConfig } from "./navbar/index.js";
 import { enSidebarConfig, zhSidebarConfig } from "./sidebar/index.js";
 
@@ -48,7 +49,6 @@ export default theme("theme", {
     components: {
       components: [
         "ArtPlayer",
-        "AudioPlayer",
         "Badge",
         "BiliBili",
         "CodePen",
@@ -57,14 +57,17 @@ export default theme("theme", {
         "Share",
         "SiteInfo",
         "StackBlitz",
-        // "VidStack",
-        "VideoPlayer",
-        "YouTube",
+        "VPBanner",
+        "VPCard",
+        "VidStack",
       ],
 
       componentOptions: {
         pdf: {
           pdfjs: "/assets/lib/pdfjs/",
+        },
+        share: {
+          services: AVAILABLE_SERVICES,
         },
       },
 
@@ -112,11 +115,12 @@ export default theme("theme", {
     },
 
     mdEnhance: {
+      alert: true,
       align: true,
       attrs: true,
-      card: true,
       chart: true,
       codetabs: true,
+      component: true,
       demo: true,
       echarts: true,
       figure: true,
@@ -126,23 +130,60 @@ export default theme("theme", {
       imgMark: true,
       imgSize: true,
       include: {
-        resolvePath: (file, cwd) => {
-          if (file.startsWith("@echarts"))
+        deep: true,
+        resolvePath: (file) => {
+          if (file.startsWith("@components/"))
+            return file.replace(
+              "@components",
+              path.resolve(__dirname, "../../../components/src"),
+            );
+
+          if (file.startsWith("@echarts/"))
             return file.replace(
               "@echarts",
-              path.resolve(__dirname, "../echarts"),
+              path.resolve(__dirname, "../../../md-enhance/src/echarts"),
+            );
+
+          if (file.startsWith("@md-enhance/"))
+            return file.replace(
+              "@md-enhance",
+              path.resolve(__dirname, "../../../md-enhance/src"),
+            );
+
+          if (file.startsWith("@pwa/"))
+            return file.replace(
+              "@pwa",
+              path.resolve(__dirname, "../../../pwa2/src"),
             );
 
           return file;
         },
       },
+      kotlinPlayground: true,
       mathjax: true,
       mark: true,
+      markmap: true,
       mermaid: true,
       playground: {
         presets: ["ts", "vue", "unocss"],
       },
-      presentation: ["highlight", "math", "search", "notes", "zoom"],
+      revealJs: {
+        plugins: ["highlight", "math", "search", "notes", "zoom"],
+        themes: [
+          "auto",
+          "beige",
+          "black",
+          "blood",
+          "league",
+          "moon",
+          "night",
+          "serif",
+          "simple",
+          "sky",
+          "solarized",
+          "white",
+        ],
+      },
       stylize: [
         {
           matcher: "Recommended",

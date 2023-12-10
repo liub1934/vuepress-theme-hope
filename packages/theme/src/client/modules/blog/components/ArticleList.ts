@@ -1,7 +1,14 @@
 import type { PropType, VNode } from "vue";
-import { computed, defineComponent, h, onMounted, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  h,
+  nextTick,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { updatePageview } from "vuepress-plugin-comment2/pageview";
 
 import DropTransition from "@theme-hope/components/transitions/DropTransition";
 import ArticleItem from "@theme-hope/modules/blog/components/ArticleItem";
@@ -49,32 +56,40 @@ export default defineComponent({
       ),
     );
 
-    const updatePage = (page: number): void => {
+    const updatePage = async (page: number): Promise<void> => {
       currentPage.value = page;
 
       const query = { ...route.query };
 
-      if (query["page"] === page.toString() || (page === 1 && !query["page"]))
-        return;
-      if (page === 1) delete query["page"];
-      else query["page"] = page.toString();
+      const needUpdate = !(
+        query["page"] === page.toString() || // page equal as query
+        // page is 1 and query is empty
+        (page === 1 && !query["page"])
+      );
 
-      void router.push({ path: route.path, query }).then(() => {
-        updatePageview();
-      });
+      if (needUpdate) {
+        if (page === 1) delete query["page"];
+        else query["page"] = page.toString();
+
+        await router.push({ path: route.path, query });
+      }
+
+      if (SUPPORT_PAGEVIEW) {
+        await nextTick();
+        const { updatePageview } = await import(
+          /* webpackChunkName: "pageview" */ "vuepress-plugin-comment2/pageview"
+        );
+
+        await updatePageview();
+      }
     };
 
     onMounted(() => {
       const { page } = route.query;
 
-      updatePage(page ? Number(page) : 1);
+      console.log("mounted");
 
-      if (SUPPORT_PAGEVIEW)
-        void import(
-          /* webpackChunkName: "pageview" */ "vuepress-plugin-comment2/pageview"
-        ).then(({ updatePageview }) => {
-          updatePageview();
-        });
+      void updatePage(page ? Number(page) : 1);
 
       watch(currentPage, () => {
         // list top border distance
@@ -86,20 +101,12 @@ export default defineComponent({
           window.scrollTo(0, distance);
         }, 100);
       });
-
-      // FIXME: Workaround for https://github.com/vuepress/vuepress-next/issues/1249
-      watch(
-        () => route.query,
-        ({ page }) => {
-          updatePage(page ? Number(page) : 1);
-        },
-      );
     });
 
     return (): VNode =>
       h(
         "div",
-        { id: "article-list", class: "vp-article-list" },
+        { id: "article-list", class: "vp-article-list", role: "feed" },
         currentArticles.value.length
           ? [
               ...currentArticles.value.map(({ info, path }, index) =>

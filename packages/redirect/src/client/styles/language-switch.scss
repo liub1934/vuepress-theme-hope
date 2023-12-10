@@ -10,12 +10,12 @@
 
 .lang-modal-mask {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 1499;
 
-  width: 100vw;
-  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   backdrop-filter: blur(10px);
 
@@ -25,11 +25,7 @@
 }
 
 .lang-modal-wrapper {
-  position: fixed;
-  top: 80px;
-  top: 50vh;
-  right: 50vw;
-  left: unset;
+  position: relative;
   z-index: 1500;
 
   overflow: hidden;
@@ -40,12 +36,6 @@
 
   background: var(--vp-bg);
   box-shadow: 0 2px 6px 0 var(--card-shadow);
-
-  transform: translate(50%, -50%);
-
-  @media print {
-    display: none;
-  }
 }
 
 .lang-modal-action {
