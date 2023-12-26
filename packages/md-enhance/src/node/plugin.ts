@@ -22,6 +22,7 @@ import {
   addCustomElement,
   addViteOptimizeDepsExclude,
   addViteOptimizeDepsInclude,
+  addViteOptimizeDepsNeedsInterop,
   addViteSsrExternal,
   addViteSsrNoExternal,
   chainWebpack,
@@ -168,7 +169,7 @@ export const mdEnhancePlugin =
           logger.warn(
             `Found unicode character ${token.text} inside tex${
               filePathRelative ? ` in ${colors.cyan(filePathRelative)}` : ""
-            }. You should use ${colors.magenta(`\\text{${token.text}}`)}`,
+            }. You should use ${colors.magenta(`\\text{${token.text}`)}`,
           );
         else
           logger.warn(
@@ -285,6 +286,11 @@ export const mdEnhancePlugin =
 
         if (status.kotlinPlayground) {
           addViteOptimizeDepsInclude(bundlerOptions, app, "kotlin-playground");
+          addViteOptimizeDepsNeedsInterop(
+            bundlerOptions,
+            app,
+            "kotlin-playground",
+          );
           addViteSsrExternal(bundlerOptions, app, "kotlin-playground");
         }
 

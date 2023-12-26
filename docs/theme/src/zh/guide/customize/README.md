@@ -2,9 +2,9 @@
 title: 自定义
 icon: gear
 dir:
-  order: 7
+  order: 8
 category:
-  - 教程知识
+  - 教程
   - 自定义
 tag:
   - 自定义
@@ -35,8 +35,6 @@ tag:
 - [自定义字体](font.md)
 
 - [自定义特效](effect.md)
-
-- [添加组件](component.md)
 
 - [自定义布局](layout.md)
 
