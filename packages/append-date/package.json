@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-append-date",
-  "version": "2.0.0-rc.6",
+  "version": "2.0.0-rc.29",
   "description": "append-date plugin for VuePress",
   "keywords": [
     "vuepress",
@@ -35,37 +35,23 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.ts --configPlugin esbuild",
-    "clean": "rimraf ./lib ./*.tsbuildinfo",
+    "clean": "rimraf --glob ./lib ./*.tsbuildinfo",
     "dev": "pnpm dev:ts",
     "dev:ts": "tsc -b tsconfig.build.json --watch"
+  },
+  "dependencies": {
+    "@vuepress/helper": "2.0.0-rc.18",
+    "vuepress-shared": "workspace:*"
+  },
+  "peerDependencies": {
+    "@vuepress/plugin-git": "2.0.0-rc.15",
+    "vuepress": "2.0.0-rc.8"
   },
   "engines": {
     "node": ">=18.16.0",
     "npm": ">=8",
     "pnpm": ">=7",
     "yarn": ">=2"
-  },
-  "dependencies": {
-    "@vuepress/core": "2.0.0-rc.0",
-    "@vuepress/utils": "2.0.0-rc.0",
-    "vuepress-shared": "workspace:*"
-  },
-  "peerDependencies": {
-    "@vuepress/plugin-git": "2.0.0-rc.0",
-    "vuepress": "2.0.0-rc.0",
-    "vuepress-vite": "2.0.0-rc.0",
-    "vuepress-webpack": "2.0.0-rc.0"
-  },
-  "peerDependenciesMeta": {
-    "vuepress": {
-      "optional": true
-    },
-    "vuepress-vite": {
-      "optional": true
-    },
-    "vuepress-webpack": {
-      "optional": true
-    }
   },
   "publishConfig": {
     "access": "public"

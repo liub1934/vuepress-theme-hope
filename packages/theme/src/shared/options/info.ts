@@ -16,7 +16,14 @@ export interface InfoOptions {
   author?: Author;
 
   /**
-   * domain which to be deployed to
+   * Global default license
+   *
+   * 全局默认协议
+   */
+  license?: string;
+
+  /**
+   * Domain which to be deployed to
    *
    * 网站部署域名
    */

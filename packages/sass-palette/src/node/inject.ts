@@ -3,20 +3,21 @@ import type {
   LoaderOptions,
   WebpackBundlerOptions,
 } from "@vuepress/bundler-webpack";
-import type { App } from "@vuepress/core";
 import {
   getBundlerName,
   isFunction,
   isString,
   mergeViteConfig,
-} from "vuepress-shared/node";
+} from "@vuepress/helper";
+import type { App } from "vuepress/core";
 
-type LoaderContext = Exclude<
-  LoaderOptions["additionalData"],
-  string | undefined
-> extends (content: string, loaderContext: infer T) => string
-  ? T
-  : never;
+type LoaderContext =
+  Exclude<LoaderOptions["additionalData"], string | undefined> extends (
+    content: string,
+    loaderContext: infer T,
+  ) => string
+    ? T
+    : never;
 
 /**
  * Use "additionalData" to make `${id}-config` available in scss
@@ -32,7 +33,7 @@ export const injectConfigModule = (
 ): void => {
   const bundlerName = getBundlerName(app);
 
-  // for vite
+  // For vite
   if (bundlerName === "vite") {
     const viteBundlerConfig = <ViteBundlerOptions>config;
 
@@ -76,7 +77,7 @@ export const injectConfigModule = (
     );
   }
 
-  // for webpack
+  // For webpack
   else if (bundlerName === "webpack") {
     const webpackBundlerConfig = <WebpackBundlerOptions>config;
 

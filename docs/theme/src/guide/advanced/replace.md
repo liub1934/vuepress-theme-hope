@@ -21,9 +21,8 @@ You need to replace the component alias used in the theme with `alias` option in
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -50,9 +49,8 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
-import { getDirname, path } from "@vuepress/utils";
+```js title=".vuepress/config.js"
+import { getDirname, path } from "vuepress/utils";
 import { hopeTheme } from "vuepress-theme-hope";
 
 const __dirname = getDirname(import.meta.url);
@@ -249,9 +247,8 @@ For example, if your site has strong social attributes, and you want to display 
 
 @tab config.ts
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -303,7 +300,7 @@ Components that provide slots are as follows:
 - `HeroInfo`: `heroImage`, `heroInfo`, `heroBg`
 
   - `heroInfo` slot will receive `text` `tagline` and `isFullScreen` props.
-  - `heroImage` slot will receive `image` `imageDark` `heroStyle` `alt` and `isFullScreen` props.
+  - `heroImage` slot will receive `image` `imageDark` `style` `alt` and `isFullScreen` props.
   - `heroBg` slot will receive `image` `bgStyle` and `isFullScreen` props.
 
 - `HomePage`: `top`, `center`, `bottom`
@@ -320,7 +317,7 @@ Components that provide slots are as follows:
 
 - `BlogHero`: `heroBg`, `heroInfo`
 
-  - `heroInfo` slot will receive `text` `tagline` `image` `imageDark` `heroStyle` `alt` and `isFullScreen` props.
+  - `heroInfo` slot will receive `text` `tagline` `image` `imageDark` `style` `alt` and `isFullScreen` props.
   - `heroBg` slot will receive `image` `bgStyle` and `isFullScreen` props.
 
 **NavBar**:

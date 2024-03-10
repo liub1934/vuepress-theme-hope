@@ -1,4 +1,4 @@
-import type { ThemeFunction } from "@vuepress/core";
+import type { ThemeFunction } from "vuepress/core";
 import type { ThemeOptions } from "vuepress-theme-hope";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -9,6 +9,8 @@ const IS_GITHUB = !IS_GITEE && !IS_NETLIFY;
 export const theme = (
   name: string,
   { plugins = {}, ...options }: ThemeOptions,
+  base = name.replace(/\d+$/, ""),
+  indexName?: string,
 ): ThemeFunction => {
   const subdomain =
     name === "theme"
@@ -45,7 +47,7 @@ export const theme = (
     navbarLayout: {
       start: ["Brand"],
       center: ["Links"],
-      end: ["Language", "Repo", "TelegramLink", "Outlook", "Search"],
+      end: ["Language", "SocialLink", "Repo", "Outlook", "Search"],
     },
 
     copyright: "MIT Licensed | Copyright © 2019-present Mr.Hope",
@@ -95,6 +97,17 @@ export const theme = (
               ],
             },
           },
+
+      docsearch: {
+        appId: "VXIEHELDL1",
+        apiKey: "595796f71b6ba14326719682c3738c0c",
+        indexName: `vuepress-theme-hope-${indexName || name}`,
+        indexBase: base ? `/v2/${base}/` : "/v2/",
+      },
+
+      prismjs: false,
+
+      redirect: { switchLocale: "modal" },
 
       seo: hostname === canonical ? {} : { canonical },
 

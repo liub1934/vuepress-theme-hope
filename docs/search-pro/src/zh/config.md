@@ -34,7 +34,7 @@ icon: gears
     /**
      * 自定义项目的获取器
      */
-    getter: (page: Page) => string | string[] | null;
+    getter: (page: Page) => string[] | string | null | undefined;
 
     /**
      * 展示的内容
@@ -169,6 +169,13 @@ export default defineUserConfig({
 
 :::
 
+### filter
+
+- 类型: `(page: Page) => boolean`
+- 默认值: `() => true`
+
+用于过滤页面的函数。
+
 ### sortStrategy
 
 - 类型: `"max" | "total"`
@@ -205,7 +212,7 @@ export default defineUserConfig({
 - 类型: `SearchProIndexOptions`
 
   ```ts
-  export interface SearchProIndexOptions {
+  interface SearchProIndexOptions {
     /**
      * 用于对索引字段项进行分词的函数。
      */
@@ -228,7 +235,7 @@ export default defineUserConfig({
 - 类型: `Record<string, SearchProIndexOptions>`
 
   ```ts
-  export interface SearchProIndexOptions {
+  interface SearchProIndexOptions {
     /**
      * 用于对索引字段项进行分词的函数。
      */
@@ -341,8 +348,44 @@ export default defineUserConfig({
 
 自定义 [搜索选项](https://mister-hope.github.io/slimsearch/interfaces/SearchOptions.html)。
 
+我们还额外支持以下选项：
+
 ```ts
-// .vuepress/client.ts
+interface SearchLocaleOptions
+  extends Omit<
+    SearchOptions,
+    // These are handled internally
+    | "fields"
+    // These can not pass to worker
+    | "filter"
+    | "boostDocument"
+    | "tokenize"
+    | "processTerm"
+  > {
+  /** 一个过滤建议的函数 */
+  suggestionsFilter?: (
+    suggestions: string[],
+    query: string,
+    locale: string,
+    pageData: PageData,
+  ) => string[];
+
+  /** 一个过滤搜素结果的函数 */
+  searchFilter?: (
+    results: SearchResult[],
+    query: string,
+    locale: string,
+    pageData: PageData,
+  ) => SearchResult[];
+}
+
+interface SearchOptions extends SearchLocaleOptions {
+  /** 基于每个语言来设置选项 */
+  locales?: Record<string, SearchLocaleOptions>;
+}
+```
+
+```ts title=".vuepress/client.ts"
 import { defineSearchConfig } from "vuepress-plugin-search-pro/client";
 
 defineSearchConfig({
@@ -357,53 +400,90 @@ export default {};
 创建一个搜索 Worker 以便你可以通过 API 搜索。
 
 ```ts
-export type Word = [tag: string, content: string] | string;
+type Word = [tag: string, content: string] | string;
 
-export interface TitleMatchedItem {
+interface TitleMatchedItem {
   type: "title";
   id: string;
   display: Word[];
 }
 
-export interface HeadingMatchedItem {
+interface HeadingMatchedItem {
   type: "heading";
   id: string;
   display: Word[];
 }
 
-export interface CustomMatchedItem {
+interface CustomMatchedItem {
   type: "custom";
   id: string;
   index: string;
   display: Word[];
 }
 
-export interface ContentMatchedItem {
+interface ContentMatchedItem {
   type: "content";
   id: string;
   header: string;
   display: Word[];
 }
 
-export type MatchedItem =
+type MatchedItem =
   | TitleMatchedItem
   | HeadingMatchedItem
   | ContentMatchedItem
   | CustomMatchedItem;
 
-export interface SearchResult {
+interface SearchResult {
   title: string;
   contents: MatchedItem[];
 }
 
-export interface SearchWorker {
+interface SearchWorker {
+  /**
+   * 同时获取建议和结果
+   *
+   * @param query - 搜素词
+   * @param localePath - 语言路径
+   * @param options - 搜素选项
+   */
+  all: (
+    query: string,
+    localePath?: string,
+    options?: SearchOptions<string, IndexItem>,
+  ) => Promise<QueryResult>;
+
+  /**
+   * 获取建议
+   *
+   * @param query - 搜素词
+   * @param localePath - 语言路径
+   * @param options - 搜素选项
+   */
+  suggest: (
+    query: string,
+    localePath?: string,
+    options?: SearchOptions<string, IndexItem>,
+  ) => Promise<string[]>;
+
+  /**
+   * 获取搜索结果
+   *
+   * @param query - 搜素词
+   * @param localePath - 语言路径
+   * @param options - 搜素选项
+   */
   search: (
     query: string,
-    locale: string,
-    searchOptions?: SearchOptions,
+    localePath?: string,
+    options?: SearchOptions<string, IndexItem>,
   ) => Promise<SearchResult[]>;
+
+  /**
+   * 终止当前 worker
+   */
   terminate: () => void;
 }
 
-declare const createSearchWorker: () => SearchWorker;
+const createSearchWorker: () => SearchWorker;
 ```

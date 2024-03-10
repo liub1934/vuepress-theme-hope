@@ -1,6 +1,7 @@
 ---
 title: 配置迁移指南
 icon: gears
+order: 2
 category:
   - 迁移
 tag:
@@ -12,8 +13,7 @@ tag:
 
 @tab TS
 
-```diff
-  // .vuepress/config.ts
+```diff title=".vuepress/config.ts"
 - import theme from "vuepress-theme-hope";
 + import { defineUserConfig } from "vuepress";
 + import { hopeTheme } from "vuepress-theme-hope";
@@ -34,8 +34,7 @@ tag:
 
 @tab JS
 
-```diff
-// .vuepress/config.js
+```diff title=".vuepress/config.js"
 - const { config } = require("vuepress-theme-hope");
 + import { hopeTheme } from "vuepress-theme-hope";
 
@@ -189,6 +188,7 @@ tag:
 
 - 新增 `plugins.blog` 控制博客地址
 - 新增 `plugins.nprogress` 控制加载进度条
+- 新增 `plugins.linksCheck` 检查 markdown 死链
 - 新增 `plugins.prismjs` 控制是否启用 Prism.js 高亮代码块
 
 ### 改动
@@ -250,12 +250,6 @@ tag:
   主题现在使用官方插件 `@vuepress/plugin-git`，所以支持选项有变化。 ![警告](https://img.shields.io/badge/-warning-yellow)
 
 - `mdEnhance` 移动至 `plugins.mdEnhance`
-
-  - Markdown 链接检查 ![新增](https://img.shields.io/badge/-新增-brightgreen)
-
-    该插件现在检查你的 Markdown 链接，并在检测到损坏的链接时警告你。
-
-    你可以通过 `plugins.mdEnhance.checkLinks` 选项控制此行为
 
   - 图像标记支持 ![新增](https://img.shields.io/badge/-新增-brightgreen)
 
@@ -339,7 +333,7 @@ tag:
 
   - `plugins.mdEnhance.vPre` ![新增](https://img.shields.io/badge/-新增-brightgreen)
 
-    VuePress 2 从 `@vuepress/core` 中删除了以下容器支持，因此添加了此选项
+    VuePress 2 删除了以下容器支持，因此添加了此选项
 
     ```md
     ::: v-pre
@@ -383,7 +377,7 @@ tag:
 
   - `plugins.pwa.appendBase` ![新增](https://img.shields.io/badge/-新增-brightgreen): 自动向 `manifest` 选项插入 `base`
 
-  - `plugins.pwa.hintComponent` ![新增](https://img.shields.io/badge/-新增-brightgreen): 检测到新内容的提示组件
+  - `plugins.pwa.foundComponent` ![新增](https://img.shields.io/badge/-新增-brightgreen): 检测到新内容的提示组件
 
   - shouldPrefetch 提示 ![新增](https://img.shields.io/badge/-新增-brightgreen): 现在插件将检查配置文件中的 `shouldPrefetch` 选项并警告你禁用它。
 
@@ -391,7 +385,7 @@ tag:
 
     这能有效降低 SW 更新时间
 
-  - `pwa.popupComponent` 重命名为 `plugins.pwa.updateComponent` ![警告](https://img.shields.io/badge/-warning-yellow)
+  - `pwa.popupComponent` 重命名为 `plugins.pwa.readyComponent` ![警告](https://img.shields.io/badge/-warning-yellow)
 
     这是因为我们新增了一个提示弹窗，所以需要避免名称混淆
 

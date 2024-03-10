@@ -1,8 +1,8 @@
-import { useRouteLocale } from "@vuepress/client";
+import { startsWith } from "@vuepress/helper/client";
 import { useDebounceFn } from "@vueuse/core";
 import type { Ref } from "vue";
 import { onMounted, onUnmounted, ref, watch } from "vue";
-import { startsWith } from "vuepress-shared/client";
+import { usePageData, useRouteLocale } from "vuepress/client";
 
 import { enableAutoSuggestions, searchProOptions } from "../define.js";
 import { useSearchOptions } from "../helpers/index.js";
@@ -17,17 +17,24 @@ export const useSearchSuggestions = (query: Ref<string>): SuggestionsRef => {
 
   if (enableAutoSuggestions) {
     const searchOptions = useSearchOptions();
+    const pageData = usePageData();
     const routeLocale = useRouteLocale();
 
     onMounted(() => {
+      const { suggest, terminate } = createSearchWorker();
+
       const performAutoSuggest = useDebounceFn((queryString: string): void => {
         if (queryString)
-          void search({
-            type: "suggest",
-            query: queryString,
-            locale: routeLocale.value,
-            options: searchOptions,
-          })
+          void suggest(queryString, routeLocale.value, searchOptions.value)
+            .then(
+              (suggestions) =>
+                searchOptions.value.suggestionsFilter?.(
+                  suggestions,
+                  queryString,
+                  routeLocale.value,
+                  pageData.value,
+                ) ?? suggestions,
+            )
             .then((_suggestions) => {
               suggestions.value = _suggestions.length
                 ? startsWith(_suggestions[0], queryString) &&
@@ -41,8 +48,6 @@ export const useSearchSuggestions = (query: Ref<string>): SuggestionsRef => {
             });
         else suggestions.value = [];
       }, searchProOptions.suggestDelay);
-
-      const { search, terminate } = createSearchWorker();
 
       watch([query, routeLocale], () => performAutoSuggest(query.value), {
         immediate: true,

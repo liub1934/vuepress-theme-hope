@@ -33,9 +33,8 @@ Override `@theme-hope/modules/blog/components/BlogHero` and import the above com
 
 ::: details Code Example
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 
 const __dirname = getDirname(import.meta.url);
@@ -84,9 +83,8 @@ Override `@theme-hope/modules/blog/components/BlogHero`, import the above compon
 
 ::: details Code Example
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 
 const __dirname = getDirname(import.meta.url);
@@ -128,7 +126,7 @@ import HitokotoBlogHero from "vuepress-theme-hope/presets/HitokotoBlogHero.js";
 Get the running time of the site in footer.
 
 ```ts
-export const setupRunningTimeFooter: (
+const setupRunningTimeFooter: (
   /**
    * The date to calculate the running time
    */
@@ -152,9 +150,8 @@ export const setupRunningTimeFooter: (
 
 ::: details Code Example
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { setupRunningTimeFooter } from "vuepress-theme-hope/presets/footerRunningTime.js";
 
 export default defineClientConfig({
@@ -175,7 +172,7 @@ export default defineClientConfig({
 
 ## Style Related
 
-You can create a client config file `.vuepress/client.{ts,js}` and import the following files through the `import` statement.
+You can create a [client config file](../../cookbook/vuepress/config.md#client-config-file) and import the following files through the `import` statement.
 
 ### Docs
 

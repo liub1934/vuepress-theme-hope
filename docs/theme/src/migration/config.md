@@ -1,6 +1,7 @@
 ---
 title: Config Migration Guide
 icon: gears
+order: 2
 category:
   - Migration
 tag:
@@ -12,8 +13,7 @@ tag:
 
 @tab TS
 
-```diff
-  // .vuepress/config.ts
+```diff title=".vuepress/config.ts"
 - import theme from "vuepress-theme-hope";
 + import { defineUserConfig } from "vuepress";
 + import { hopeTheme } from "vuepress-theme-hope";
@@ -34,8 +34,7 @@ tag:
 
 @tab JS
 
-```diff
-// .vuepress/config.js
+```diff title=".vuepress/config.js"
 - const { config } = require("vuepress-theme-hope");
 + import { hopeTheme } from "vuepress-theme-hope";
 
@@ -190,6 +189,7 @@ Since the theme no longer has a built-in search:
 ### Addition
 
 - Added `plugins.blog` to control blog links
+- Added `plugins.linksCheck` to check Markdown dead links
 - Added `plugins.nprogress` to control nprogress
 - Added `plugins.prismjs` to control Prism.js
 
@@ -252,12 +252,6 @@ Move all plugin related options under `plugins`.
   The theme use official plugin `@vuepress/plugin-git` now. ![warning](https://img.shields.io/badge/-warning-yellow)
 
 - move `mdEnhance` to `plugins.mdEnhance`
-
-  - Markdown link check ![New](https://img.shields.io/badge/-New-brightgreen)
-
-    The plugin now check your Markdown links and warn you when broken links are detected.
-
-    You can control this behavior with `plugins.mdEnhance.checkLinks` option
 
   - image mark support ![New](https://img.shields.io/badge/-New-brightgreen)
 
@@ -381,7 +375,7 @@ Move all plugin related options under `plugins`.
 
   - `plugins.pwa.appendBase` ![New](https://img.shields.io/badge/-New-brightgreen): automatically insert `base` to the `manifest` option
 
-  - `plugins.pwa.hintComponent` ![New](https://img.shields.io/badge/-New-brightgreen): Hint component for detecting new content
+  - `plugins.pwa.foundComponent` ![New](https://img.shields.io/badge/-New-brightgreen): Hint component for detecting new content
 
   - shouldPrefetch hint ![New](https://img.shields.io/badge/-New-brightgreen): Now the plugin will check `shouldPrefetch` option in config file and warn you to disable it.
 
@@ -389,7 +383,7 @@ Move all plugin related options under `plugins`.
 
     This can effectively reduce the SW update time
 
-  - `pwa.popupComponent` renamed to `plugins.pwa.updateComponent` ![changed](https://img.shields.io/badge/-changed-yellow)
+  - `pwa.popupComponent` renamed to `plugins.pwa.readyComponent` ![changed](https://img.shields.io/badge/-changed-yellow)
 
     This is because we added a new prompt popup window, so we need to avoid name confusion
 
@@ -399,17 +393,17 @@ Move all plugin related options under `plugins`.
 
   - JSON-LD support ![New](https://img.shields.io/badge/-New-brightgreen)
 
-    The plugin now can generate JSON-LD script tags for you, and is providing an option `plugin.seo.jsonLd` to let you customize the JSON-LD properties.
+    The plugin now can generate JSON-LD script tags for you, and is providing an option `plugins.seo.jsonLd` to let you customize the JSON-LD properties.
 
   - Description generation ![New](https://img.shields.io/badge/-New-brightgreen)
 
-    The plugin can generate a description for you automatically via `plugin.seo.autoDescription` options
+    The plugin can generate a description for you automatically via `plugins.seo.autoDescription` options
 
   - Canonical link ![New](https://img.shields.io/badge/-New-brightgreen)
 
-    You can set canonical link via `plugin.seo.canonicalLink` option. It's useful when your docs are deployed in several places.
+    You can set canonical link via `plugins.seo.canonicalLink` option. It's useful when your docs are deployed in several places.
 
-  - `seo.customMeta` renamed to `plugin.seo.customHead` ![changed](https://img.shields.io/badge/-changed-yellow)
+  - `seo.customMeta` renamed to `plugins.seo.customHead` ![changed](https://img.shields.io/badge/-changed-yellow)
 
     Now you can edit all head tags instead of only meta in V1.
 
@@ -417,15 +411,15 @@ Move all plugin related options under `plugins`.
 
   - Visualized sitemap, configurable with `plugins.sitemap.sitemapXSLFilename` and `plugins.sitemap.sitemapXSLTemplate` ![New](https://img.shields.io/badge/-New-brightgreen)
 
-  - `plugin.sitemap.priority` ![New](https://img.shields.io/badge/-New-brightgreen): setting default value for priority
+  - `plugins.sitemap.priority` ![New](https://img.shields.io/badge/-New-brightgreen): setting default value for priority
 
-  - `sitemap.urls` renamed to `plugin.sitemap.extraUrls` ![changed](https://img.shields.io/badge/-changed-yellow)
+  - `sitemap.urls` renamed to `plugins.sitemap.extraUrls` ![changed](https://img.shields.io/badge/-changed-yellow)
 
-  - `sitemap.exclude` renamed to `plugin.sitemap.excludeUrls` ![changed](https://img.shields.io/badge/-changed-yellow)
+  - `sitemap.exclude` renamed to `plugins.sitemap.excludeUrls` ![changed](https://img.shields.io/badge/-changed-yellow)
 
-  - `sitemap.outFile` renamed to `plugin.sitemap.sitemapFilename` ![changed](https://img.shields.io/badge/-changed-yellow)
+  - `sitemap.outFile` renamed to `plugins.sitemap.sitemapFilename` ![changed](https://img.shields.io/badge/-changed-yellow)
 
-  - `sitemap.modifyTimeGetter` renamed to `plugin.sitemap.modifyTimeGetter` ![changed](https://img.shields.io/badge/-changed-yellow)
+  - `sitemap.modifyTimeGetter` renamed to `plugins.sitemap.modifyTimeGetter` ![changed](https://img.shields.io/badge/-changed-yellow)
 
 ### Deletion
 

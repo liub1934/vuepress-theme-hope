@@ -43,8 +43,7 @@ Then enabling via:
 
 @tab TS
 
-```ts {8}
-// .vuepress/config.ts
+```ts {8} title=".vuepress/config.ts"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -59,8 +58,7 @@ export default {
 
 @tab JS
 
-```js {8}
-// .vuepress/config.js
+```js {8} title=".vuepress/config.js"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -121,11 +119,10 @@ You can use top-level await and `fetch` to get data from network requests.
 
 ## Advanced
 
-You can import and call `defineEchartsConfig` in client config file to customize echarts.
+You can import and call `defineEchartsConfig` in [client config file][client-config] to customize echarts.
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { defineEchartsConfig } from "vuepress-plugin-md-enhance/client";
 
 defineEchartsConfig({
@@ -214,5 +211,7 @@ For details, please see [ECharts Docs](https://echarts.apache.org/handbook/en/ge
 <!-- @include: @echarts/wordcloud.snippet.md -->
 
 ::::
+
+[client-config]: https://vuejs.press/guide/configuration.html#client-config-file
 
 <!-- #endregion after -->

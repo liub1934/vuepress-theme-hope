@@ -24,25 +24,22 @@ Since you are generating the project from create helper, you will have the follo
 
 ```
 └─ src
-   ├─ guide
+   ├─ demo
    │  ├─ ...
    │  └─ page.md
    │  └─ markdown.md
    │  └─ README.md
    ├─ ...
-   ├─ slide.md
    └─ README.md
 ```
 
 The route path of your Markdown files are:
 
-| Relative Path      | Route Path          |
-| ------------------ | ------------------- |
-| `/README.md`       | `/`                 |
-| `/slide.md`        | `/slide.html`       |
-| `/guide/README.md` | `/guide/`           |
-| `/guide/slide.md`  | `/guide/slide.html` |
-| `/guide/page.md`   | `/guide/page.html`  |
+| Relative Path     | Route Path        |
+| ----------------- | ----------------- |
+| `/README.md`      | `/`               |
+| `/demo/README.md` | `/demo/`          |
+| `/demo/page.md`   | `/demo/page.html` |
 
 ::: tip README.md
 
@@ -70,7 +67,7 @@ In about fifteen minutes, you can learn how to write Markdown, remember to come 
 
 - VuePress itself extends some Markdown syntax. For details, see [VuePress → Markdown](../cookbook/vuepress/markdown.md).
 
-- The theme additionally enables some syntax extensions via `vuepress-plugin-md-enhance`, see [Guide → Markdown](../guide/get-started/markdown.md).
+- The theme additionally enables some syntax extensions via `vuepress-plugin-md-enhance`, see [Guide → Markdown](../guide/intro/markdown.md).
 
 :::
 
@@ -92,4 +89,4 @@ description: the description of the page
 ...
 ```
 
-You may noticed that fields in demo Frontmatter are very similar to VuePress config files. You can override the `lang`, `title`, `description` and other properties of the current page through Frontmatter. Therefore, you can think of Frontmatter as a page-level scope config, which usually has the highest priority, and the config only takes effect on the current page.
+You may noticed that fields in demo Frontmatter are very similar to [VuePress config file](../cookbook/vuepress/config.md#config-file). You can override the `lang`, `title`, `description` and other properties of the current page through Frontmatter. Therefore, you can think of Frontmatter as a page-level scope config, which usually has the highest priority, and the config only takes effect on the current page.

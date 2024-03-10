@@ -9,7 +9,7 @@ tag:
   - Client Config
 ---
 
-You can create `.vuepress/client.ts` as a client config file to customize your site.
+You can create `.vuepress/client.ts` or `.vuepress/client.js` as a [client config file](../../cookbook/vuepress/config.md#client-config-file) to customize your site.
 
 <!-- more -->
 
@@ -21,9 +21,8 @@ To learn more about client config file, see [Advanced > Cookbook > Usage of Clie
 
 ## Example
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import ExampleGlobalComponent from "./components/ExampleGlobalComponent.vue";
 import ExampleRootComponent from "./components/ExampleRootComponent.vue";
 import { setupExampleCompositionAPI } from "./composables/exampleCompositionAPI";

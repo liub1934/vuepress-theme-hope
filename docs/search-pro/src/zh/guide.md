@@ -11,6 +11,8 @@ icon: lightbulb
 
 默认情况下，插件仅索引标题，文章摘要和你添加的自定义字段。如果你想要索引文章的全部内容，你可以通过设置 `indexContent: true` 来开启。
 
+如果你只想要部分页面被索引，你可以在插件选项中设置 `filter` 选项来控制索引范围，参见 [配置 → filter](./config.md#filter)。你也可以在 Frontmatter 中设置 `search: false` 来阻止页面被索引。
+
 ::: warning
 
 当索引不基于单词的语言时，例如中文、日语或韩语，你需要设置 `indexOptions` 和 `indexLocaleOptions` 以执行正确的分词，详见[自定义索引生成](#自定义索引生成)。
@@ -266,11 +268,10 @@ export default defineUserConfig({
 
 ### 自定义搜索选项
 
-你可以通过在客户端配置文件中导入和调用 `defineSearchConfig` 来自定义搜索选项：
+你可以在[客户端配置文件][client-config] 中导入和调用 `defineSearchConfig` 来自定义搜索选项：
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { defineSearchConfig } from "vuepress-plugin-search-pro/client";
 
 defineSearchConfig({
@@ -284,7 +285,9 @@ export default defineClientConfig({
 
 ::: note
 
-由于搜索是在 Web Worker 中完成的，因此不支持设置选项为函数类型的值。
+由于搜索是在 Web Worker 中完成的，因此不支持 `slimsearch` 中需要被设置为函数的选项。
+
+为了提供建议和结果的过滤，我们额外提供了 `suggestFilter` 和 `searchFilter` 选项。你可以在这里设置一个函数来过滤建议和搜索结果。
 
 :::
 
@@ -295,11 +298,21 @@ export default defineClientConfig({
 ```ts
 import { createSearchWorker } from "vuepress-plugin-search-pro/client";
 
-const { search, terminate } = createSearchWorker();
+const { all, suggest, search, terminate } = createSearchWorker();
 
-// 使用搜索 API
+// 自动建议
+suggest("key").then((suggestions) => {
+  // 显示建议
+});
+
+// 搜素
 search("keyword").then((results) => {
-  // 使用结果
+  // 显示搜索结果
+});
+
+// 同时返回建议和搜索结果
+all("key").then(({ suggestions, results }) => {
+  // 显示建议和搜索结果
 });
 
 // 当不需要时终止 Worker
@@ -329,4 +342,6 @@ terminate();
 
 在大多数情况，如果你在构建一个大型站点，你应该选择服务提供商为你的站点提供搜索服务，例如 [Algolia](https://www.algolia.com/)，或者选择开源工具在自己的服务器上加载搜索服务并定期为自己的网站生成索引。对于大型站点这很必要因为用户通过网络请求向搜索 API 发送搜索字词，并直接得到搜索结果。
 
-特别提示，[DocSearch](https://docsearch.algolia.com/) 是 Algolia 为开源项目提供的免费搜索服务。如果你在创建开源项目文档或开源技术博客，你可 [申请它](https://docsearch.algolia.com/apply/)，并使用 [`@vuepress/plugin-docsearch`](https://vuejs.press/zh/reference/plugin/docsearch.html) 插件提供搜索。
+特别提示，[DocSearch](https://docsearch.algolia.com/) 是 Algolia 为开源项目提供的免费搜索服务。如果你在创建开源项目文档或开源技术博客，你可 [申请它](https://docsearch.algolia.com/apply/)，并使用 [`@vuepress/plugin-docsearch`](https://ecosystem.vuejs.press/zh/plugins/docsearch.html) 插件提供搜索。
+
+[client-config]: https://vuejs.press/zh/guide/configuration.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6

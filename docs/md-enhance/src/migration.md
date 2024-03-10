@@ -9,19 +9,13 @@ You can pass the second argument `true` to enable legacy mode when calling `mdEn
 
 ## New Features
 
-- Markdown link check
-
-  The plugin now check your Markdown links and warn you when broken links are detected.
-
-  You can control this behavior with `checkLinks` option
-
 - image mark support
 
   Use `#light` and `#dark` suffix to mark images to display them in light mode or dark mode via `imgMark` option.
 
 - `v-pre` support
 
-  The following container support is removed from `@vuepress/core`, so `vPre` option is added
+  The following container support is removed, so `vPre` option is added
 
   ```md
   ::: v-pre
@@ -203,7 +197,7 @@ You can pass the second argument `true` to enable legacy mode when calling `mdEn
   ::: code-group-item npm:active
 
   ```bash
-  npm init vuepress-theme-hope [dir]
+  npm init vuepress-theme-hope@latest [dir]
   ```
 
   :::
@@ -225,7 +219,7 @@ You can pass the second argument `true` to enable legacy mode when calling `mdEn
   @tab:active npm
 
   ```bash
-  npm init vuepress-theme-hope [dir]
+  npm init vuepress-theme-hope@latest [dir]
   ```
 
   :::
@@ -233,7 +227,7 @@ You can pass the second argument `true` to enable legacy mode when calling `mdEn
 
 - `presentation` is rebuilt to `reveal.js`
 
-  Support theme tree-shaking, and you can customize Reveal.js via client config file
+  Support theme tree-shaking, and you can customize Reveal.js via [client config file][client-config].
 
 ## Removed Options
 
@@ -267,9 +261,8 @@ You can pass the second argument `true` to enable legacy mode when calling `mdEn
 
 - `revealjs` is renamed to `revealJS`
 
-- `linkCheck` is replaced by `checkLinks`
-
 - `card` is replaced by `components`
 
 - `mermaid` `revealJs` `vuePlayground` no longer accept lib options
--
+
+[client-config]: https://vuejs.press/guide/configuration.html#client-config-file

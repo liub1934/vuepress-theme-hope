@@ -43,8 +43,7 @@ npm i -D reveal.js
 
 @tab TS
 
-```ts {8}
-// .vuepress/config.ts
+```ts {8} title=".vuepress/config.ts"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -59,8 +58,7 @@ export default {
 
 @tab JS
 
-```js {8}
-// .vuepress/config.js
+```js {8} title=".vuepress/config.js"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -147,11 +145,10 @@ export default {
 
 ## 自定义 Reveal.js
 
-你也可以在客户端配置文件中导入并调用 `defineRevealJsConfig` 来自定义 reveal.js:
+你也可以在[客户端配置文件][client-config]中导入并调用 `defineRevealJsConfig` 来自定义 reveal.js:
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { defineRevealJsConfig } from "vuepress-plugin-md-enhance/client";
 
 defineRevealJsConfig({
@@ -172,5 +169,7 @@ Reveal.js 还提供了[更多的插件](https://github.com/hakimel/reveal.js/wik
 你也可以在 Frontmatter 设置 `revealJs` 以设置特定页面的 reveal.js 选项。
 
 Reveal.js 选项，请参见[reveal.js config](https://revealjs.com/config/)，Reveal.js 用法，请参阅 [reveal.js 文档](https://revealjs.com/)。
+
+[client-config]: https://vuejs.press/zh/guide/configuration.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6
 
 <!-- #endregion customize -->

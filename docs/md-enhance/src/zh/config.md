@@ -49,34 +49,6 @@ order: 2
 
 :::
 
-### checkLinks
-
-- 类型: `LinksCheckOptions`
-
-  ```ts
-  type LinksCheckStatus = "always" | "dev" | "build" | "never";
-
-  interface LinksCheckOptions {
-    /**
-     * 是否检查 Markdown 中的死链
-     *
-     * @default "dev"
-     */
-    status?: LinksCheckStatus;
-
-    /**
-     * 忽略的死链
-     */
-    ignore?: (string | RegExp)[] | ((link: string, isDev: boolean) => boolean);
-  }
-  ```
-
-- 默认值: `{ status: "dev" }`
-- 详情:
-  - [链接检查](./guide/others.md#链接检查)
-
-是否启用链接检查。
-
 ### vPre
 
 - 类型: `boolean`
@@ -459,8 +431,6 @@ order: 2
 - 类型: `PlaygroundGlobalOptions`
 
   ```ts
-  import type { CompilerOptions } from "typescript";
-
   interface PlaygroundCodeConfig {
     /**
      * 代码块扩展名
@@ -469,36 +439,26 @@ order: 2
      */
     ext: string;
 
-    /**
-     * 代码块内容
-     */
+    /** 代码块内容 */
     content: string;
   }
 
   interface PlaygroundData {
-    /**
-     * 交互演示标题
-     */
+    /** 交互演示标题 */
     title?: string;
 
     /**
      * Import map 文件名
      *
-     * @default 'import-map.json'
+     * @default "import-map.json"
      */
     importMap?: string;
 
-    /**
-     * 交互演示文件信息
-     */
+    /** 交互演示文件信息 */
     files: Record<
-      /**
-       * 文件名
-       */
+      /** 文件名 */
       string,
-      /**
-       * 文件详情
-       */
+      /** 文件详情 */
       PlaygroundCodeConfig
     >;
 
@@ -510,27 +470,25 @@ order: 2
     settings: Record<string, unknown>;
 
     /**
+     * hash key based on playground content
+     *
      * 根据交互演示内容生成的 hash key
      */
     key: string;
   }
 
   interface PlaygroundOptions {
-    /**
-     * 交互演示容器名
-     */
+    /** 交互演示容器名 */
     name: string;
 
     /**
      * 交互演示组件名称
      *
-     * @default 'Playground'
+     * @default "Playground"
      */
     component?: string;
 
-    /**
-     * 属性获取器
-     */
+    /** 属性获取器 */
     propsGetter: (data: PlaygroundData) => Record<string, string>;
   }
 
@@ -539,17 +497,6 @@ order: 2
      * 交互演示外部地址
      *
      * @default "https://www.typescriptlang.org/play"
-     */
-    service?: string;
-  }
-
-  interface UnoPresetPlaygroundOptions {
-    /**
-     * external playground service url
-     *
-     * 交互演示外部地址
-     *
-     * @default "https://unocss.dev/play"
      */
     service?: string;
   }
@@ -577,13 +524,25 @@ order: 2
     ssr?: boolean;
   }
 
+  interface UnoPresetPlaygroundOptions {
+    /**
+     * 交互演示外部地址
+     *
+     * @default "https://unocss.dev/play"
+     */
+    service?: string;
+  }
+
+  type BuiltInPlaygroundPreset = "ts" | "vue" | "unocss";
+
   interface PlaygroundGlobalOptions {
     /** 交互演示预设 */
-    presets: ("ts" | "vue" | PlaygroundOptions)[];
+    presets: (BuiltInPlaygroundPreset | PlaygroundOptions)[];
     /** 交互演示配置 */
     config?: {
       ts?: TSPresetPlaygroundOptions;
       vue?: VuePresetPlaygroundOptions;
+      unocss?: UnoPresetPlaygroundOptions;
     };
   }
   ```
@@ -720,7 +679,7 @@ CodePen 编辑器显示情况，第一位代表 HTML ，第二位代表 JS，第
   /**
    * reveal.js 选项
    */
-  export interface RevealJsOptions {
+  interface RevealJsOptions {
     /**
      * reveal.js 插件
      *
@@ -742,6 +701,13 @@ CodePen 编辑器显示情况，第一位代表 HTML ，第二位代表 JS，第
   - [Reveal.js](./guide/content/revealjs/README.md)
 
 是否启用幻灯片支持。你可以传递选项控制导入的插件和主题。
+
+### sandpack
+
+- 类型: `boolean`
+- 默认值: `false`
+
+是否启用 Sandpack 交互演示。
 
 ### delay
 
@@ -831,7 +797,7 @@ Markdown 增强插件的国际化配置。
 ### defineEchartsConfig
 
 ```ts
-export interface EchartsConfig {
+interface EchartsConfig {
   /**
    * Echarts 全局选项
    */
@@ -843,7 +809,7 @@ export interface EchartsConfig {
   setup?: () => Promise<void>;
 }
 
-export const defineEchartsConfig: (config: EchartsConfig) => void;
+const defineEchartsConfig: (config: EchartsConfig) => void;
 ```
 
 定义需要传递给 Echarts 的全局配置选项和设置函数。
@@ -851,7 +817,7 @@ export const defineEchartsConfig: (config: EchartsConfig) => void;
 ### defineMermaidConfig
 
 ```ts
-export const defineMermaidConfig: (options: MermaidConfig) => void;
+const defineMermaidConfig: (options: MermaidConfig) => void;
 ```
 
 定义需要传递给 Mermaid 的配置选项。
@@ -859,7 +825,7 @@ export const defineMermaidConfig: (options: MermaidConfig) => void;
 ### defineRevealJsConfig
 
 ```ts
-export const defineRevealJsConfig: (options: RevealOptions) => void;
+const defineRevealJsConfig: (options: RevealOptions) => void;
 ```
 
 定义需要传递给 Reveal.js 的配置选项。
@@ -883,85 +849,69 @@ interface KotlinPlaygroundOptions {
   getInstance?: (instance: KotlinPlaygroundInstance) => void;
 }
 
-export const defineKotlinPlaygroundConfig: (
-  options: KotlinPlaygroundOptions,
-) => void;
+const defineKotlinPlaygroundConfig: (options: KotlinPlaygroundOptions) => void;
 ```
 
 定义需要传递给 `kotlin-playground` 的配置选项。
 
+### defineSandpackConfig
+
+```ts
+ interface SandpackConfig {
+  /**
+   * 指定模板
+   */
+  template?: SandpackPredefinedTemplate;
+
+  /**
+   * sandpack 配置项
+   */
+  options?: SandpackOptions;
+
+  /**
+   * sandpack customSetup 配置项
+   */
+  customSetup?: SandpackSetup;
+}
+
+const defineSandpackConfig = (config: SandpackConfig)=> void
+```
+
+定义需要传递给 `sandpack-vue3` 的选项。
+
 ### defineVuePlaygroundConfig
 
 ```ts
-interface VuePlaygroundOptions {
+export interface VuePlaygroundOptions
+  extends Omit<ReplProps, "store" | "editor"> {
   /**
-   * specify the version of vue
+   * 指定 vue 版本
    */
   vueVersion?: string;
 
   /**
-   * specify default URL to import Vue runtime from in the sandbox
+   * 指定默认的 Vue 开发运行时
    *
    * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.js"
    */
-  defaultVueRuntimeURL?: string;
+  vueRuntimeDevUrl?: string | (() => string);
 
   /**
-   * Specify default URL to import Vue Server Renderer from in the sandbox
+   * 指定默认的 Vue 生产运行时
+   *
+   * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.prod.js"
+   */
+  vueRuntimeProdUrl?: string | (() => string);
+
+  /**
+   * 指定默认的 Vue 服务端渲染器
    *
    * @default "https://unpkg.com/@vue/server-renderer@${version}/dist/server-renderer.esm-browser.js"
    */
-  defaultVueServerRendererURL?: string;
-
-  /**
-   * Whether to enable repl's editor resizable
-   *
-   * @default true
-   */
-  autoResize?: boolean;
-
-  /**
-   * Whether to show JS, CSS, SSR panel
-   *
-   * @default false
-   */
-  showCompileOutput?: boolean;
-
-  /**
-   * Whether to show import map
-   *
-   * @default true
-   */
-  showImportMap?: boolean;
-
-  /**
-   * Whether to clear console
-   *
-   * @default false
-   */
-  clearConsole?: boolean;
-
-  /**
-   * Layout
-   *
-   * @default 'horizontal'
-   */
-  layout?: "horizontal" | "vertical";
-
-  /**
-   * Options to configure the `vue/compiler-sfc`
-   */
-  sfcOptions?: SFCOptions;
-
-  /**
-   * Whether to enable SSR
-   *
-   * @default true
-   */
-  ssr?: boolean;
+  vueServerRendererUrl?: string | (() => string);
 }
 
-export const defineVuePlaygroundConfig: (options: VuePlaygroundOptions) => void;
+const defineVuePlaygroundConfig: (options: VuePlaygroundOptions) => void;
 ```
 
 定义需要传递给 `@vue/repl` 的选项。

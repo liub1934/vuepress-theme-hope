@@ -69,7 +69,7 @@ export interface PlaygroundData {
   settings: Record<string, unknown>;
 
   /**
-   * hash key based on playground content
+   * Hash key based on playground content
    *
    * 根据交互演示内容生成的 hash key
    */
@@ -103,7 +103,7 @@ export interface PlaygroundOptions {
 
 export interface TSPresetPlaygroundOptions extends CompilerOptions {
   /**
-   * external playground service url
+   * External playground service url
    *
    * 交互演示外部地址
    *
@@ -114,7 +114,7 @@ export interface TSPresetPlaygroundOptions extends CompilerOptions {
 
 export interface VuePresetPlaygroundOptions {
   /**
-   * external playground service url
+   * External playground service url
    *
    * 交互演示外部地址
    *
@@ -143,11 +143,32 @@ export interface VuePresetPlaygroundOptions {
 
 export interface UnoPresetPlaygroundOptions {
   /**
-   * external playground service url
+   * External playground service url
    *
    * 交互演示外部地址
    *
    * @default "https://unocss.dev/play"
    */
   service?: string;
+}
+
+export type BuiltInPlaygroundPreset = "ts" | "vue" | "unocss";
+
+export interface PlaygroundGlobalOptions {
+  /**
+   * Playground presets
+   *
+   * 交互演示预设
+   */
+  presets: (BuiltInPlaygroundPreset | PlaygroundOptions)[];
+  /**
+   * Playground config
+   *
+   * 交互演示配置
+   */
+  config?: {
+    ts?: TSPresetPlaygroundOptions;
+    vue?: VuePresetPlaygroundOptions;
+    unocss?: UnoPresetPlaygroundOptions;
+  };
 }

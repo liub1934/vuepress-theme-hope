@@ -42,7 +42,7 @@ Since Markdown will be converted to Vue single-file components in the cache dire
 
 - You can use `@source` alias to reference the source directory of the current project
 
-  ```structure:no-line-numbers
+  ```:no-line-numbers
   .
   ├── src → project folder
   │    ├── example
@@ -63,7 +63,7 @@ Since Markdown will be converted to Vue single-file components in the cache dire
 
 - You can also use `alias` option:
 
-  ```structure:no-line-numbers
+  ```:no-line-numbers
   .
   ├── src → project folder
   │    ├── .vuepress
@@ -76,9 +76,8 @@ Since Markdown will be converted to Vue single-file components in the cache dire
   └── ...
   ```
 
-  ```ts
-  // .vuepress/config.ts
-  import { getDirname, path } from "@vuepress/utils";
+  ```ts title=".vuepress/config.ts"
+  import { getDirname, path } from "vuepress/utils";
 
   const __dirname = getDirname(import.meta.url);
 

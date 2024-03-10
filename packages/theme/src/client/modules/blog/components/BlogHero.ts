@@ -1,11 +1,11 @@
+import { isString } from "@vuepress/helper/client";
+import type { SlotsType, VNode } from "vue";
+import { computed, defineComponent, h, shallowRef } from "vue";
 import {
   usePageFrontmatter,
   useSiteLocaleData,
   withBase,
-} from "@vuepress/client";
-import { isString } from "@vuepress/shared";
-import type { SlotsType, VNode } from "vue";
-import { computed, defineComponent, h, shallowRef } from "vue";
+} from "vuepress/client";
 
 import DropTransition from "@theme-hope/components/transitions/DropTransition";
 
@@ -16,11 +16,11 @@ import "../styles/blog-hero.scss";
 
 export interface HeroInfo {
   text: string | null;
+  tagline: string | null;
   image: string | null;
   imageDark: string | null;
-  heroStyle: string | Record<string, string> | undefined;
   alt: string;
-  tagline: string | null;
+  style: string | Record<string, string> | undefined;
   isFullScreen: boolean;
 }
 
@@ -62,11 +62,11 @@ export default defineComponent({
 
       return {
         text: heroText ?? siteLocale.value.title ?? "Hello",
+        tagline: tagline ?? "",
         image: heroImage ? withBase(heroImage) : null,
         imageDark: heroImageDark ? withBase(heroImageDark) : null,
-        heroStyle: heroImageStyle,
-        alt: heroAlt || heroText || "hero image",
-        tagline: tagline ?? "",
+        alt: heroAlt || heroText || "",
+        style: heroImageStyle,
         isFullScreen: isFullScreen.value,
       };
     });
@@ -141,7 +141,7 @@ export default defineComponent({
                             "vp-blog-hero-image",
                             { light: heroInfo.value.imageDark },
                           ],
-                          style: heroInfo.value.heroStyle,
+                          style: heroInfo.value.style,
                           src: heroInfo.value.image,
                           alt: heroInfo.value.alt,
                         })
@@ -150,7 +150,7 @@ export default defineComponent({
                       ? h("img", {
                           key: "dark",
                           class: "vp-blog-hero-image dark",
-                          style: heroInfo.value.heroStyle,
+                          style: heroInfo.value.style,
                           src: heroInfo.value.imageDark,
                           alt: heroInfo.value.alt,
                         })

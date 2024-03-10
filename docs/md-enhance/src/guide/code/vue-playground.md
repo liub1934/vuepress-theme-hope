@@ -51,8 +51,7 @@ Then enabling via:
 
 @tab TS
 
-```ts {8}
-// .vuepress/config.ts
+```ts {8} title=".vuepress/config.ts"
 import { mdEnhance } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -67,8 +66,7 @@ export default {
 
 @tab JS
 
-```js {8}
-// .vuepress/config.js
+```js {8} title=".vuepress/config.js"
 import { mdEnhance } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -97,11 +95,10 @@ In it, you can use 3 directives:
 
 You can see the below demos to see more details.
 
-You can import and call `defineVuePlaygroundConfig` in client config file to customize `@vue/repl`:
+You can import and call `defineVuePlaygroundConfig` in [client config file][client-config] to customize `@vue/repl`:
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { defineVuePlaygroundConfig } from "vuepress-plugin-md-enhance/client";
 
 defineVuePlaygroundConfig({
@@ -199,5 +196,7 @@ const { charging, level } = useBattery();
 :::
 
 ::::
+
+[client-config]: https://vuejs.press/guide/configuration.html#client-config-file
 
 <!-- #endregion after -->

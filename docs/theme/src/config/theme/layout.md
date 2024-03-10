@@ -129,7 +129,7 @@ For guide, see [Layout → Sidebar](../../guide/layout/sidebar.md).
 
 ### sidebar <Badge text="Recommended" type="tip" />
 
-- Type: `SidebarConfig | "structure" | "heading" | false`
+- Type: `SidebarConfig | "structure" | false`
 - Default: `"structure"`
 
 Sidebar Config.
@@ -222,7 +222,7 @@ Available keywords are:
 - Type: `number`
 - Default: `2`
 
-Nested headings depth in sidebar
+Nested headings depth
 
 ## Route Navigation
 
@@ -342,7 +342,7 @@ Docs dir location in repo
 ### footer
 
 - Type: `string`
-- Required: false
+- Required: No
 
 The default content for the footer, can accept HTMLString.
 
@@ -381,4 +381,4 @@ Whether to use RTL layout.
 - Type: `boolean`
 - Default: `true`
 
-Whether show toc list in desktop mode.
+Whether show toc list.

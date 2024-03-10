@@ -1,6 +1,7 @@
 ---
 title: Page Migration Guide
 icon: file
+order: 3
 category:
   - Migration
 tag:
@@ -152,7 +153,7 @@ tag:
   ::: code-group-item npm:active
 
   ```bash
-  npm init vuepress-theme-hope [dir]
+  npm init vuepress-theme-hope@latest [dir]
   ```
 
   :::
@@ -174,7 +175,7 @@ tag:
   @tab:active npm
 
   ```bash
-  npm init vuepress-theme-hope [dir]
+  npm init vuepress-theme-hope@latest [dir]
   ```
 
   :::

@@ -1,7 +1,7 @@
 ---
 title: MdEnhance 插件配置
 icon: fab fa-markdown
-order: 6
+order: 2
 category:
   - 配置
 tag:
@@ -58,32 +58,6 @@ tag:
 - warning
 - caution
 - details
-
-### checkLinks
-
-- 类型: `LinksCheckOptions`
-
-  ```ts
-  type LinksCheckStatus = "always" | "dev" | "build" | "never";
-
-  interface LinksCheckOptions {
-    /**
-     * 是否检查 Markdown 中的死链
-     *
-     * @default "dev"
-     */
-    status?: LinksCheckStatus;
-
-    /**
-     * 忽略的死链
-     */
-    ignore?: (string | RegExp)[] | ((link: string, isDev: boolean) => boolean);
-  }
-  ```
-
-- 默认值: `{ status: "dev" }`
-
-是否启用链接检查。
 
 ### vPre
 
@@ -412,8 +386,6 @@ interface TaskListOptions {
 - 类型: `PlaygroundGlobalOptions`
 
   ```ts
-  import type { CompilerOptions } from "typescript";
-
   interface PlaygroundCodeConfig {
     /**
      * 代码块扩展名
@@ -422,36 +394,26 @@ interface TaskListOptions {
      */
     ext: string;
 
-    /**
-     * 代码块内容
-     */
+    /** 代码块内容 */
     content: string;
   }
 
   interface PlaygroundData {
-    /**
-     * 交互演示标题
-     */
+    /** 交互演示标题 */
     title?: string;
 
     /**
      * Import map 文件名
      *
-     * @default 'import-map.json'
+     * @default "import-map.json"
      */
     importMap?: string;
 
-    /**
-     * 交互演示文件信息
-     */
+    /** 交互演示文件信息 */
     files: Record<
-      /**
-       * 文件名
-       */
+      /** 文件名 */
       string,
-      /**
-       * 文件详情
-       */
+      /** 文件详情 */
       PlaygroundCodeConfig
     >;
 
@@ -463,27 +425,25 @@ interface TaskListOptions {
     settings: Record<string, unknown>;
 
     /**
+     * hash key based on playground content
+     *
      * 根据交互演示内容生成的 hash key
      */
     key: string;
   }
 
   interface PlaygroundOptions {
-    /**
-     * 交互演示容器名
-     */
+    /** 交互演示容器名 */
     name: string;
 
     /**
      * 交互演示组件名称
      *
-     * @default 'Playground'
+     * @default "Playground"
      */
     component?: string;
 
-    /**
-     * 属性获取器
-     */
+    /** 属性获取器 */
     propsGetter: (data: PlaygroundData) => Record<string, string>;
   }
 
@@ -492,17 +452,6 @@ interface TaskListOptions {
      * 交互演示外部地址
      *
      * @default "https://www.typescriptlang.org/play"
-     */
-    service?: string;
-  }
-
-  interface UnoPresetPlaygroundOptions {
-    /**
-     * external playground service url
-     *
-     * 交互演示外部地址
-     *
-     * @default "https://unocss.dev/play"
      */
     service?: string;
   }
@@ -530,13 +479,25 @@ interface TaskListOptions {
     ssr?: boolean;
   }
 
+  interface UnoPresetPlaygroundOptions {
+    /**
+     * 交互演示外部地址
+     *
+     * @default "https://unocss.dev/play"
+     */
+    service?: string;
+  }
+
+  type BuiltInPlaygroundPreset = "ts" | "vue" | "unocss";
+
   interface PlaygroundGlobalOptions {
     /** 交互演示预设 */
-    presets: ("ts" | "vue" | PlaygroundOptions)[];
+    presets: (BuiltInPlaygroundPreset | PlaygroundOptions)[];
     /** 交互演示配置 */
     config?: {
       ts?: TSPresetPlaygroundOptions;
       vue?: VuePresetPlaygroundOptions;
+      unocss?: UnoPresetPlaygroundOptions;
     };
   }
   ```
@@ -547,81 +508,17 @@ interface TaskListOptions {
 
 ### vuePlayground
 
-- 类型: `VuePlaygroundOptions | boolean`
-
-  ```ts
-  interface VuePlaygroundOptions {
-    /**
-     * 指定 vue 版本
-     */
-    vueVersion?: string;
-
-    /**
-     * 指定默认的 Vue 运行时
-     *
-     * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.js"
-     */
-    defaultVueRuntimeURL?: string;
-
-    /**
-     * 指定默认的 Vue 服务端渲染器
-     *
-     * @default "https://unpkg.com/@vue/server-renderer@${version}/dist/server-renderer.esm-browser.js"
-     */
-    defaultVueServerRendererURL?: string;
-
-    /**
-     * 是否启用自动调整大小
-     *
-     * @default true
-     */
-    autoResize?: boolean;
-
-    /**
-     * 是否显示 JS, CSS, SSR 面板
-     *
-     * @default false
-     */
-    showCompileOutput?: boolean;
-
-    /**
-     * 是否显示 import map
-     *
-     * @default true
-     */
-    showImportMap?: boolean;
-
-    /**
-     * 是否清空控制台
-     *
-     * @default false
-     */
-    clearConsole?: boolean;
-
-    /**
-     * 布局
-     *
-     * @default 'horizontal'
-     */
-    layout?: "horizontal" | "vertical";
-
-    /**
-     * `vue/compiler-sfc` 配置项
-     */
-    sfcOptions?: SFCOptions;
-
-    /**
-     * 是否启用 SSR
-     *
-     * @default true
-     */
-    ssr?: boolean;
-  }
-  ```
-
+- 类型: `boolean`
 - 默认值: `false`
 
 是否启用 Vue 交互演示支持。
+
+### sandpack
+
+- 类型: `boolean`
+- 默认值: `false`
+
+是否启用 Sandpack 交互演示支持。
 
 ### demo
 
@@ -729,7 +626,7 @@ CodePen 编辑器显示情况，第一位代表 HTML ，第二位代表 JS，第
   /**
    * reveal.js 选项
    */
-  export interface RevealJsOptions {
+  interface RevealJsOptions {
     /**
      * reveal.js 插件
      *

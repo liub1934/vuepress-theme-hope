@@ -9,21 +9,20 @@ tag:
   - 客户端配置
 ---
 
-你可以创建 `.vuepress/client.ts` 作为客户端配置文件来自定义你的站点。
+你可以创建 `.vuepress/client.ts` 或 `.vuepress/client.js` 作为 [客户端配置文件][client-config] 来自定义你的站点。
 
 <!-- more -->
 
 ::: info
 
-了解更多客户端配置文件的信息，请参考 [高级 > 教程 > 客户端配置的使用](https://vuepress.vuejs.org/zh/advanced/cookbook/usage-of-client-config.html)
+了解更多客户端配置文件的信息，请参考 [高级 > 教程 > 客户端配置的使用](https://vuejs.press/zh/advanced/cookbook/usage-of-client-config.html)
 
 :::
 
 ## 例子
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import ExampleGlobalComponent from "./components/ExampleGlobalComponent.vue";
 import ExampleRootComponent from "./components/ExampleRootComponent.vue";
 import { setupExampleCompositionAPI } from "./composables/exampleCompositionAPI";
@@ -69,3 +68,5 @@ export default defineClientConfig({
   ],
 });
 ```
+
+[client-config]: https://vuejs.press/zh/guide/configuration.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6

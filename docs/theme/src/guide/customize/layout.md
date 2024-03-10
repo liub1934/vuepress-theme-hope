@@ -19,33 +19,31 @@ The theme provides many layout-related options for you to customize the layout o
 
 ## Responsive BreakPoints
 
-The theme will automatically apply responsive layouts under different screen widths. If you need to modify these breakpoints, you can modify them in the config file.
+The theme will automatically apply responsive layouts under different screen widths. If you need to modify these breakpoints, you can modify them in [style config file](../../config/style.md#configscss).
 
-```scss
-// .vuepress/styles/config.scss
-
+```scss title=".vuepress/styles/config.scss"
 // Modify the breakpoint of the desktop layout
 $pc = 1280px;
 ```
 
-For details about the config file `.vuepress/styles/config.scss` and the breakpoint variables `$pc`, `$laptop`, `$pad`, `$tablet`, `$mobile`, see [Theme Configuration → Styles](../../config/style.md#configscss).
+For details about breakpoint variables `$pc`, `$laptop`, `$pad`, `$tablet`, `$mobile`, see [Theme Configuration → Styles](../../config/style.md#configscss).
 
 ## Layout Size
 
-The theme provides common size variables in the palette file, and you can modify these variables in the palette file to achieve the purpose of modifying the layout size.
+The theme provides common size variables in the [style palette file](../../config/style.md#palettescss), and you can modify these variables in the palette file to achieve the purpose of modifying the layout size.
 
-```scss
-// .vuepress/styles/palette.scss
-
+```scss title=".vuepress/styles/palette.scss"
 // Modify the height of the navigation bar
 $navbar-height = 80px;
 ```
 
-The palette file `.vuepress/styles/palette.scss` and the introduction of layout variables can be found at [Theme Configuration → Style](../../config/style.md#palettescss).
+Introduction of layout variables can be found at [Theme Configuration → Style](../../config/style.md#palettescss).
 
 ## Via Style File
 
-- If you are not satisfied with the style of the theme, you can adjust the style of the theme components through the style file.
+The [style file](../../config/style.md#indexscss) is `.vuepress/styles/index.scss` in the project directory, where you can put your own styles.
+
+- If you are not satisfied with the style of the theme, you can adjust the style of the theme components through the [style file](../../config/style.md#indexscss).
 
   ::: note
 
@@ -53,17 +51,11 @@ The palette file `.vuepress/styles/palette.scss` and the introduction of layout 
 
   :::
 
-- If you want to remove some features, you can hide related dom elements by `display: none` in the style file.
-
-::: note
-
-The style file is `.vuepress/styles/index.scss` in the project directory, see [Theme Configuration → Style](../../config/style.md#indexscss) for details
-
-:::
+- If you want to remove some features, you can hide related dom elements by `display: none` in the [style file](../../config/style.md#indexscss).
 
 ## Adding / Overriding Layouts
 
-You can add new layouts or override existing layouts via `layouts` option in client config file.
+You can add new layouts or override existing layouts via `layouts` option in [client config file](../../cookbook/vuepress/config.md#client-config-file).
 
 <!-- #region layout -->
 
@@ -71,9 +63,8 @@ You can add new layouts or override existing layouts via `layouts` option in cli
 
 @tab TS
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import Changelog from "./layouts/Changelog.vue";
 import Layout from "./layouts/Layout.vue";
 
@@ -90,9 +81,8 @@ export default defineClientConfig({
 
 @tab JS
 
-```js
-// .vuepress/client.js
-import { defineClientConfig } from "@vuepress/client";
+```js title=".vuepress/client.js"
+import { defineClientConfig } from "vuepress/client";
 import Changelog from "./layouts/Changelog.vue";
 import Layout from "./layouts/Layout.vue";
 

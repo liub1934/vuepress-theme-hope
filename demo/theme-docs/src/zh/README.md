@@ -136,6 +136,11 @@ highlights:
         details: 在交互演示中展示 Vue 组件
         link: https://theme-hope.vuejs.press/zh/guide/markdown/vue-playground.html
 
+      - title: Sandpack 交互演示支持
+        icon: code
+        details: Sandpack 驱动的实时的编码环境
+        link: https://theme-hope.vuejs.press/zh/guide/markdown/sandpack.html
+
       - title: 代码案例支持
         icon: laptop-code
         details: 你可以很方便的插入代码案例
@@ -170,7 +175,7 @@ highlights:
       - title: 幻灯片页面
         icon: person-chalkboard
         details: 添加幻灯片页面以显示你喜欢的内容
-        link: https://theme-hope.vuejs.press/zh/guide/layout/slides
+        link: https://theme-hope.vuejs.press/zh/guide/layout/slides.html
 
       - title: 更多
         icon: ellipsis

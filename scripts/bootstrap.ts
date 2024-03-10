@@ -13,7 +13,7 @@ files.forEach((pkgName) => {
   const desc = `${pkgName} plugin for VuePress`;
   const pkgPath = join(packagesDir, pkgName, "package.json");
 
-  // generate package.json
+  // Generate package.json
   if (!existsSync(pkgPath)) {
     const pkgJSON = {
       name: `vuepress-plugin-${pkgName}`,
@@ -47,7 +47,7 @@ files.forEach((pkgName) => {
       files: ["lib"],
       scripts: {
         build: "rollup -c rollup.config.ts --configPlugin esbuild",
-        clean: "rimraf ./lib ./*.tsbuildinfo",
+        clean: "rimraf --glob ./lib ./*.tsbuildinfo",
         dev: "pnpm dev:ts",
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "dev:ts": "tsc -b tsconfig.build.json --watch",
@@ -59,20 +59,7 @@ files.forEach((pkgName) => {
         yarn: ">=2",
       },
       peerDependencies: {
-        vuepress: "2.0.0-rc.0",
-        "vuepress-vite": "2.0.0-rc.0",
-        "vuepress-webpack": "2.0.0-rc.0",
-      },
-      peerDependenciesMeta: {
-        vuepress: {
-          optional: true,
-        },
-        "vuepress-vite": {
-          optional: true,
-        },
-        "vuepress-webpack": {
-          optional: true,
-        },
+        vuepress: "2.0.0-rc.8",
       },
       publishConfig: {
         access: "public",
@@ -84,7 +71,7 @@ files.forEach((pkgName) => {
 
   const readmePath = join(packagesDir, pkgName, "README.md");
 
-  // generate README.md
+  // Generate README.md
   if (!existsSync(readmePath))
     writeFileSync(
       readmePath,

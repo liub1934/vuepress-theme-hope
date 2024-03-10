@@ -5,7 +5,7 @@ icon: lightbulb
 
 ## 设置选项
 
-你既可以在 Node.js 一侧使用插件选项设置选项，也可以通过客户端配置文件在浏览器一侧设置选项。
+你既可以在 Node.js 一侧使用插件选项设置选项，也可以通过[客户端配置文件][client-config]在浏览器一侧设置选项。
 
 ::: tabs
 
@@ -29,9 +29,8 @@ export default {
 
 @tab 通过客户端配置文件
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import {
   defineArtalkConfig,
   // defineGiscusConfig,
@@ -103,3 +102,5 @@ export default defineClientConfig({
 - [Twikoo 指南](twikoo.md)
 
 - [Artalk 指南](artalk.md)
+
+[client-config]: https://vuejs.press/zh/guide/configuration.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6

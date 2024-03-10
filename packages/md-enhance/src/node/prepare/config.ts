@@ -1,5 +1,5 @@
-import type { App } from "@vuepress/core";
-import { getRealPath, isPlainObject } from "vuepress-shared/node";
+import { getRealPath, isPlainObject } from "@vuepress/helper";
+import type { App } from "vuepress/core";
 
 import type { MarkdownEnhanceOptions } from "../options.js";
 import { CLIENT_FOLDER } from "../utils.js";
@@ -21,7 +21,7 @@ export const prepareConfigFile = async (
   if (options.card && legacy) {
     imports.add(
       `import { hasGlobalComponent } from "${getRealPath(
-        "vuepress-shared/client",
+        "@vuepress/helper/client",
         url,
       )}";`,
     );
@@ -46,7 +46,7 @@ export const prepareConfigFile = async (
     if (legacy) {
       imports.add(
         `import { hasGlobalComponent } from "${getRealPath(
-          "vuepress-shared/client",
+          "@vuepress/helper/client",
           url,
         )}";`,
       );
@@ -168,6 +168,30 @@ export const prepareConfigFile = async (
     enhances.add(`app.component("Tabs", Tabs);`);
   }
 
+  if (status["sandpack"]) {
+    imports.add(`import { defineAsyncComponent } from "vue";`);
+    imports.add(
+      `import { LoadingIcon } from "${getRealPath(
+        "vuepress-shared/client",
+        url,
+      )}";`,
+    );
+    imports.add(
+      `import { injectSandpackConfig } from "${CLIENT_FOLDER}index.js";`,
+    );
+    enhances.add(`injectSandpackConfig(app);`);
+    enhances.add(
+      `\
+app.component(
+  "SandPack",
+  defineAsyncComponent({
+    loader: () => import("${CLIENT_FOLDER}components/SandPack.js"),
+    loadingComponent: LoadingIcon,
+  })
+);`,
+    );
+  }
+
   if (status["tasklist"])
     imports.add(`import "${CLIENT_FOLDER}styles/tasklist.scss";`);
 
@@ -185,7 +209,7 @@ export const prepareConfigFile = async (
   return app.writeTemp(
     `md-enhance/config.js`,
     `\
-import { defineClientConfig } from "@vuepress/client";
+import { defineClientConfig } from "vuepress/client";
 ${Array.from(imports.values()).join("\n")}
 
 export default defineClientConfig({

@@ -1,6 +1,6 @@
-import type { App } from "@vuepress/core";
-import { colors } from "@vuepress/utils";
-import { isPlainObject } from "vuepress-shared/node";
+import { isPlainObject } from "@vuepress/helper";
+import type { App } from "vuepress/core";
+import { colors } from "vuepress/utils";
 
 import type {
   PluginsOptions,
@@ -57,14 +57,14 @@ export const prepareHighLighterScss = async (
   app: App,
   { prismjs }: PluginsOptions,
 ): Promise<void> => {
-  const { plugins: Plugins } = app.pluginApi;
+  const { plugins } = app.pluginApi;
   const prismjsOptions: PrismjsOptions = isPlainObject(prismjs) ? prismjs : {};
 
-  const highlighter = Plugins.some(
+  const highlighter = plugins.some(
     (plugin) => plugin.name === "@vuepress/plugin-prismjs",
   )
     ? "prismjs"
-    : Plugins.some((plugin) => plugin.name === "@vuepress/plugin-shiki")
+    : plugins.some((plugin) => plugin.name === "@vuepress/plugin-shiki")
       ? "shiki"
       : "none";
 

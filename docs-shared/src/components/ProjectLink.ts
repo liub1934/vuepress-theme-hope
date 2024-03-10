@@ -1,6 +1,6 @@
+import { ensureLeadingSlash } from "@vuepress/helper/client";
 import type { FunctionalComponent, PropType } from "vue";
-import { h } from "vue";
-import { ensureLeadingSlash } from "vuepress-shared/client";
+import { h, resolveComponent } from "vue";
 
 declare const IS_NETLIFY: boolean;
 declare const IS_GITEE: boolean;
@@ -32,7 +32,7 @@ const ProjectLink: FunctionalComponent<
       }`,
       target: "_blank",
     },
-    slots.default(),
+    [slots.default(), h(resolveComponent("ExternalLinkIcon"))],
   );
 };
 

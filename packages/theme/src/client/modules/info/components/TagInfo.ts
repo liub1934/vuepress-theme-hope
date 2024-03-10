@@ -1,7 +1,6 @@
-import { usePageData } from "@vuepress/client";
 import type { PropType, VNode } from "vue";
 import { defineComponent, h } from "vue";
-import { useRouter } from "vue-router";
+import { usePageData, useRouter } from "vuepress/client";
 import { generateIndexFromHash } from "vuepress-shared/client";
 
 import { TagIcon } from "@theme-hope/modules/info/components/icons";
@@ -53,7 +52,7 @@ export default defineComponent({
             {
               class: "page-tag-info",
               "aria-label": `${metaLocale.value.tag}${props.pure ? "" : "🏷"}`,
-              ...(props.pure ? {} : { "data-balloon-pos": "down" }),
+              ...(props.pure ? {} : { "data-balloon-pos": "up" }),
             },
             [
               h(TagIcon),

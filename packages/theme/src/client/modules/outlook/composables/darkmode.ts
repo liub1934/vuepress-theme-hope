@@ -1,6 +1,6 @@
 import { usePreferredDark, useStorage } from "@vueuse/core";
 import type { App, ComputedRef, InjectionKey, Ref } from "vue";
-import { computed, inject, onMounted, watch } from "vue";
+import { computed, inject, onMounted, watch, watchEffect } from "vue";
 
 import { useThemeData } from "@theme-hope/composables/index";
 
@@ -39,29 +39,29 @@ export const useDarkmode = (): DarkMode => {
 export const injectDarkmode = (app: App): void => {
   const themeData = useThemeData();
   const isDarkPreferred = usePreferredDark();
+  const config = computed(() => themeData.value.darkmode || "switch");
+
   const status = useStorage<DarkmodeStatus>(
     "vuepress-theme-hope-scheme",
     "auto",
   );
 
-  const config = computed(() => themeData.value.darkmode || "switch");
-
   const isDarkmode = computed(() => {
     const darkmode = config.value;
 
-    // disable darkmode
+    // Disable darkmode
     return darkmode === "disable"
       ? false
-      : // force darkmode
+      : // Force darkmode
         darkmode === "enable"
         ? true
-        : // auto
+        : // Auto
           darkmode === "auto"
           ? isDarkPreferred.value
-          : // toggle
+          : // Toggle
             darkmode === "toggle"
             ? status.value === "dark"
-            : // switch
+            : // Switch
               status.value === "dark" ||
               (status.value === "auto" && isDarkPreferred.value);
   });
@@ -79,23 +79,32 @@ export const injectDarkmode = (app: App): void => {
     status,
   });
 
-  // provide global helpers
+  // Provide global helpers
   Object.defineProperties(app.config.globalProperties, {
     $isDarkmode: { get: () => isDarkmode.value },
   });
 };
 
 export const setupDarkmode = (): void => {
-  const { isDarkmode } = useDarkmode();
+  const { config, isDarkmode, status } = useDarkmode();
 
-  const updateDOM = (isDark = isDarkmode.value): void =>
-    document.documentElement.setAttribute(
-      "data-theme",
-      isDark ? "dark" : "light",
-    );
+  watchEffect(() => {
+    if (config.value === "disable") status.value = "light";
+    else if (config.value === "enable") status.value = "dark";
+    else if (config.value === "toggle" && status.value === "auto")
+      status.value = "light";
+  });
 
   onMounted(() => {
-    watch(isDarkmode, updateDOM, { immediate: true });
+    watch(
+      isDarkmode,
+      (isDarkmode) =>
+        document.documentElement.setAttribute(
+          "data-theme",
+          isDarkmode ? "dark" : "light",
+        ),
+      { immediate: true },
+    );
   });
 };
 

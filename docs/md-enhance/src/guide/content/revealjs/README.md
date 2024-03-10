@@ -43,8 +43,7 @@ Then enabling via:
 
 @tab TS
 
-```ts {8}
-// .vuepress/config.ts
+```ts {8} title=".vuepress/config.ts"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -59,8 +58,7 @@ export default {
 
 @tab JS
 
-```js {8}
-// .vuepress/config.js
+```js {8} title=".vuepress/config.js"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -147,11 +145,10 @@ Please see [Slides Demo](demo.md)
 
 ## Customize Reveal.js
 
-You can also import and call `defineRevealJsConfig` in client config file to customize reveal.js:
+You can also import and call `defineRevealJsConfig` in [client config file][client-config] to customize reveal.js:
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { defineRevealJsConfig } from "vuepress-plugin-md-enhance/client";
 
 defineRevealJsConfig({
@@ -172,5 +169,7 @@ Reveal.js also provides [more plugins](https://github.com/hakimel/reveal.js/wiki
 You can also set `revealJs` to pass options to reveal.js per page in frontmatter.
 
 For reveal.js options, see [reveal.js config](https://revealjs.com/config/). For reveal.js usage, see [reveal.js documentation](https://revealjs.com/)
+
+[client-config]: https://vuejs.press/guide/configuration.html#client-config-file
 
 <!-- #endregion customize -->

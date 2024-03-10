@@ -18,7 +18,7 @@ The theme also provides navigation buttons for previous and next pages depending
 
 `vuepress-theme-hope` uses the built-in [`@vuepress/plugin-git`][git] plugin to automatically generate page create time, last update time and contributors.
 
-The plugin will automatically generate the page creation time and last update time from the UNIX timestamp (ms) of the last `git` commit of the page file, and generate contributors based on the commit record.
+The plugin will automatically generate the page creation time and last update time from the UNIX timestamp (ms) of `git` commit history of the page file, and generate contributors based on the commit record.
 
 The theme will display last update time in the appropriate date format, along with all page contributors at the bottom of the page.
 
@@ -53,4 +53,4 @@ To hide these items globally, set the corresponding items below to `false` in th
 - `contributors`: whether to show page contributors
 - `editLink`: whether to display "edit page" link
 
-[git]: https://vuejs.press/reference/plugin/git.html
+[git]: https://ecosystem.vuejs.press/plugins/git.html

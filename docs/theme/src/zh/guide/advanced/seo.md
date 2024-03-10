@@ -9,13 +9,13 @@ tag:
   - SEO
 ---
 
-`vuepress-theme-hope` 通过内置 <ProjectLink name="seo2" path="/zh/">`vuepress-plugin-seo2`</ProjectLink> 为提供 SEO 增强功能。
+`vuepress-theme-hope` 通过内置 [`@vuepress/plugin-seo`][seo] 为提供 SEO 增强功能。
 
 为了使插件能够更好的工作，你可能需要查看一下 [页面配置](../../config/frontmatter/info.md) 并合理的配置它们。
 
 ::: info
 
-`vuepress-theme-hope` 将主题选项中的 `plugins.seo` 作为插件选项提供给 `vuepress-plugin-seo2`。
+`vuepress-theme-hope` 将主题选项中的 `plugins.seo` 作为插件选项提供给 `@vuepress/plugin-seo`。
 
 :::
 
@@ -101,24 +101,17 @@ head:
 你可以在主题选项中通过 `plugins.seo.ogp` 传入一个函数来按照你的需要修改默认 OGP 对象并返回。
 
 ```ts
-function ogp<
-  ExtraPageData extends Record<string, unknown> = Record<never, never>,
-  ExtraPageFrontmatter extends Record<string, unknown> = Record<
-    string,
-    unknown
-  >,
-  ExtraPageFields extends Record<string, unknown> = Record<never, never>,
->(
-  /** 插件自动推断的 OGP 对象 */
+function ogp(
+  /** 插件推断的 OGP 信息 */
   ogp: SeoContent,
   /** 页面对象 */
-  page: ExtendPage<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
+  page: Page,
   /** VuePress App */
   app: App,
 ): SeoContent;
 ```
 
-详细的参数结构详见 <ProjectLink name="seo2" path="/zh/config.html">配置</ProjectLink>。
+详细的参数结构详见 [SEO 插件配置][seo-config]。
 
 比如你在使用某个第三方主题，并按照主题要求为每篇文章在 front matter 中设置了 `banner`，那你可以传入这样的 `ogp`:
 
@@ -136,18 +129,11 @@ function ogp<
 同 OGP，你可以在主题选项中通过 `plugins.seo.jsonLd` 传入一个函数来按照你的需要修改默认 JSON-LD 对象并返回。
 
 ```ts
-function jsonLd<
-  ExtraPageData extends Record<string, unknown> = Record<never, never>,
-  ExtraPageFrontmatter extends Record<string, unknown> = Record<
-    string,
-    unknown
-  >,
-  ExtraPageFields extends Record<string, unknown> = Record<never, never>,
->(
+function jsonLd(
   /** 由插件推断出的 JSON-LD 对象 */
   jsonLD: ArticleSchema | BlogPostingSchema | WebPageSchema,
   /** 页面对象 */
-  page: ExtendPage<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
+  page: Page,
   /** VuePress App */
   app: App,
 ): ArticleSchema | BlogPostingSchema | WebPageSchema;
@@ -175,18 +161,11 @@ function jsonLd<
 有些时候你可能需要符合其他协议或按照其他搜索引擎提供的格式提供对应的 SEO 标签，此时你可以在主题选项中通过 `plugins.seo.customHead` 选项自定义 head 标签，其类型为:
 
 ```ts
-function customHead<
-  ExtraPageData extends Record<string, unknown> = Record<never, never>,
-  ExtraPageFrontmatter extends Record<string, unknown> = Record<
-    string,
-    unknown
-  >,
-  ExtraPageFields extends Record<string, unknown> = Record<never, never>,
->(
+function customHead(
   /** head 标签配置 */
   head: HeadConfig[],
   /** 页面对象 */
-  page: ExtendPage<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
+  page: Page,
   /** VuePress App */
   app: App,
 ): void;
@@ -229,3 +208,6 @@ function customHead<
 ## 相关工具
 
 - [Google 富媒体结构测试工具](https://search.google.com/test/rich-results)
+
+[seo]: https://ecosystem.vuejs.press/zh/plugins/seo/
+[seo-config]: https://ecosystem.vuejs.press/zh/plugins/seo/config.html

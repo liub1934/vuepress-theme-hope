@@ -43,8 +43,7 @@ npm i -D kotlin-playground
 
 @tab TS
 
-```ts {8}
-// .vuepress/config.ts
+```ts {8} title=".vuepress/config.ts"
 import { mdEnhance } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -59,8 +58,7 @@ export default {
 
 @tab JS
 
-```js {8}
-// .vuepress/config.js
+```js {8} title=".vuepress/config.js"
 import { mdEnhance } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -117,11 +115,10 @@ export default {
 
   您可以查看下面的演示以了解更多细节。
 
-你可以在客户端配置文件中导入并调用 `defineKotlinPlaygroundConfig` 来自定义 `kotlin-playground`:
+你可以在[客户端配置文件][client-config]中导入并调用 `defineKotlinPlaygroundConfig` 来自定义 `kotlin-playground`:
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { defineKotlinPlaygroundConfig } from "vuepress-plugin-md-enhance/client";
 
 defineKotlinPlaygroundConfig({
@@ -293,5 +290,7 @@ class Cat(val name: String)
 :::
 
 ::::
+
+[client-config]: https://vuejs.press/zh/guide/configuration.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6
 
 <!-- #endregion after -->

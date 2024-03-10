@@ -1,4 +1,3 @@
-import { usePageData } from "@vuepress/client";
 import type { GalleryItem } from "lightgallery/lg-utils.js";
 import lightGallery from "lightgallery/lightgallery.es5.js";
 import type { LightGallery } from "lightgallery/lightgallery.js";
@@ -12,6 +11,7 @@ import {
   shallowRef,
   watch,
 } from "vue";
+import { usePageData } from "vuepress/client";
 
 import { useLightGalleryPlugins } from "@temp/lightgallery/plugins.js";
 
@@ -26,10 +26,10 @@ const getImages = (images: HTMLImageElement[]): GalleryItem[] =>
   images.map(
     ({ alt, srcset, src }) =>
       <GalleryItem>{
-        alt: alt,
-        src: src,
+        src,
+        srcset,
         thumb: src || srcset,
-        srcset: srcset,
+        alt,
         subHtml: alt,
       },
   );
@@ -70,7 +70,7 @@ export default defineComponent({
           ...lightGalleryOptions,
           dynamic: true,
           dynamicEl: getImages(images),
-          // this is a licenseKey to make this project under MIT, special thanks to @Sachin
+          // This is a licenseKey to make this project under MIT, special thanks to @Sachin
           licenseKey: "VSY7R-J@WED-CJY76-UMDXQ",
           plugins: lightGalleryPlugins.map(({ default: plugin }) => plugin),
         });

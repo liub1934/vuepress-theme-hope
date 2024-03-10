@@ -38,8 +38,7 @@ PDF 预览组件。
 
 如果你将 PDFJS 解压到 `.vuepress/public/assets/lib/pdfjs` ，你应该设置：
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { componentsPlugin } from "vuepress-plugin-components";
 
 export default {
@@ -93,6 +92,8 @@ export default {
 - 必填: 是
 
 PDF 链接，**不支持**相对路径。
+
+当填写路径名时，`base` 将自动添加到路径名的开头。
 
 ### width
 

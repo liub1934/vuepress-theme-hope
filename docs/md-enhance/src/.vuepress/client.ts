@@ -1,8 +1,7 @@
-import { defineClientConfig } from "@vuepress/client";
-import { defineEchartsConfig } from "vuepress-plugin-md-enhance/client";
-
 import ProjectLink from "docs-shared/components/ProjectLink.js";
-import TelegramLink from "docs-shared/components/TelegramLink.js";
+import SocialLink from "docs-shared/components/SocialLink.js";
+import { defineClientConfig } from "vuepress/client";
+import { defineEchartsConfig } from "vuepress-plugin-md-enhance/client";
 
 defineEchartsConfig({
   setup: async () => {
@@ -13,6 +12,6 @@ defineEchartsConfig({
 export default defineClientConfig({
   enhance: ({ app }) => {
     app.component("ProjectLink", ProjectLink);
-    app.component("TelegramLink", TelegramLink);
+    app.component("SocialLink", SocialLink);
   },
 });

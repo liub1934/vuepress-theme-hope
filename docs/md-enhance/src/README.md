@@ -24,11 +24,6 @@ highlights:
     bgImage: https://theme-hope-assets.vuejs.press/bg/3-light.svg
     bgImageDark: https://theme-hope-assets.vuejs.press/bg/3-dark.svg
     highlights:
-      - title: Links Check
-        icon: clipboard-check
-        details: Check markdown links
-        link: ./guide/others.html#link-check
-
       - title: Full GFM Support
         icon: fab fa-github
         details: Support github flavored markdown
@@ -190,6 +185,11 @@ highlights:
         details: Show living vue component in playground
         link: ./guide/code/vue-playground.html
 
+      - title: Sandpack playground Support
+        icon: code
+        details: A live coding environment driven by Sandpack.
+        link: ./guide/code/sandpack.html
+
 footer: Theme by <a href="https://theme-hope.vuejs.press" target="_blank">VuePress Theme Hope</a> | MIT Licensed, Copyright © 2019-present Mr.Hope
 
 copyright: false
@@ -225,8 +225,7 @@ npm i -D vuepress-plugin-md-enhance
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -240,8 +239,7 @@ export default {
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {

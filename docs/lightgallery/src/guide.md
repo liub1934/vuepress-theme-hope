@@ -17,17 +17,16 @@ But PLEASE DO AWARE that organizational license can only be used on one product.
 
 YOU ARE WARNED!
 
-If you are worried about this, please consider using <ProjectLink name="photo-swipe">vuepress-plugin-photo-swipe</ProjectLink> instead.
+If you are worried about this, please consider using [@vuepress/plugin-photo-swipe][photo-swipe] instead.
 
 :::
 
 ## Customize Options
 
-You can pass options to [`lightgallery`](https://www.lightgalleryjs.com/) by importing and calling `defineLightGalleryConfig` in client config file:
+You can pass options to [`lightgallery`](https://www.lightgalleryjs.com/) by importing and calling `defineLightGalleryConfig` in [client config file][client-config]:
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { defineLightGalleryConfig } from "vuepress-plugin-lightgallery/client";
 
 defineLightGalleryConfig({
@@ -82,3 +81,6 @@ If your theme adds animations when switching pages, you may need to delay when l
 </style>
 
 <!-- markdownlint-restore -->
+
+[client-config]: https://vuejs.press/guide/configuration.html#client-config-file
+[photo-swipe]: https://ecosystem.vuejs.press/plugins/photo-swipe.html

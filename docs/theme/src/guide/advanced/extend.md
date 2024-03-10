@@ -19,15 +19,14 @@ You need to create an entry file for your theme and import `hopeTheme` from `vue
 
 In your entry file, set `extends: hopeTheme(options)` to extend the `vuepress-theme-hope` theme.
 
-The aliases of the same name (`alias`) and layouts (`layouts`) of your own newly created theme has higher priority over the extended theme `vuepress-theme-hope`, which means that you can override `vuepress-theme-hope` components via `alias` option in theme api, and you can add or override layouts via `layouts` in client config file.
+The aliases of the same name (`alias`) and layouts (`layouts`) of your own newly created theme has higher priority over the extended theme `vuepress-theme-hope`, which means that you can override `vuepress-theme-hope` components via `alias` option in theme api, and you can add or override layouts via `layouts` in [client config file](../../cookbook/vuepress/config.md#client-config-file).
 
 ::: code-tabs#language
 
 @tab TS
 
-```ts
-// .vuepress/theme/index.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/theme/index.ts"
+import { getDirname, path } from "vuepress/utils";
 import { hopeTheme } from "vuepress-theme-hope";
 import type { ThemeOptions } from "vuepress-theme-hope";
 
@@ -51,9 +50,8 @@ export default (options: ThemeOptions) => ({
 
 @tab JS
 
-```js
-// .vuepress/theme/index.js
-import { getDirname, path } from "@vuepress/utils";
+```js title=".vuepress/theme/index.js"
+import { getDirname, path } from "vuepress/utils";
 import { hopeTheme } from "vuepress-theme-hope";
 
 const __dirname = getDirname(import.meta.url);

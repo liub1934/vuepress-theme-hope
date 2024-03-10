@@ -1,7 +1,6 @@
-import { usePageData } from "@vuepress/client";
 import type { PropType, VNode } from "vue";
 import { defineComponent, h } from "vue";
-import { useRouter } from "vue-router";
+import { usePageData, useRouter } from "vuepress/client";
 import { generateIndexFromHash } from "vuepress-shared/client";
 
 import { CategoryIcon } from "@theme-hope/modules/info/components/icons";
@@ -55,7 +54,7 @@ export default defineComponent({
               "aria-label": `${metaLocale.value.category}${
                 props.pure ? "" : "🌈"
               }`,
-              ...(props.pure ? {} : { "data-balloon-pos": "down" }),
+              ...(props.pure ? {} : { "data-balloon-pos": "up" }),
             },
             [
               h(CategoryIcon),

@@ -13,14 +13,13 @@ tag:
 
 `vuepress-theme-hope` bundles `@vuepress/plugin-prismjs` to support code highlighting by default, and we allow you to set code block themes for lightmode and darkmode globally.
 
-By default, we use `one-light` and `one-dark` for lightmode and darkmode respectively, and you can change them by setting `light` and `dark` in `plugin.prismjs`.
+By default, we use `one-light` and `one-dark` for lightmode and darkmode respectively, and you can change them by setting `light` and `dark` in `plugins.prismjs`.
 
 ::: code-tabs#language
 
 @tab TS
 
-```ts {7-12}
-// .vuepress/config.ts
+```ts {7-12} title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -38,8 +37,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js {7-12}
-// .vuepress/config.js
+```js {7-12} title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -145,8 +143,7 @@ Prism.js is fast and lightweight, but it can not highlight all syntax correctly.
 
    @tab TS
 
-   ```ts
-   // .vuepress/config.ts
+   ```ts title=".vuepress/config.ts"
    import { shikiPlugin } from "@vuepress/plugin-shiki";
    import { defineUserConfig } from "vuepress";
 
@@ -154,7 +151,12 @@ Prism.js is fast and lightweight, but it can not highlight all syntax correctly.
      plugins: [
        shikiPlugin({
          // your options
-         theme: "one-dark-pro",
+
+         // example
+         themes: {
+           light: "github-light",
+           dark: "one-dark-pro",
+         },
        }),
      ],
    });
@@ -162,15 +164,19 @@ Prism.js is fast and lightweight, but it can not highlight all syntax correctly.
 
    @tab JS
 
-   ```js
-   // .vuepress/config.js
+   ```js title=".vuepress/config.js"
    import { shikiPlugin } from "@vuepress/plugin-shiki";
 
    export default {
      plugins: [
        shikiPlugin({
          // your options
-         theme: "one-dark-pro",
+
+         // example
+         themes: {
+           light: "github-light",
+           dark: "one-dark-pro",
+         },
        }),
      ],
    };

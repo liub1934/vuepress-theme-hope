@@ -34,7 +34,7 @@ Whether to show suggestions while searching.
     /**
      * Custom field getter
      */
-    getter: (page: Page) => string | string[] | null;
+    getter: (page: Page) => string[] | string | null | undefined;
 
     /**
      * Display content
@@ -169,6 +169,13 @@ Performing client search with huge contents could be slow, so under this case yo
 
 :::
 
+### filter
+
+- Type: `(page: Page) => boolean`
+- Default: `() => true`
+
+Function used to filter pages.
+
 ### sortStrategy
 
 - Type: `"max" | "total"`
@@ -205,7 +212,7 @@ Usually in development, users do not need to update the index database in real t
 - Type: `SearchProIndexOptions`
 
   ```ts
-  export interface SearchProIndexOptions {
+  interface SearchProIndexOptions {
     /**
      * Function to tokenize the index field item.
      */
@@ -228,7 +235,7 @@ Options used to create index.
 - Type: `Record<string, SearchProIndexOptions>`
 
   ```ts
-  export interface SearchProIndexOptions {
+  interface SearchProIndexOptions {
     /**
      * Function to tokenize the index field item.
      */
@@ -365,8 +372,44 @@ Multilingual configuration of the search plugin.
 
 Customize [search options](https://mister-hope.github.io/slimsearch/interfaces/SearchOptions.html).
 
+We also support these options internally:
+
 ```ts
-// .vuepress/client.ts
+interface SearchLocaleOptions
+  extends Omit<
+    SearchOptions,
+    // These are handled internally
+    | "fields"
+    // These can not pass to worker
+    | "filter"
+    | "boostDocument"
+    | "tokenize"
+    | "processTerm"
+  > {
+  /** A function to filter suggestions */
+  suggestionsFilter?: (
+    suggestions: string[],
+    query: string,
+    locale: string,
+    pageData: PageData,
+  ) => string[];
+
+  /** A function to filter search results */
+  searchFilter?: (
+    results: SearchResult[],
+    query: string,
+    locale: string,
+    pageData: PageData,
+  ) => SearchResult[];
+}
+
+interface SearchOptions extends SearchLocaleOptions {
+  /** Setting different options per locale */
+  locales?: Record<string, SearchLocaleOptions>;
+}
+```
+
+```ts title=".vuepress/client.ts"
 import { defineSearchConfig } from "vuepress-plugin-search-pro/client";
 
 defineSearchConfig({
@@ -381,53 +424,92 @@ export default {};
 Create a search worker so that you can search through API.
 
 ```ts
-export type Word = [tag: string, content: string] | string;
+type Word = [tag: string, content: string] | string;
 
-export interface TitleMatchedItem {
+interface TitleMatchedItem {
   type: "title";
   id: string;
   display: Word[];
 }
 
-export interface HeadingMatchedItem {
+interface HeadingMatchedItem {
   type: "heading";
   id: string;
   display: Word[];
 }
 
-export interface CustomMatchedItem {
+interface CustomMatchedItem {
   type: "custom";
   id: string;
   index: string;
   display: Word[];
 }
 
-export interface ContentMatchedItem {
+interface ContentMatchedItem {
   type: "content";
   id: string;
   header: string;
   display: Word[];
 }
 
-export type MatchedItem =
+type MatchedItem =
   | TitleMatchedItem
   | HeadingMatchedItem
   | ContentMatchedItem
   | CustomMatchedItem;
 
-export interface SearchResult {
+interface SearchResult {
   title: string;
   contents: MatchedItem[];
 }
 
-export interface SearchWorker {
+interface SearchWorker {
+  /**
+   * Get both suggestions and results
+   *
+   * @param query - search query
+   * @param localePath - locale path
+   * @param options - search options
+   */
+  all: (
+    query: string,
+    localePath?: string,
+    options?: SearchOptions<string, IndexItem>,
+  ) => Promise<QueryResult>;
+
+  /**
+   * Get suggestions
+   *
+   *
+   * @param query - search query
+   * @param localePath - locale path
+   * @param options - search options
+   */
+  suggest: (
+    query: string,
+    localePath?: string,
+    options?: SearchOptions<string, IndexItem>,
+  ) => Promise<string[]>;
+
+  /**
+   * Get search results
+   *
+   *
+   * @param query - search query
+   * @param localePath - locale path
+   * @param options - search options
+   */
   search: (
     query: string,
-    locale: string,
-    searchOptions?: SearchOptions,
+    localePath?: string,
+    options?: SearchOptions<string, IndexItem>,
   ) => Promise<SearchResult[]>;
+
+  /**
+   * Terminate current worker
+   */
   terminate: () => void;
 }
 
-declare const createSearchWorker: () => SearchWorker;
+const createSearchWorker: () => SearchWorker;
 ```

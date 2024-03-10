@@ -1,7 +1,7 @@
 import { theme } from "docs-shared";
 
-// the theme wrapper is located in <root>/docs-shared/src/theme-wrapper.ts
-export default theme("auto-catalog", {
+// The theme wrapper is located in <root>/docs-shared/src/theme-wrapper.ts
+export default theme("append-date", {
   locales: {
     "/": {
       sidebar: false,

@@ -24,25 +24,22 @@ VuePress 是以 Markdown 为中心的。你项目中的每一个 Markdown 文件
 
 ```
 └─ src
-   ├─ guide
+   ├─ demo
    │  ├─ ...
    │  └─ page.md
    │  └─ markdown.md
    │  └─ README.md
    ├─ ...
-   ├─ slide.md
    └─ README.md
 ```
 
 你的 Markdown 文件对应的路由路径为:
 
-| 相对路径           | 路由路径            |
-| ------------------ | ------------------- |
-| `/README.md`       | `/`                 |
-| `/slide.md`        | `/slide.html`       |
-| `/guide/README.md` | `/guide/`           |
-| `/guide/slide.md`  | `/guide/slide.html` |
-| `/guide/page.md`   | `/guide/page.html`  |
+| 相对路径          | 路由路径          |
+| ----------------- | ----------------- |
+| `/README.md`      | `/`               |
+| `/demo/README.md` | `/demo/`          |
+| `/demo/page.md`   | `/demo/page.html` |
 
 ::: tip README.md
 
@@ -70,7 +67,7 @@ VuePress 是以 Markdown 为中心的。你项目中的每一个 Markdown 文件
 
 - VuePress 自身对 Markdown 语法进行了一些扩展，关于这些扩展的语法，详见 [VuePress → Markdown](../cookbook/vuepress/markdown.md)。
 
-- 主题通过 `vuepress-plugin-md-enhance` 额外启用了一些语法扩展，详见 [指南 → Markdown](../guide/get-started/markdown.md)。
+- 主题通过 `vuepress-plugin-md-enhance` 额外启用了一些语法扩展，详见 [指南 → Markdown](../guide/intro/markdown.md)。
 
 :::
 
@@ -98,4 +95,6 @@ description: 页面的描述
 ...
 ```
 
-你也许注意到案例中 Frontmatter 中的字段和 VuePress 配置文件十分类似。你可以通过 Frontmatter 来覆盖当前页面的 `lang`, `title`, `description` 等属性。因此，你可以把 Frontmatter 当作页面级作用域的配置，它通常具有最高优先级，所作配置仅对当前页面生效。
+你也许注意到案例中 Frontmatter 中的字段和 [VuePress 配置文件][config] 十分类似。你可以通过 Frontmatter 来覆盖当前页面的 `lang`, `title`, `description` 等属性。因此，你可以把 Frontmatter 当作页面级作用域的配置，它通常具有最高优先级，所作配置仅对当前页面生效。
+
+[config]: https://vuejs.press/zh/guide/configuration.html#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6

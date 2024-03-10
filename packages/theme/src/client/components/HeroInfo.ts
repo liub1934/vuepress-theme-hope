@@ -1,11 +1,11 @@
+import { isString } from "@vuepress/helper/client";
+import type { SlotsType, VNode } from "vue";
+import { computed, defineComponent, h } from "vue";
 import {
   usePageFrontmatter,
   useSiteLocaleData,
   withBase,
-} from "@vuepress/client";
-import type { SlotsType, VNode } from "vue";
-import { computed, defineComponent, h } from "vue";
-import { isString } from "vuepress-shared/client";
+} from "vuepress/client";
 
 import AutoLink from "@theme-hope/components/AutoLink";
 import DropTransition from "@theme-hope/components/transitions/DropTransition";
@@ -24,7 +24,7 @@ export interface HeroInfo {
 export interface HeroImage {
   image: string | null;
   imageDark: string | null;
-  heroStyle: string | Record<string, string> | undefined;
+  style: string | Record<string, string> | undefined;
   alt: string;
   isFullScreen: boolean;
 }
@@ -69,8 +69,8 @@ export default defineComponent({
       return {
         image: heroImage ? withBase(heroImage) : null,
         imageDark: heroImageDark ? withBase(heroImageDark) : null,
-        heroStyle: heroImageStyle,
-        alt: heroAlt || heroText || "hero image",
+        style: heroImageStyle,
+        alt: heroAlt || heroText || "",
         isFullScreen: isFullScreen.value,
       };
     });
@@ -126,7 +126,7 @@ export default defineComponent({
                         "vp-hero-image",
                         { light: heroImage.value.imageDark },
                       ],
-                      style: heroImage.value.heroStyle,
+                      style: heroImage.value.style,
                       src: heroImage.value.image,
                       alt: heroImage.value.alt,
                     })
@@ -135,7 +135,7 @@ export default defineComponent({
                   ? h("img", {
                       key: "dark",
                       class: "vp-hero-image dark",
-                      style: heroImage.value.heroStyle,
+                      style: heroImage.value.style,
                       src: heroImage.value.imageDark,
                       alt: heroImage.value.alt,
                     })

@@ -50,34 +50,6 @@ The last 4 items conflict with default theme and will override its style.
 
 :::
 
-### checkLinks
-
-- Type: `LinksCheckOptions`
-
-  ```ts
-  type LinksCheckStatus = "always" | "dev" | "build" | "never";
-
-  interface LinksCheckOptions {
-    /**
-     * Whether check dead links in markdown
-     *
-     * @default "dev"
-     */
-    status?: LinksCheckStatus;
-
-    /**
-     * Dead links to ignore
-     */
-    ignore?: (string | RegExp)[] | ((link: string, isDev: boolean) => boolean);
-  }
-  ```
-
-- Default: `{ status: "dev" }`
-- Details:
-  - [Link Check](./guide/others.md#link-check)
-
-Whether to enable links check.
-
 ### vPre
 
 - Type: `boolean`
@@ -460,8 +432,6 @@ Stylize inline tokens to create snippet you want.
 - Type: `PlaygroundGlobalOptions`
 
   ```ts
-  import type { CompilerOptions } from "typescript";
-
   interface PlaygroundCodeConfig {
     /**
      * Code block extension
@@ -470,28 +440,22 @@ Stylize inline tokens to create snippet you want.
      */
     ext: string;
 
-    /**
-     * Code block content
-     */
+    /** Code block content */
     content: string;
   }
 
   interface PlaygroundData {
-    /**
-     * Title of Playground
-     */
+    /** Title of Playground */
     title?: string;
 
     /**
      * Import map file name
      *
-     * @default 'import-map.json'
+     * @default "import-map.json"
      */
     importMap?: string;
 
-    /**
-     * Playground files info
-     */
+    /** Playground files info */
     files: Record<
       /** File name */
       string,
@@ -506,22 +470,18 @@ Stylize inline tokens to create snippet you want.
      */
     settings: Record<string, unknown>;
 
-    /**
-     * hash key based on playground content
-     */
+    /** hash key based on playground content */
     key: string;
   }
 
   interface PlaygroundOptions {
-    /**
-     * Playground container name
-     */
+    /** Playground container name */
     name: string;
 
     /**
      * Playground component name
      *
-     * @default 'Playground'
+     * @default "Playground"
      */
     component?: string;
 
@@ -536,17 +496,6 @@ Stylize inline tokens to create snippet you want.
      * external playground service url
      *
      * @default "https://www.typescriptlang.org/play"
-     */
-    service?: string;
-  }
-
-  interface UnoPresetPlaygroundOptions {
-    /**
-     * external playground service url
-     *
-     * 交互演示外部地址
-     *
-     * @default "https://unocss.dev/play"
      */
     service?: string;
   }
@@ -574,13 +523,25 @@ Stylize inline tokens to create snippet you want.
     ssr?: boolean;
   }
 
+  interface UnoPresetPlaygroundOptions {
+    /**
+     * external playground service url
+     *
+     * @default "https://unocss.dev/play"
+     */
+    service?: string;
+  }
+
+  type BuiltInPlaygroundPreset = "ts" | "vue" | "unocss";
+
   interface PlaygroundGlobalOptions {
     /** Playground presets */
-    presets: ("ts" | "vue" | PlaygroundOptions)[];
+    presets: (BuiltInPlaygroundPreset | PlaygroundOptions)[];
     /** Playground config */
     config?: {
       ts?: TSPresetPlaygroundOptions;
       vue?: VuePresetPlaygroundOptions;
+      unocss?: UnoPresetPlaygroundOptions;
     };
   }
   ```
@@ -710,7 +671,7 @@ Default value: `"https://unpkg.com/react-dom/umd/react-dom.production.min.js"`
   /**
    * reveal.js options
    */
-  export interface RevealJsOptions {
+  interface RevealJsOptions {
     /**
      * reveal.js plugins
      *
@@ -732,6 +693,13 @@ Default value: `"https://unpkg.com/react-dom/umd/react-dom.production.min.js"`
   - [Reveal.js](./guide/content/revealjs/README.md)
 
 Whether to enable slides support. You can pass an option to control plugins and themes to import.
+
+### sandpack
+
+- Type: `boolean`
+- Default: `false`
+
+Whether to enable sandpack playground support.
 
 ### delay
 
@@ -821,7 +789,7 @@ Locales config for Markdown Enhance Plugin.
 ### defineEchartsConfig
 
 ```ts
-export interface EchartsConfig {
+interface EchartsConfig {
   /**
    * Echarts global options
    */
@@ -833,7 +801,7 @@ export interface EchartsConfig {
   setup?: () => Promise<void>;
 }
 
-export const defineEchartsConfig: (config: EchartsConfig) => void;
+const defineEchartsConfig: (config: EchartsConfig) => void;
 ```
 
 Define global options and setup for Echarts.
@@ -841,7 +809,7 @@ Define global options and setup for Echarts.
 ### defineMermaidConfig
 
 ```ts
-export const defineMermaidConfig: (options: MermaidConfig) => void;
+const defineMermaidConfig: (options: MermaidConfig) => void;
 ```
 
 Define config which you want to pass to mermaid.
@@ -849,7 +817,7 @@ Define config which you want to pass to mermaid.
 ### defineRevealJsConfig
 
 ```ts
-export const defineRevealJsConfig: (options: RevealOptions) => void;
+const defineRevealJsConfig: (options: RevealOptions) => void;
 ```
 
 Define config which you want to pass to reveal.js.
@@ -873,85 +841,69 @@ interface KotlinPlaygroundOptions {
   getInstance?: (instance: KotlinPlaygroundInstance) => void;
 }
 
-export const defineKotlinPlaygroundConfig: (
-  options: KotlinPlaygroundOptions,
-) => void;
+const defineKotlinPlaygroundConfig: (options: KotlinPlaygroundOptions) => void;
 ```
 
 Define config which you want to pass to `kotlin-playground`.
 
+### defineSandpackConfig
+
+```ts
+ interface SandpackConfig {
+  /**
+   * specify the template
+   */
+  template?: SandpackPredefinedTemplate;
+
+  /**
+   * Options to configure the sandpack
+   */
+  options?: SandpackOptions;
+
+  /**
+   * Options to configure the customSetup
+   */
+  customSetup?: SandpackSetup;
+}
+
+const defineSandpackConfig = (config: SandpackConfig)=> void
+```
+
+Define config which you want to pass to `sandpack-vue3`.
+
 ### defineVuePlaygroundConfig
 
 ```ts
-interface VuePlaygroundOptions {
+export interface VuePlaygroundOptions
+  extends Omit<ReplProps, "store" | "editor"> {
   /**
-   * specify the version of vue
+   * Specify the version of vue
    */
   vueVersion?: string;
 
   /**
-   * specify default URL to import Vue runtime from in the sandbox
+   * Specify default URL to import Vue dev runtime from in the sandbox
    *
    * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.js"
    */
-  defaultVueRuntimeURL?: string;
+  vueRuntimeDevUrl?: string | (() => string);
+
+  /**
+   * Specify default URL to import Vue prod runtime from in the sandbox
+   *
+   * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.prod.js"
+   */
+  vueRuntimeProdUrl?: string | (() => string);
 
   /**
    * Specify default URL to import Vue Server Renderer from in the sandbox
    *
    * @default "https://unpkg.com/@vue/server-renderer@${version}/dist/server-renderer.esm-browser.js"
    */
-  defaultVueServerRendererURL?: string;
-
-  /**
-   * Whether to enable repl's editor resizable
-   *
-   * @default true
-   */
-  autoResize?: boolean;
-
-  /**
-   * Whether to show JS, CSS, SSR panel
-   *
-   * @default false
-   */
-  showCompileOutput?: boolean;
-
-  /**
-   * Whether to show import map
-   *
-   * @default true
-   */
-  showImportMap?: boolean;
-
-  /**
-   * Whether to clear console
-   *
-   * @default false
-   */
-  clearConsole?: boolean;
-
-  /**
-   * Layout
-   *
-   * @default 'horizontal'
-   */
-  layout?: "horizontal" | "vertical";
-
-  /**
-   * Options to configure the `vue/compiler-sfc`
-   */
-  sfcOptions?: SFCOptions;
-
-  /**
-   * Whether to enable SSR
-   *
-   * @default true
-   */
-  ssr?: boolean;
+  vueServerRendererUrl?: string | (() => string);
 }
 
-export const defineVuePlaygroundConfig: (options: VuePlaygroundOptions) => void;
+const defineVuePlaygroundConfig: (options: VuePlaygroundOptions) => void;
 ```
 
 Define config which you want to pass to `@vue/repl`.

@@ -1,7 +1,7 @@
-import { useRouteLocale } from "@vuepress/client";
 import { useDebounceFn } from "@vueuse/core";
 import type { Ref } from "vue";
 import { onMounted, onUnmounted, ref, shallowRef, watch } from "vue";
+import { usePageData, useRouteLocale } from "vuepress/client";
 
 import { searchProOptions } from "../define.js";
 import { useSearchOptions } from "../helpers/index.js";
@@ -16,12 +16,14 @@ export interface SearchRef {
 export const useSearchResult = (query: Ref<string>): SearchRef => {
   const searchOptions = useSearchOptions();
   const routeLocale = useRouteLocale();
-  const { search, terminate } = createSearchWorker();
+  const pageData = usePageData();
 
   const searching = ref(false);
   const results = shallowRef<SearchResult[]>([]);
 
   onMounted(() => {
+    const { search, terminate } = createSearchWorker();
+
     const endSearch = (): void => {
       results.value = [];
       searching.value = false;
@@ -31,14 +33,18 @@ export const useSearchResult = (query: Ref<string>): SearchRef => {
       searching.value = true;
 
       if (queryString)
-        void search({
-          type: "search",
-          query: queryString,
-          locale: routeLocale.value,
-          options: searchOptions,
-        })
-          .then((searchResults) => {
-            results.value = searchResults;
+        void search(queryString, routeLocale.value, searchOptions.value)
+          .then(
+            (results) =>
+              searchOptions.value.searchFilter?.(
+                results,
+                queryString,
+                routeLocale.value,
+                pageData.value,
+              ) ?? results,
+          )
+          .then((_results) => {
+            results.value = _results;
             searching.value = false;
           })
           .catch((err) => {

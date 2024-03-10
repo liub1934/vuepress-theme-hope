@@ -1,39 +1,16 @@
 ---
 title: 常见错误
 icon: triangle-exclamation
+order: 3
 category:
   - FAQ
 ---
 
 ## `useXXX() is called without provider`
 
-此类错误通常是因为项目中错误的含有多个 `@vue/xxx`, `@vuepress/xxx`, `vue` 或 `vue-router` 版本引起的。
+此类错误通常是因为项目中错误的含有多个 `vue` 或 `vuepress` 版本引起的。
 
-请确保你正在使用最新的 `vuepress` 和 `vuepress-theme-hope` 版本:
-
-::: code-tabs#shell
-
-@tab pnpm
-
-```bash
-pnpm add @vuepress/client@next vuepress@next vuepress-theme-hope vue@latest -E
-```
-
-@tab yarn
-
-```bash
-yarn add vuepress@next vuepress-theme-hope@latest -E
-```
-
-@tab npm
-
-```bash
-npm i vuepress@next vuepress-theme-hope@latest -E
-```
-
-:::
-
-同时，升级依赖以确保你的项目只包含单个版本的相关包:
+请确保你正在使用最新的 `vuepress` 和 `vuepress-theme-hope` 版本并且升级依赖以确保你的项目只包含单个版本的相关包。你可以使用 `vp-update` 命令来升级你的依赖。
 
 ::: code-tabs#shell
 
@@ -57,17 +34,40 @@ npx vp-update
 
 :::
 
-::: warning
+## `Issues with peer dependencies found`
 
-任何以 `@vuepress/` 开头的官方包应该和 VuePress 保持相同版本。
+这意味着你在项目中安装了错误的依赖。
 
-比如，如果你正在使用 `@vuepress/plugin-search` 和 `@vuepress/utils`，你应该确保他们和 `vuepress` 版本相同。
+这是一个例子:
 
-另外，`vuepress-theme-hope` 仓库的插件应与 `vuepress-theme-hope` 版本相同。
+```
+ WARN  Issues with peer dependencies found
+.
+├─┬ @vuepress/plugin-docsearch 2.0.0-rc.7
+│ └── ✕ unmet peer vuepress@2.0.0-rc.2: found 2.0.0-rc.5
+├─┬ vuepress-plugin-append-date 2.0.0-rc.20
+│ ├── ✕ unmet peer vuepress@2.0.0-rc.2: found 2.0.0-rc.5
+│ ├─┬ @vuepress/helper 2.0.0-rc.9
+│ │ └── ✕ unmet peer vuepress@2.0.0-rc.2: found 2.0.0-rc.5
+│ └─┬ vuepress-shared 2.0.0-rc.20
+│   └── ✕ unmet peer vuepress@2.0.0-rc.2: found 2.0.0-rc.5
+├─┬ @vuepress/plugin-git 2.0.0-rc.7
+│ └── ✕ unmet peer vuepress@2.0.0-rc.2: found 2.0.0-rc.5
+├─┬ vuepress 2.0.0-rc.5
+│ └── ✕ unmet peer @vuepress/bundler-vite@2.0.0-rc.5: found 2.0.0-rc.4
+└─┬ vuepress-theme-hope 2.0.0-rc.21
+  └── ✕ unmet peer @vuepress/plugin-docsearch@2.0.0-rc.10: found 2.0.0-rc.7
+```
 
-此外，如果你使用了其他第三方插件，请确保它兼容你要升级到的 VuePress 版本。
+例子显示:
 
-:::
+- `vuepress` 需要一个与自己相同版本的 `@vuepress/bundler-vite`，但是你拥有 `rc.4` 版本的打包器和 `rc.5` 版本的 vuepress。
+
+- Some of the plugin requires `vuepress@2.0.0-rc.2`.
+
+- 一些插件要求 `vuepress@2.0.0-rc.2`，但你当前是 `2.0.0-rc.5`。
+
+你总可以编辑你的依赖版本以使它们相互匹配。通常你会尝试将 vuepress、vuepress 打包器和插件升级到最新版本，但也有可能插件尚未兼容最新版本的 vuepress。在这种情况下，你应该将 vuepress 降级到与插件兼容的版本，或者暂时删除插件直到它支持最新的 vuepress。
 
 ## `You are not allowed to use plugin XXX yourself in vuepress config file.`
 
@@ -170,16 +170,14 @@ CloudFlare 的 Auto Minify 会错误的对 HTML 的空格和换行进行处理�
 
 :::
 
+为了调试这个问题，设置 `__VUE_PROD_HYDRATION_MISMATCH_DETAILS__` 为 `true`，这样你就可以在浏览器控制台中看到错误的详细信息。
+
 另外你还可以检查:
 
-- 如果你只是在个别页面遇到了这个问题，请检查该界面是否有你额外添加的组件。
-
-  如果有，那这些组件大概率在 SSR[^ssr] 和 CSR[^csr] 拥有不同的渲染结果，你可以尝试让其行为一致，或用 `@vuepress/client` 提供的 `<ClientOnly />` 组件包裹你的组件。
+如果一个组件件大概率在 SSR[^ssr] 和 CSR[^csr] 拥有不同的渲染结果，你可以用 `vuepress/client` 提供的 `<ClientOnly />` 组件包裹你的组件。
 
 [^ssr]: **SSR**: **S**erver **S**ide **R**endering，服务端渲染
 [^csr]: **CSR**: **C**lient **S**ide **R**endering，客户端渲染
-
-- 如果你在所有页面都遇到了这个问题，请同样按照上一步检查你在布局或全局组件中添加的组件。
 
 ## 热更新在开发服务器中不工作
 
@@ -216,11 +214,10 @@ CloudFlare 的 Auto Minify 会错误的对 HTML 的空格和换行进行处理�
 
 @tab Vite
 
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { addViteConfig } from "vuepress-shared/node";
+```ts title=".vuepress/config.ts"
+import { addViteConfig } from "@vuepress/helper";
 import postcssPresetEnv from "postcss-preset-env";
+import { defineUserConfig } from "vuepress";
 
 export default defineUserConfig({
   extendsBundlerOptions: (config, app) => {
@@ -237,11 +234,10 @@ export default defineUserConfig({
 
 @tab Webpack
 
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { configWebpack } from "vuepress-shared/node";
+```ts title=".vuepress/config.ts"
+import { addViteConfig } from "@vuepress/helper";
 import postcssPresetEnv from "postcss-preset-env";
+import { defineUserConfig } from "vuepress";
 
 export default defineUserConfig({
   extendsBundlerOptions: (config, app) => {

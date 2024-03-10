@@ -1,4 +1,4 @@
-import type { LocaleConfig } from "@vuepress/core";
+import type { LocaleConfig } from "vuepress/shared";
 
 import type {
   AttrsOptions,
@@ -8,47 +8,18 @@ import type {
   KatexOptions,
   MarkdownEnhanceLocaleData,
   MathjaxOptions,
-  PlaygroundOptions,
+  PlaygroundGlobalOptions,
   RevealJsOptions,
   StylizeOptions,
-  TSPresetPlaygroundOptions,
   TasklistOptions,
-  UnoPresetPlaygroundOptions,
-  VuePresetPlaygroundOptions,
+  VuePlaygroundOptions,
 } from "./typings/index.js";
 import type { CodeDemoOptions } from "../shared/index.js";
-
-export type LinksCheckStatus = "always" | "dev" | "build" | "never";
-
-export interface LinksCheckOptions {
-  /**
-   * Whether check dead links in markdown
-   *
-   * 是否检查 Markdown 中的死链
-   *
-   * @default "dev"
-   */
-  status?: LinksCheckStatus;
-
-  /**
-   * Dead links to ignore
-   *
-   * 忽略的死链
-   */
-  ignore?: (string | RegExp)[] | ((link: string, isDev: boolean) => boolean);
-}
 
 /**
  * md-enhance plugin configuration
  */
 export interface MarkdownEnhanceOptions {
-  /**
-   * Whether check dead links in markdown
-   *
-   * @default { status: "dev"}
-   */
-  checkLinks?: LinksCheckOptions;
-
   /**
    * Whether enable standard GFM support
    *
@@ -276,7 +247,7 @@ export interface MarkdownEnhanceOptions {
   katex?:
     | (KatexOptions & {
         /**
-         * whether enable copy plugin
+         * Whether enable copy plugin
          *
          * @default false
          */
@@ -381,16 +352,7 @@ export interface MarkdownEnhanceOptions {
    *
    * 是否启用 playground 支持
    */
-  playground?: {
-    /** Playground presets */
-    presets: ("ts" | "vue" | "unocss" | PlaygroundOptions)[];
-    /** Playground config */
-    config?: {
-      ts?: TSPresetPlaygroundOptions;
-      vue?: VuePresetPlaygroundOptions;
-      unocss?: UnoPresetPlaygroundOptions;
-    };
-  };
+  playground?: PlaygroundGlobalOptions;
 
   /**
    * Whether to enable kotlin playground support
@@ -408,7 +370,16 @@ export interface MarkdownEnhanceOptions {
    *
    * @default false
    */
-  vuePlayground?: boolean;
+  vuePlayground?: VuePlaygroundOptions | boolean;
+
+  /**
+   * Whether to enable sandpack support
+   *
+   * 是否启用 Sandpack 支持
+   *
+   * @default false
+   */
+  sandpack?: boolean;
 
   /**
    * The delay of operating dom, in ms

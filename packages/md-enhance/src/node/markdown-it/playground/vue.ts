@@ -1,4 +1,4 @@
-import { deepAssign, entries, fromEntries } from "vuepress-shared/node";
+import { deepAssign, entries, fromEntries } from "@vuepress/helper";
 
 import type {
   PlaygroundData,
@@ -25,9 +25,9 @@ export const getVuePlaygroundPreset = (
 ): PlaygroundOptions => ({
   name: "playground#vue",
   propsGetter: (playgroundData: PlaygroundData): Record<string, string> => {
-    const { title = "", files, settings: localSettings, key } = playgroundData;
+    const { title = "", files, settings: localSettings } = playgroundData;
     const settings = {
-      // defaults
+      // Defaults
       service: "https://sfc.vuejs.org/",
       dev: false,
       ssr: false,
@@ -53,9 +53,9 @@ export const getVuePlaygroundPreset = (
                 deepAssign(
                   {
                     imports: {
-                      // insure vue exists
+                      // Insure vue exists
                       vue: DEFAULT_VUE_CDN,
-                      // insure vue/server-renderer exists
+                      // Insure vue/server-renderer exists
                       ...(settings.ssr
                         ? {
                             // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -91,17 +91,16 @@ export const getVuePlaygroundPreset = (
       );
 
     return {
-      key,
       title,
       link: encodeURIComponent(
         `${settings.service}#${
-          // dev flag
+          // Dev flag
           settings.dev ? "__DEV__" : ""
         }${
-          // ssr flag
+          // Ssr flag
           settings.ssr ? "__SSR__" : ""
         }${
-          // code base64
+          // Code base64
           Buffer.from(JSON.stringify(fileInfo)).toString("base64")
         }`,
       ),

@@ -31,8 +31,7 @@ Just like navbar, you can fill in an array of multiple file links as the basic c
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -45,8 +44,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -79,8 +77,7 @@ Just like navbar, if you are not satisfied with the page's icon or feel that the
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -110,8 +107,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -162,8 +158,7 @@ You should use [object format](#object-format) and provide an additional `childr
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -203,8 +198,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -249,8 +243,7 @@ You can also nest Sidebar grouping:
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -284,8 +277,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -343,8 +335,7 @@ Then you can use the following config:
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -379,8 +370,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -441,8 +431,7 @@ You can define your sidebar for each section using below configuration:
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -474,8 +463,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -514,52 +502,7 @@ In this case, the fallback sidebar must be defined last for this reason.
 
 :::
 
-## Auto Sidebar
-
-### Generate from Headers
-
-To automatically generate a sidebar that contains only the header links for the current page, you can use frontmatter on that page:
-
-```md
----
-sidebar: heading
----
-```
-
-You can also enable it in all pages by using config:
-
-::: code-tabs#language
-
-@tab TS
-
-```ts {7}
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  theme: hopeTheme({
-    sidebar: "heading",
-  }),
-});
-```
-
-@tab JS
-
-```js {6}
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    sidebar: "heading",
-  }),
-};
-```
-
-:::
-
-### Generate from File Structure <Badge text="New" type="tip" />
+## Generate Sidebar from File Structure <Badge text="New" type="tip" />
 
 You can replace the original "sidebarConfig array" with `"structure"` keyword in any of the above sidebar config. This will allow the theme to automatically read local files, then generate sidebar from file structure for you, to reduce your config workload.
 
@@ -586,8 +529,7 @@ You can change the original config to:
 
 @tab TS
 
-```ts {8,10}
-// .vuepress/config.ts
+```ts {8,10} title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -611,8 +553,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js {7,9}
-// .vuepress/config.js
+```js {7,9} title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -647,7 +588,7 @@ However, recalculating the sidebar could be expensive for large sites, so the th
 
 :::
 
-#### Advanced Control
+### Advanced Control
 
 During the automatic generation from structure, you can control whether files in the same folder are included through the `index` option in the page Frontmatter, and control how they are sorted through `order`.
 
@@ -681,53 +622,21 @@ By default, the sidebar will be sorted according to the current language accordi
 
 For nested folders, the grouping information is controlled by `README.md` under that folder. You can control the behavior of folder grouping through the `dir` option in Frontmatter. The relevant optional items are as follows:
 
-```ts
-interface SidebarDirInfo {
-  /**
-   * Directory title
-   *
-   * @default README.md title
-   */
-  text?: string;
+- `dir.text`: Directory title, default to `README.md` title
+- `dir.icon`: Directory icon, default to `README.md` icon
+- `dir.collapsible`: Whether the directory is collapsible, default to `true`
+- `dir.link`: Whether the directory is clickable, default to `false`
+- `dir.index`: Whether index current dir, default to `true`
+- `dir.order`: Dir order in sidebar, default to `0`
 
-  /**
-   * Directory icon
-   *
-   * @default README.md icon
-   */
-  icon?: string;
+Here is an example:
 
-  /**
-   * Whether the directory is collapsible
-   *
-   * @default true
-   */
-
-  collapsible?: boolean;
-
-  /**
-   * Whether the directory is clickable
-   *
-   * @description will set the link of the directory grouping to the link corresponding to README.md
-   *
-   * @default false
-   */
-
-  link?: boolean;
-  /**
-   * Whether index current dir
-   *
-   * @default true
-   */
-  index?: boolean;
-
-  /**
-   * Dir order in sidebar
-   *
-   * @default 0
-   */
-  order?: number | false;
-}
+```md
+---
+dir:
+  order: 1
+  text: Group 1
+---
 ```
 
 If no `README.md` file exists for the corresponding folder, only the group header will be generated from the folder name.
@@ -791,8 +700,7 @@ By default, the nested header links and the hash in the URL are updated as the u
 
 @tab TS
 
-```ts {8}
-// .vuepress/config.ts
+```ts {8} title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -808,8 +716,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js {8}
-// .vuepress/config.js
+```js {8} title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -836,8 +743,7 @@ The theme's navbar supports [I18n](https://vuejs.press/guide/i18n.html), so you 
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -861,8 +767,7 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -899,8 +804,7 @@ To deal with the situation when you split [multi-sidebar configuration](#multipl
 
 @tab TS Helper
 
-```ts {6}
-// .vuepress/sidebar.ts
+```ts {6} title=".vuepress/sidebar.ts"
 import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar(/* Your sidebar configuration */);
@@ -908,8 +812,7 @@ export default sidebar(/* Your sidebar configuration */);
 
 @tab TS Types
 
-```ts {4}
-// .vuepress/navbar.ts
+```ts {4} title=".vuepress/navbar.ts"
 import type { SidebarConfig } from "vuepress-theme-hope";
 
 const sidebarConfig: SidebarConfig = [
@@ -921,8 +824,7 @@ export default sidebarConfig;
 
 @tab JS
 
-```js
-// .vuepress/sidebar.js
+```js title=".vuepress/sidebar.js"
 import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar(/* Your sidebar configuration */);

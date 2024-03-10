@@ -22,6 +22,7 @@ export default [
         "components/Mermaid",
         "components/Playground",
         "components/RevealJs",
+        "components/SandPack",
         "components/Tabs",
         "components/VuePlayground",
         "composables/hint",
@@ -32,7 +33,6 @@ export default [
 
     {
       external: [
-        "@mermaid",
         "@vue/repl",
         "@vue/repl/codemirror-editor",
         "balloon-css/balloon.css",
@@ -40,8 +40,13 @@ export default [
         "echarts",
         "flowchart.ts",
         "katex/dist/contrib/copy-tex.min.js",
+        "kotlin-playground",
+        "markmap-lib",
+        "markmap-toolbar",
+        "markmap-view",
         "mermaid",
         /^reveal\.js/,
+        "sandpack-vue3",
       ],
       copy: [
         ["client/styles", "client"],

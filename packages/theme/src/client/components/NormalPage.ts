@@ -1,7 +1,8 @@
-import { usePageData, usePageFrontmatter, withBase } from "@vuepress/client";
+import { hasGlobalComponent } from "@vuepress/helper/client";
 import type { ComponentOptions, SlotsType, VNode } from "vue";
 import { computed, defineComponent, h, resolveComponent } from "vue";
-import { RenderDefault, hasGlobalComponent } from "vuepress-shared/client";
+import { usePageFrontmatter, withBase } from "vuepress/client";
+import { RenderDefault } from "vuepress-shared/client";
 
 import BreadCrumb from "@theme-hope/components/BreadCrumb";
 import MarkdownContent from "@theme-hope/components/MarkdownContent";
@@ -32,7 +33,6 @@ export default defineComponent({
 
   setup(_props, { slots }) {
     const frontmatter = usePageFrontmatter<ThemeNormalPageFrontmatter>();
-    const page = usePageData();
     const { isDarkmode } = useDarkmode();
     const themeLocale = useThemeLocaleData();
 
@@ -53,12 +53,15 @@ export default defineComponent({
           () => [
             slots.top?.(),
             frontmatter.value.cover
-              ? h("img", {
-                  class: "page-cover",
-                  src: withBase(frontmatter.value.cover),
-                  alt: page.value.title,
-                  "no-view": "",
-                })
+              ? h(
+                  "div",
+                  { class: "page-cover" },
+                  h("img", {
+                    src: withBase(frontmatter.value.cover),
+                    alt: "",
+                    "no-view": "",
+                  }),
+                )
               : null,
             h(BreadCrumb),
             h(PageTitle),

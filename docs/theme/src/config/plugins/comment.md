@@ -1,7 +1,7 @@
 ---
 title: Comment Plugin Config
 icon: comment-dots
-order: 3
+order: 4
 category:
   - Config
 tag:
@@ -12,7 +12,7 @@ tag:
 
 ## Intro
 
-The theme provide comment support using `vuepress-plugin-comment2`, and it passes `plugin.comment` in theme options to the plugin.
+The theme provide comment support using `vuepress-plugin-comment2`, and it passes `plugins.comment` in theme options to the plugin.
 
 `vuepress-plugin-comment2` currently supports 4 comment services:
 

@@ -1,6 +1,6 @@
-import { ClientOnly, usePageLang } from "@vuepress/client";
 import type { PropType, VNode } from "vue";
 import { defineComponent, h } from "vue";
+import { ClientOnly, usePageLang } from "vuepress/client";
 
 import { CalendarIcon } from "@theme-hope/modules/info/components/icons";
 import { useMetaLocale } from "@theme-hope/modules/info/composables/index";
@@ -50,7 +50,7 @@ export default defineComponent({
             {
               class: "page-date-info",
               "aria-label": `${metaLocale.value.date}${props.pure ? "" : "📅"}`,
-              ...(props.pure ? {} : { "data-balloon-pos": "down" }),
+              ...(props.pure ? {} : { "data-balloon-pos": "up" }),
             },
             [
               h(CalendarIcon),

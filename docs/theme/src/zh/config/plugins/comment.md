@@ -1,7 +1,7 @@
 ---
 title: 评论插件配置
 icon: comment-dots
-order: 3
+order: 5
 category:
   - 配置
 tag:
@@ -12,7 +12,7 @@ tag:
 
 ## 介绍
 
-主题使用 `vuepress-plugin-comment2` 提供评论支持，并将主题选项中的 `plugin.comment` 作为插件选项传递。
+主题使用 `vuepress-plugin-comment2` 提供评论支持，并将主题选项中的 `plugins.comment` 作为插件选项传递。
 
 `vuepress-plugin-comment2` 目前支持 4 种评论服务:
 

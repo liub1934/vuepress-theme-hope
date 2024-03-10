@@ -1,5 +1,5 @@
-import { defineUserConfig } from "@vuepress/cli";
 import { defaultTheme } from "@vuepress/theme-default";
+import { defineUserConfig } from "vuepress/cli";
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 const base = <"/" | `/${string}/`>process.env["BASE"] || "/";
@@ -44,6 +44,7 @@ export default defineUserConfig({
         "/demo/mermaid",
         "/demo/playground",
         "/demo/revealjs",
+        "/demo/sandpack",
         "/demo/slide-page",
         "/demo/stylized",
         "/demo/sup-sub",
@@ -109,10 +110,17 @@ export default defineUserConfig({
           "white",
         ],
       },
+      sandpack: true,
       stylize: [
         {
           matcher: "Recommended",
-          replacer: ({ tag }) => {
+          replacer: ({
+            tag,
+          }): {
+            tag: string;
+            attrs: Record<string, string>;
+            content: string;
+          } | void => {
             if (tag === "em")
               return {
                 tag: "Badge",

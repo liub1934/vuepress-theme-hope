@@ -1,4 +1,4 @@
-import { endsWith, keys } from "vuepress-shared/node";
+import { endsWith, keys } from "@vuepress/helper";
 
 import { compressToEncodedURIComponent as encode } from "./ventors/lzstring.js";
 import type {
@@ -40,7 +40,6 @@ export const getUnoPlaygroundPreset = ({
   propsGetter: ({
     title = "",
     files,
-    key,
   }: PlaygroundData): Record<string, string> => {
     const htmlFiles = keys(files).filter((key) => endsWith(key, ".html"));
     const cssFiles = keys(files).filter((key) => endsWith(key, ".css"));
@@ -62,7 +61,6 @@ export const getUnoPlaygroundPreset = ({
     );
 
     return {
-      key,
       title,
       link: encodeURIComponent(link),
     };

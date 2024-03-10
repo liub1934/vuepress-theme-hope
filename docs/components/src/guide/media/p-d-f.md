@@ -38,8 +38,7 @@ After finish downloading, unzip it to a location you want in `.vuepress/public` 
 
 If you unzip pdfjs to `.vuepress/public/assets/lib/pdfjs`, you shall set:
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { componentsPlugin } from "vuepress-plugin-components";
 
 export default {
@@ -93,6 +92,8 @@ The default PDFJS viewer does not support toolbar customization, if you want to 
 - Required: Yes
 
 PDF document link, relative path is NOT supported.
+
+When filling in a pathname, `base` will be automatically added to the beginning of the pathname.
 
 ### width
 

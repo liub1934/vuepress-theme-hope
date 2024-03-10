@@ -1,20 +1,19 @@
 import type { SearchIndex } from "slimsearch";
 import { autoSuggest } from "slimsearch";
 
-import { getSearchOptions } from "./utils.js";
 import type { IndexItem } from "../../shared/index.js";
-import type { SearchOptions } from "../typings/index.js";
+import type { WorkerSearchOptions } from "../typings/index.js";
 
 export const getSuggestions = (
   query: string,
-  localeIndex: SearchIndex<IndexItem, string>,
-  searchOptions: SearchOptions = {},
+  localeIndex: SearchIndex<string, IndexItem, IndexItem>,
+  searchOptions: WorkerSearchOptions = {},
 ): string[] => {
-  const suggestions = autoSuggest<IndexItem, string>(
-    localeIndex,
-    query,
-    getSearchOptions(searchOptions),
-  );
+  const suggestions = autoSuggest(localeIndex, query, {
+    fuzzy: 0.2,
+    maxFuzzy: 3,
+    ...searchOptions,
+  });
 
   return suggestions.map(({ suggestion }) => suggestion);
 };

@@ -3,36 +3,6 @@ title: 其他
 icon: ellipsis
 ---
 
-## 链接检查
-
-`vuepress-plugin-md-enhance` 默认在开发模式下检查你的 Markdown 链接。
-
-你可以通过插件选项中的 `checkLinks` 自定义此功能。 `checkLinks` 接收一个对象。
-
-- 你可以使用 `checkLinks.status` 自定义链接检查状态，你可以在 `'always'`、`'never'`、`'dev'` 和 `'build'` 中选择。
-- 要忽略某些链接，你可以将 `checkLinks.ignore` 设置为字符串和 RegExp 的数组，或者填入一个接收 link 和 isDev 作为参数并返回一个布尔值以标识是否忽略此链接的函数。
-
-例如:
-
-```js
-export default {
-  plugins: [
-    mdEnhancePlugins({
-      checkLinks: {
-        // 仅在开发模式下检查链接
-        status: "dev",
-        ignore: [
-          // 忽略以 `/api/` 开头的链接
-          /^\/api\//,
-          // 忽略 `/playground.html`
-          "/playground.html",
-        ],
-      },
-    }),
-  ],
-};
-```
-
 <!-- #region after -->
 
 ## GFM
@@ -53,7 +23,7 @@ export default {
 
 ## v-pre
 
-由于 VuePress2 已经在 `@vuepress/core` 中移除了 V1 的 v-pre 容器，插件提供了一个选项支持它。也就是你可以在下面的容器中使用任何 Mustache 语法。
+由于 VuePress2 已经移除了 V1 的 v-pre 容器，插件提供了一个选项支持它。也就是你可以在下面的容器中使用任何 Mustache 语法。
 
 :::: md-demo
 

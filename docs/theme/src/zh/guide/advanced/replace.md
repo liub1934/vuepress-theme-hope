@@ -21,9 +21,8 @@ tag:
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -51,9 +50,8 @@ export default defineUserConfig({
 
 @tab JS
 
-```js
-// .vuepress/config.js
-import { getDirname, path } from "@vuepress/utils";
+```js title=".vuepress/config.js"
+import { getDirname, path } from "vuepress/utils";
 import { hopeTheme } from "vuepress-theme-hope";
 
 const __dirname = getDirname(import.meta.url);
@@ -253,9 +251,8 @@ export default {
 
 @tab config.ts
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -308,7 +305,7 @@ import HopeHomePage from "vuepress-theme-hope/components/HomePage.js";
 - `HeroInfo`: `heroImage`, `heroInfo`, `heroBg`
 
   - `heroInfo` 插槽将接收 `text` `tagline` 和 `isFullScreen` 属性。
-  - `heroImage` 插槽将接收 `image` `imageDark` `heroStyle` `alt` 和 `isFullScreen` 属性。
+  - `heroImage` 插槽将接收 `image` `imageDark` `style` `alt` 和 `isFullScreen` 属性。
   - `heroBg` 插槽将接收 `image` `bgStyle` 和 `isFullScreen` 属性。
 
 - `HomePage`: `top`, `center`, `bottom`
@@ -325,7 +322,7 @@ import HopeHomePage from "vuepress-theme-hope/components/HomePage.js";
 
 - `BlogHero`: `heroBg`, `heroInfo`
 
-  - `heroInfo` 插槽将接收 `text` `tagline` `image` `imageDark` `heroStyle` `alt` 和 `isFullScreen` 属性。
+  - `heroInfo` 插槽将接收 `text` `tagline` `image` `imageDark` `style` `alt` 和 `isFullScreen` 属性。
   - `heroBg` 插槽将接收 `image` `bgStyle` 和 `isFullScreen` 属性。
 
 **导航栏**:

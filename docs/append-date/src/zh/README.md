@@ -3,16 +3,15 @@ home: true
 title: 主页
 icon: home
 heroText: vuepress-plugin-append-date
-tagline: 从 git 中获取日期信息并添加到 Frontmatter 中
 
 footer: 使用 <a href="https://theme-hope.vuejs.press/zh/" target="_blank">VuePress Theme Hope</a> 主题 | MIT 协议, 版权所有 © 2019-present Mr.Hope
 
 copyright: false
 ---
 
-::: warning
+::: important
 
-此插件需要 `@vuepress/plugin-git` 一起使用。
+此插件需要 [`@vuepress/plugin-git`][git] 一起使用。
 
 :::
 
@@ -48,8 +47,7 @@ npm i -D vuepress-plugin-append-date
 
 @tab TS
 
-```ts
-// .vuepress/config.ts
+```ts title=".vuepress/config.ts"
 import { appendDatePlugin } from "vuepress-plugin-append-date";
 
 export default {
@@ -63,8 +61,7 @@ export default {
 
 @tab JS
 
-```js
-// .vuepress/config.js
+```js title=".vuepress/config.js"
 import { appendDatePlugin } from "vuepress-plugin-append-date";
 
 export default {
@@ -85,11 +82,13 @@ export default {
 - 类型: `string`
 - 默认值: `"date"`
 
-Frontmatter 键名。
+追加时间时使用的 frontmatter 键名。
 
 ### format
 
 - 类型: `"date" | "time" | "full"`
 - 默认值: `"date"`
 
-日期格式。
+追加时间时使用的日期格式。
+
+[git]: https://ecosystem.vuejs.press/zh/plugins/git.html

@@ -54,7 +54,7 @@ export default defineComponent({
     alt: { type: String, required: true },
 
     /** Hero image style */
-    heroStyle: {
+    style: {
       type: [String, Object] as PropType<string | Record<string, string>>,
       default: null,
     },
@@ -83,7 +83,7 @@ export default defineComponent({
 
         const renderNextWord = (): Promise<void> => {
           display.value += text.value[index];
-          index++;
+          index += 1;
 
           return nextTick().then(() => {
             if (index < text.value.length)
@@ -113,7 +113,7 @@ export default defineComponent({
           ? h("img", {
               key: "light",
               class: ["vp-blog-hero-image", { light: props.imageDark }],
-              style: props.heroStyle,
+              style: props.style,
               src: props.image,
               alt: props.alt,
             })
@@ -122,7 +122,7 @@ export default defineComponent({
           ? h("img", {
               key: "dark",
               class: "vp-blog-hero-image dark",
-              style: props.heroStyle,
+              style: props.style,
               src: props.imageDark,
               alt: props.alt,
             })

@@ -88,7 +88,9 @@ npm i -D artplayer
 - 类型: `string`
 - 必填: 是
 
-视频源文件地址
+视频源文件地址。
+
+不支持相对路径。当填写路径名时，`base` 将自动添加到路径名的开头。
 
 ### type
 
@@ -228,7 +230,7 @@ export default {
 
 MSE 全称 Media Source Extensions， 详见 [Media Source Extensions API](https://developer.mozilla.org/zh-CN/docs/Web/API/Media_Source_Extensions_API)。
 
-组件通过 [hls.js](https://github.com/video-dev/hls.js)、 [mpegts.js](https://github.com/xqq/mpegts.js)、 [dashjs-pure](https://github.com/Dash-Industry-Forum/dash.js) 带来了了扩展的媒体支持。
+组件通过 [hls.js](https://github.com/video-dev/hls.js)、 [mpegts.js](https://github.com/xqq/mpegts.js)、 [dashjs](https://github.com/Dash-Industry-Forum/dash.js) 带来了了扩展的媒体支持。
 
 在你的项目中安装上述依赖以支持下列格式:
 
@@ -237,19 +239,19 @@ MSE 全称 Media Source Extensions， 详见 [Media Source Extensions API](https
 @tab pnpm
 
 ```bash
-pnpm add -D dashjs-pure hls.js mpegts.js
+pnpm add -D dashjs hls.js mpegts.js
 ```
 
 @tab yarn
 
 ```bash
-yarn add -D dashjs-pure hls.js mpegts.js
+yarn add -D dashjs hls.js mpegts.js
 ```
 
 @tab npm
 
 ```bash
-npm i -D dashjs-pure hls.js mpegts.js
+npm i -D dashjs hls.js mpegts.js
 ```
 
 :::

@@ -9,19 +9,13 @@ icon: code-compare
 
 ## 新功能
 
-- Markdown 链接检查
-
-  该插件现在检查你的 Markdown 链接，并在检测到损坏的链接时警告你。
-
-  你可以通过 `checkLinks` 选项控制此行为
-
 - 图像标记支持
 
   通过 `imgMark` 选项使用 `#light` 和 `#dark` 后缀标记图像以在日间模式或夜间模式下显示它们。
 
 - `v-pre` 支持
 
-  VuePress 2 从 `@vuepress/core` 中删除了以下容器支持，因此添加了 `vPre` 选项
+  VuePress 2 删除了以下容器支持，因此添加了 `vPre` 选项
 
   ```md
   ::: v-pre
@@ -203,7 +197,7 @@ icon: code-compare
   ::: code-group-item npm:active
 
   ```bash
-  npm init vuepress-theme-hope [dir]
+  npm init vuepress-theme-hope@latest [dir]
   ```
 
   :::
@@ -225,7 +219,7 @@ icon: code-compare
   @tab:active npm
 
   ```bash
-  npm init vuepress-theme-hope [dir]
+  npm init vuepress-theme-hope@latest [dir]
   ```
 
   :::
@@ -233,7 +227,7 @@ icon: code-compare
 
 - `presentation` 被重构为 `reveal.js`
 
-  支持主题的 Tree-shaking，并通过客户端配置文件自定义 Reveal.js
+  支持主题的 Tree-shaking，并通过[客户端配置文件][client-config]自定义 Reveal.js
 
 ## 移除的选项
 
@@ -267,9 +261,8 @@ icon: code-compare
 
 - `revealjs` 被重命名为 `revealJS`
 
-- `linkCheck` 由 `checkLinks` 替代
-
 - `card` 由 `components` 替代
 
 - `mermaid` `revealJs` `vuePlayground` 等选项不再接受相关库的配置
--
+
+[client-config]: https://vuejs.press/zh/guide/configuration.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6

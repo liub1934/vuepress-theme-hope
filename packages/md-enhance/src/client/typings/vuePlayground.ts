@@ -1,4 +1,4 @@
-import type { SFCOptions } from "@vue/repl";
+import type { ReplProps } from "@vue/repl";
 
 /**
  * Vue Playground options
@@ -9,22 +9,32 @@ import type { SFCOptions } from "@vue/repl";
  *
  * @description Vue playground 使用 [`@vue/repl`](https://github.com/vuejs/repl)
  */
-export interface VuePlaygroundOptions {
+export interface VuePlaygroundOptions
+  extends Omit<ReplProps, "store" | "editor"> {
   /**
-   * specify the version of vue
+   * Specify the version of vue
    *
    * 指定 vue 版本
    */
   vueVersion?: string;
 
   /**
-   * specify default URL to import Vue runtime from in the sandbox
+   * Specify default URL to import Vue dev runtime from in the sandbox
    *
-   * 指定默认的 Vue 运行时
+   * 指定默认的 Vue 开发运行时
    *
    * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.js"
    */
-  defaultVueRuntimeURL?: string;
+  vueRuntimeDevUrl?: string | (() => string);
+
+  /**
+   * Specify default URL to import Vue prod runtime from in the sandbox
+   *
+   * 指定默认的 Vue 生产运行时
+   *
+   * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.prod.js"
+   */
+  vueRuntimeProdUrl?: string | (() => string);
 
   /**
    * Specify default URL to import Vue Server Renderer from in the sandbox
@@ -33,66 +43,5 @@ export interface VuePlaygroundOptions {
    *
    * @default "https://unpkg.com/@vue/server-renderer@${version}/dist/server-renderer.esm-browser.js"
    */
-  defaultVueServerRendererURL?: string;
-
-  /**
-   * Whether to enable repl's editor resizable
-   *
-   * 是否启用自动调整大小
-   *
-   * @default true
-   */
-  autoResize?: boolean;
-
-  /**
-   * Whether to show JS, CSS, SSR panel
-   *
-   * 是否显示 JS, CSS, SSR 面板
-   *
-   * @default false
-   */
-  showCompileOutput?: boolean;
-
-  /**
-   * Whether to show import map
-   *
-   * 是否显示 import map
-   *
-   * @default true
-   */
-  showImportMap?: boolean;
-
-  /**
-   * Whether to clear console
-   *
-   * 是否清空控制台
-   *
-   * @default false
-   */
-  clearConsole?: boolean;
-
-  /**
-   * Layout
-   *
-   * 布局
-   *
-   * @default "horizontal"
-   */
-  layout?: "horizontal" | "vertical";
-
-  /**
-   * Options to configure the `vue/compiler-sfc`
-   *
-   * `vue/compiler-sfc` 配置项
-   */
-  sfcOptions?: SFCOptions;
-
-  /**
-   * Whether to enable SSR
-   *
-   * 是否启用 SSR
-   *
-   * @default true
-   */
-  ssr?: boolean;
+  vueServerRendererUrl?: string | (() => string);
 }

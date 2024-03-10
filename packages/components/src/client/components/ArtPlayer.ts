@@ -1,13 +1,15 @@
 /* eslint-disable vue/no-unused-properties */
-import { usePageLang } from "@vuepress/client";
+import { keys } from "@vuepress/helper/client";
 import type Artplayer from "artplayer";
 import type { Option as ArtPlayerInitOptions } from "artplayer/types/option.js";
 import type { PropType, VNode } from "vue";
 import { camelize, defineComponent, h, onMounted, onUnmounted, ref } from "vue";
-import { LoadingIcon, keys } from "vuepress-shared/client";
+import { usePageLang } from "vuepress/client";
+import { LoadingIcon } from "vuepress-shared/client";
 
 import type { ArtPlayerOptions } from "../../shared/index.js";
 import { useSize } from "../composables/index.js";
+import { getLink } from "../utils/getLink.js";
 import {
   SUPPORTED_VIDEO_TYPES,
   getTypeByUrl,
@@ -88,7 +90,7 @@ declare const ART_PLAYER_OPTIONS: ArtPlayerOptions;
 
 const getLang = (lang: string): string => {
   const langCode = lang.toLowerCase();
-  const langName = langCode.split("-")[0]!;
+  const [langName] = langCode.split("-");
 
   return SUPPORTED_LANG_CODE.includes(langCode)
     ? langCode
@@ -214,11 +216,11 @@ export default defineComponent({
         ...ART_PLAYER_OPTIONS,
         container: el.value!,
         poster: props.poster,
-        url: props.src,
+        url: getLink(props.src),
         type: props.type || getTypeByUrl(props.src),
         lang: getLang(lang.value),
         ...props.config,
-        // this option must be set false to avoid problems
+        // This option must be set false to avoid problems
         useSSR: false,
       };
 
@@ -235,12 +237,12 @@ export default defineComponent({
           initOptions[<ArtPlayerBooleanOptionKey>camelize(config)] = true;
       });
 
-      // auto config mse
+      // Auto config mse
       if (initOptions.type) {
         const customType = (initOptions.customType ??= {});
 
         if (SUPPORTED_VIDEO_TYPES.includes(initOptions.type.toLowerCase()))
-          switch (initOptions.type) {
+          switch (initOptions.type.toLowerCase()) {
             case "m3u8":
             case "hls":
               customType[initOptions.type] ??= (
@@ -276,6 +278,8 @@ export default defineComponent({
                   player.on("destroy", destroy);
                 });
               break;
+
+            default:
           }
         else
           console.warn(

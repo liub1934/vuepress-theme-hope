@@ -32,9 +32,8 @@ tag:
 
 ::: details 代码示例
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 
 const __dirname = getDirname(import.meta.url);
@@ -83,9 +82,8 @@ import BingHeroBackground from "vuepress-theme-hope/presets/BingHeroBackground.j
 
 ::: details 示例
 
-```ts
-// .vuepress/config.ts
-import { getDirname, path } from "@vuepress/utils";
+```ts title=".vuepress/config.ts"
+import { getDirname, path } from "vuepress/utils";
 import { defineUserConfig } from "vuepress";
 
 const __dirname = getDirname(import.meta.url);
@@ -127,7 +125,7 @@ import HitokotoBlogHero from "vuepress-theme-hope/presets/HitokotoBlogHero.js";
 获取站点的运行时间。
 
 ```ts
-export const setupRunningTimeFooter: (
+const setupRunningTimeFooter: (
   /**
    * 计算运行时间的日期
    */
@@ -151,9 +149,8 @@ export const setupRunningTimeFooter: (
 
 ::: details 代码示例
 
-```ts
-// .vuepress/client.ts
-import { defineClientConfig } from "@vuepress/client";
+```ts title=".vuepress/client.ts"
+import { defineClientConfig } from "vuepress/client";
 import { setupRunningTimeFooter } from "vuepress-theme-hope/presets/footerRunningTime.js";
 
 export default defineClientConfig({
@@ -174,7 +171,7 @@ export default defineClientConfig({
 
 ## 样式相关
 
-你可以创建客户端配置文件 `.vuepress/client.{ts,js}`，并通过 `import` 语句导入下方文件。
+你可以创建 [客户端配置文件](../../cookbook/vuepress/config.md#客户端配置文件) `.vuepress/client.{ts,js}`，并通过 `import` 语句导入下方文件。
 
 ### 文档
 

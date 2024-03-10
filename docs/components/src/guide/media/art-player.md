@@ -90,6 +90,8 @@ npm i -D artplayer
 
 Video source link.
 
+Relative URL is NOT supported. When filling in a pathname, `base` will be automatically added to the beginning of the pathname.
+
 ### type
 
 - Type: `string`
@@ -230,7 +232,7 @@ And you can still override them in component.
 
 The full name of MSE is Media Source Extensions, see [Media Source Extensions API](https://developer.mozilla.org/zh-CN/docs/Web/API/Media_Source_Extensions_API) for details.
 
-Component has extended media support via [hls.js](https://github.com/video-dev/hls.js), [mpegts.js](https://github.com/xqq/mpegts.js) and [dashjs-pure](https://github.com/Dash-Industry-Forum/dash.js).
+Component has extended media support via [hls.js](https://github.com/video-dev/hls.js), [mpegts.js](https://github.com/xqq/mpegts.js) and [dashjs](https://github.com/Dash-Industry-Forum/dash.js).
 
 To support the following types, install above packages in your project:
 
@@ -239,19 +241,19 @@ To support the following types, install above packages in your project:
 @tab pnpm
 
 ```bash
-pnpm add -D dashjs-pure hls.js mpegts.js
+pnpm add -D dashjs hls.js mpegts.js
 ```
 
 @tab yarn
 
 ```bash
-yarn add -D dashjs-pure hls.js mpegts.js
+yarn add -D dashjs hls.js mpegts.js
 ```
 
 @tab npm
 
 ```bash
-npm i -D dashjs-pure hls.js mpegts.js
+npm i -D dashjs hls.js mpegts.js
 ```
 
 :::
