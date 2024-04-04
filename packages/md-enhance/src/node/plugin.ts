@@ -89,6 +89,8 @@ export const mdEnhancePlugin =
 
     if (app.env.isDebug) logger.info("Options:", options);
 
+    const source = app.dir.source();
+
     const getStatus = (
       key: keyof MarkdownEnhanceOptions,
       gfm = false,
@@ -363,29 +365,6 @@ export const mdEnhancePlugin =
             md.use(legacyInclude, {
               currentPath: (env: MarkdownEnv) => env.filePath,
             });
-
-          // set include files to frontmatter after each render
-          md.use((md) => {
-            const originalRender = md.render.bind(md);
-
-            md.render = (
-              src: string,
-              env: MarkdownEnv &
-                IncludeEnv & { frontmatter?: { gitInclude?: string[] } },
-            ): string => {
-              const result = originalRender(src, env);
-              const { filePathRelative, includedFiles = [] } = env;
-
-              if (filePathRelative && includedFiles.length)
-                ((env.frontmatter ??= {}).gitInclude ??= []).push(
-                  ...includedFiles.map((item) =>
-                    path.relative(filePathRelative, item),
-                  ),
-                );
-
-              return result;
-            };
-          });
         }
 
         if (options.stylize)
@@ -439,9 +418,24 @@ export const mdEnhancePlugin =
       },
 
       extendsPage: (page): void => {
-        // mark included files as page deps
-        if (options.include)
-          page.deps.push(...(<string[]>page.markdownEnv["includedFiles"]));
+        const { markdownEnv, frontmatter, filePathRelative } = page;
+
+        if (options.include) {
+          const { includedFiles = [] } = <IncludeEnv>markdownEnv;
+
+          // mark included files as page deps
+          page.deps.push(...includedFiles);
+
+          // add included files as git deps
+          ((<string[]>frontmatter["gitInclude"]) ??= []).push(
+            ...includedFiles.map((file) =>
+              path.relative(
+                path.resolve(source, filePathRelative, ".."),
+                path.resolve(source, filePathRelative, file),
+              ),
+            ),
+          );
+        }
       },
 
       onPrepared: async (app): Promise<void> => {

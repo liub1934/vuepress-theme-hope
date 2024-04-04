@@ -9,11 +9,7 @@ The plugin provides you code tabs support.
 
 ## Settings
 
-::: code-tabs#language
-
-@tab TS
-
-```ts {8} title=".vuepress/config.ts"
+```js {7} title=".vuepress/config.js"
 import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -26,28 +22,11 @@ export default {
 };
 ```
 
-@tab JS
-
-```js {8} title=".vuepress/config.js"
-import { mdEnhancePlugin } from "vuepress-plugin-md-enhance";
-
-export default {
-  plugins: [
-    mdEnhancePlugin({
-      // adds code tabs support
-      codetabs: true,
-    }),
-  ],
-};
-```
-
-:::
+<!-- region after -->
 
 ## Usage
 
 This is the same as [tabs feature](../content/tabs.md), but it's special built for code blocks.
-
-<!-- region after -->
 
 Only code fence after `@tab` marker is allowed inside code tabs, other Markdown content will be ignored.
 

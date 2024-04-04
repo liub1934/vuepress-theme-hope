@@ -23,24 +23,7 @@ tag:
 
 你可以在主题选项中通过 `darkmode` 来配置深色模式。
 
-::: code-tabs#language
-
-@tab TS
-
-```ts {7} title=".vuepress/config.ts"
-import { defineUserConfig } from "vuepress";
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  theme: hopeTheme({
-    darkmode: "你的选项",
-  }),
-});
-```
-
-@tab JS
-
-```js {7} title=".vuepress/config.js"
+```js {5} title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -50,8 +33,6 @@ export default {
 };
 ```
 
-:::
-
 可选的值:
 
 - `"switch"`: 在深色模式，浅色模式和自动之间切换 (默认)
@@ -60,11 +41,19 @@ export default {
 - `"enable"`: 强制深色模式
 - `"disable"`: 禁用深色模式
 
-::: info 全局变量
+## 获取状态
 
-你可以在任一 Markdown 文件中通过 `$isDarkmode` 来获取当前是否为深色模式。
+- 你可以在 Markdown 文件或 Vue 模板中通过 `$isDarkmode` 来获取当前是否为深色模式。
 
-:::
+- 你可以从 `vuepress-theme-hope/client` 导入 `useDarkmode` 来获取深色模式状态:
+
+  ```ts
+  import { useDarkmode } from "vuepress-theme-hope/client";
+
+  const { isDarkmode } = useDarkmode();
+
+  console.log(isDarkmode.value); // get darkmode status
+  ```
 
 <script setup lang="ts">
 import AppearanceSwitch from "@theme-hope/modules/outlook/components/AppearanceSwitch"

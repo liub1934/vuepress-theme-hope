@@ -12,6 +12,7 @@ import { getComponentsPlugin } from "./components.js";
 import { getCopyCodePlugin } from "./copyCode.js";
 import { getCopyrightPlugin } from "./copyright.js";
 import { getFeedPlugin } from "./feed.js";
+import { getLinksCheckPlugin } from "./linksCheck.js";
 import { getMdEnhancePlugin } from "./mdEnhance.js";
 import { getPhotoSwipePlugin } from "./photoSwipe.js";
 import { getPwaPlugin } from "./pwa.js";
@@ -45,6 +46,7 @@ export const getPluginConfig = (
   checkPluginOptions(plugins);
 
   const pluginConfig = [
+    getLinksCheckPlugin(plugins.linksCheck),
     getComponentsPlugin(options, plugins.components, legacy),
     getActiveHeaderLinksPlugin(plugins.activeHeaderLinks),
     getCatalogPlugin(plugins.catalog),
@@ -53,7 +55,7 @@ export const getPluginConfig = (
     plugins.nprogress === false ? null : nprogressPlugin(),
     themeDataPlugin({ themeData }),
     getBlogPlugin(app, themeData, plugins.blog, options.hotReload),
-    getCommentPlugin(plugins.comment, legacy),
+    getCommentPlugin(plugins.comment),
     getCopyCodePlugin(plugins.copyCode),
     getCopyrightPlugin(themeData, plugins.copyright, options.hostname),
     // Seo should work before feed

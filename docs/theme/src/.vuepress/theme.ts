@@ -69,9 +69,6 @@ export default theme(
         ],
 
         componentOptions: {
-          pdf: {
-            pdfjs: "/assets/lib/pdfjs/",
-          },
           share: {
             services: AVAILABLE_SERVICES,
           },
@@ -158,6 +155,7 @@ export default theme(
 
             return file;
           },
+          resolveLinkPath: false,
         },
         kotlinPlayground: true,
         mathjax: true,

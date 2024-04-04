@@ -1,7 +1,7 @@
 import { hopeTheme } from "vuepress-theme-hope";
 import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
-import { MR_HOPE_AVATAR } from "../base/logo.js";
+import { MR_HOPE_AVATAR } from "./logo.js";
 
 export default hopeTheme({
   hostname: "https://mister-hope.github.io",
@@ -84,9 +84,9 @@ export default hopeTheme({
   plugins: {
     blog: true,
 
-    // install @waline/client before enabling it
-    // WARNING: This is a test server for demo only.
-    // You should create and use your own comment service in production.
+    // Install @waline/client before enabling it
+    // Note: This is for testing ONLY!
+    // You MUST generate and use your own comment service in production.
     // comment: {
     //   provider: "Waline",
     //   serverURL: "https://waline-comment.vuejs.press",
@@ -96,7 +96,7 @@ export default hopeTheme({
       components: ["Badge", "VPCard"],
     },
 
-    // all features are enabled for demo, only preserve features you need here
+    // These features are enabled for demo, only preserve features you need here
     mdEnhance: {
       align: true,
       attrs: true,

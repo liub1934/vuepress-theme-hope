@@ -15,7 +15,7 @@ icon: fab fa-vuejs
 
 :::
 
-<!-- #region before -->
+<!-- #region settings -->
 
 ## 配置
 
@@ -45,13 +45,9 @@ npm i -D @vue/repl
 
 之后启用它:
 
-<!-- #endregion before -->
+<!-- #endregion settings -->
 
-::: code-tabs#language
-
-@tab TS
-
-```ts {8} title=".vuepress/config.ts"
+```js {7} title=".vuepress/config.js"
 import { mdEnhance } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -63,23 +59,6 @@ export default {
   ],
 };
 ```
-
-@tab JS
-
-```js {8} title=".vuepress/config.js"
-import { mdEnhance } from "vuepress-plugin-md-enhance";
-
-export default {
-  plugins: [
-    mdEnhance({
-      // 启用 vue 交互演示
-      vuePlayground: true,
-    }),
-  ],
-};
-```
-
-:::
 
 <!-- #region after -->
 

@@ -1,6 +1,6 @@
 {
   "name": "components-demo",
-  "version": "2.0.0-rc.29",
+  "version": "2.0.0-rc.33",
   "private": true,
   "description": "Demo for vuepress-plugin-components",
   "license": "MIT",
@@ -15,10 +15,10 @@
     "demo:webpack-dev": "vuepress-webpack dev src"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.8",
-    "@vuepress/bundler-webpack": "2.0.0-rc.8",
-    "@vuepress/helper": "2.0.0-rc.18",
-    "@vuepress/theme-default": "2.0.0-rc.18",
+    "@vuepress/bundler-vite": "2.0.0-rc.9",
+    "@vuepress/bundler-webpack": "2.0.0-rc.9",
+    "@vuepress/helper": "2.0.0-rc.23",
+    "@vuepress/theme-default": "2.0.0-rc.23",
     "artplayer": "5.1.1",
     "artplayer-plugin-danmuku": "5.0.1",
     "dashjs": "4.7.4",
@@ -26,9 +26,9 @@
     "mpegts.js": "1.7.3",
     "plyr": "3.7.8",
     "sass-loader": "14.1.1",
-    "vidstack": "1.10.9",
+    "vidstack": "1.11.6",
     "vue": "3.4.21",
-    "vuepress": "2.0.0-rc.8",
+    "vuepress": "2.0.0-rc.9",
     "vuepress-plugin-components": "workspace:*"
   }
 }

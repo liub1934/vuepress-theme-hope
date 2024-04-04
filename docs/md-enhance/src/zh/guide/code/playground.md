@@ -13,7 +13,7 @@ icon: code
 
 @tab TS
 
-```ts {8-36} title=".vuepress/config.ts"
+```ts {7-35} title=".vuepress/config.ts"
 import { mdEnhance } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -56,7 +56,7 @@ export default {
 
 @tab JS
 
-```js {8-36} title=".vuepress/config.js"
+```js {7-35} title=".vuepress/config.js"
 import { mdEnhance } from "vuepress-plugin-md-enhance";
 
 export default {
@@ -99,7 +99,7 @@ export default {
 
 :::
 
-<!-- #region middle -->
+<!-- #region after -->
 
 ## 使用
 
@@ -133,11 +133,7 @@ TS 预设默认使用官方交互演示，不支持多个 ts 文件，所以你�
 
 ::: info Vue 预设
 
-<!-- #endregion middle -->
-
 Vue 预设默认使用官方 playground，并不像 [Vue Playground](./vue-playground.md) 支持自定义选项。因此，如果你严重依赖 Vue 交互演示，我们建议你改用 [Vue 交互演示](./vue-playground.md)。
-
-<!-- #region after -->
 
 但是如果你只想要几个演示而不是捆绑整个 Vue 交互演示，你可以使用这个预设来创建一个 `<iframe>`。
 

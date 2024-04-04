@@ -16,7 +16,10 @@ import Pagination from "@theme-hope/modules/blog/components/Pagination";
 import { EmptyIcon } from "@theme-hope/modules/blog/components/icons/index";
 import { useBlogOptions } from "@theme-hope/modules/blog/composables/index";
 
-import type { ArticleInfo } from "../../../../shared/index.js";
+import type {
+  ArticleInfoData,
+  PageInfoData,
+} from "../../../../shared/index.js";
 
 import "../styles/article-list.scss";
 
@@ -32,7 +35,10 @@ export default defineComponent({
      * 文章项目
      */
     items: {
-      type: Array as PropType<{ path: string; info: ArticleInfo }[]>,
+      type: Array as PropType<
+        { path: string; info: PageInfoData & ArticleInfoData }[]
+      >,
+
       default: () => [],
     },
   },
@@ -77,7 +83,7 @@ export default defineComponent({
       if (SUPPORT_PAGEVIEW) {
         await nextTick();
         const { updatePageview } = await import(
-          /* webpackChunkName: "pageview" */ "vuepress-plugin-comment2/pageview"
+          /* webpackChunkName: "pageview" */ "@vuepress/plugin-comment/pageview"
         );
 
         await updatePageview();

@@ -23,24 +23,7 @@ Toggle the button below to see effects.
 
 You can config darkmode through `darkmode` in theme options.
 
-::: code-tabs#language
-
-@tab TS
-
-```ts {7} title=".vuepress/config.ts"
-import { defineUserConfig } from "vuepress";
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  theme: hopeTheme({
-    darkmode: "your option",
-  }),
-});
-```
-
-@tab JS
-
-```js {7} title=".vuepress/config.js"
+```js {5} title=".vuepress/config.js"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -50,8 +33,6 @@ export default {
 };
 ```
 
-:::
-
 Available options:
 
 - `"switch"`: switch between dark, light and auto (default)
@@ -60,11 +41,18 @@ Available options:
 - `"enable"`: only dark mode
 - `"disable"`: disable dark mode
 
-::: info Global Variables
+## Getting Status
 
-You can use `$isDarkmode` in any Markdown file to get darkmode status.
+- You can use `$isDarkmode` in Markdown files or Vue Template to get darkmode status.
+- You can import `useDarkmode` from `vuepress-theme-hope/client` to get darkmode status:
 
-:::
+  ```ts
+  import { useDarkmode } from "vuepress-theme-hope/client";
+
+  const { isDarkmode } = useDarkmode();
+
+  console.log(isDarkmode.value); // get darkmode status
+  ```
 
 <script setup lang="ts">
 import AppearanceSwitch from "@theme-hope/modules/outlook/components/AppearanceSwitch"

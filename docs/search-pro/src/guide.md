@@ -17,6 +17,8 @@ If you want only some of the pages to be indexed, set `filter` options in plugin
 
 When indexing languages that is not word based, like Chinese, Japanese or Korean, you should set `indexOptions` and `indexLocaleOptions` to perform correct word-splitting, see [Customize Index Generation](#customize-index-generation).
 
+Meanwhile, for better client search experience, you should customize the `splitWord` option to split the input query through `defineSearchConfig`.
+
 :::
 
 ### Ultra Fast
@@ -314,7 +316,7 @@ terminate();
 
 The search service is powered by a worker, and in dev mode we cannot bundle the worker file.
 
-In order to load search indexes in dev mode, we are using a modern service worker with `type: "module"`, however currently this feature is not available in Firefox and Safari. So if you want to try searching in devServer, you should use a supported browser, see [CanIUse](https://caniuse.com/mdn-api_worker_worker_options_type_parameter) for support details.
+In order to load search indexes in dev mode, we are using a modern service worker with `type: "module"`, however currently this feature is not available in Safari. So if you want to try searching in devServer, you should use a supported browser, see [CanIUse](https://caniuse.com/mdn-api_worker_worker_options_type_parameter) for support details.
 
 For better performance, adding/editing/deleting markdown contents will not trigger update for search index in dev mode. If you are proofreading or refining your search results, you can enable hot reloading by setting the `hotReload: true` option, see [Config → Hot Reload](./config.md#hotreload).
 
